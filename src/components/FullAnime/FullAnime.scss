@@ -1,20 +1,25 @@
 .fullAnime__img{
   position: relative;
 }
+.container{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0px 15px;
+}
 
 .fullAnime__score{
   position: absolute;
   right: 0;
   top: 0;
 }
-.fullAnime__textWrapper{
+.trailer-imgWrapepr{
   span{
     font-weight: 600;
   }
+  position: relative;
 }
 
-.trailer-imgWrapper{
-  position: relative;
+.trailer-img{
   z-index: 2;
   border: 1px solid black;
 }
@@ -27,4 +32,55 @@
 }
 .trailer-img{
   width: 100%;
+}
+.animeImages__image{
+  height: 100%;
+}
+
+.canonEpisode{
+  color: green;
+}
+.episode__canon{
+  position: relative;
+  padding-left: 30px;
+  &::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    transform: translateY(-50%);
+    border-radius: 50%;
+  }
+}
+.episode__name{
+  list-style-type: circle;
+}
+.episode__filter{
+  position: relative;
+  padding-left: 30px;
+  &::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    transform: translateY(-50%);
+    border-radius: 50%;
+  }
+}
+.fillerEpisode{
+  color: red;
+}
+
+.episodes__content{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
 }

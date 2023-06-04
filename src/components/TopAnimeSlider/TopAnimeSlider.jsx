@@ -27,7 +27,6 @@ const TopAnimeSlider = () => {
       console.error(error);
     }
   }, []);
-
   useEffect(() => {
     fetchAnimeData();
   }, [fetchAnimeData]);
