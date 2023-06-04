@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./FullAnime.scss"
 import playButton from "../../assets/images/playButton.svg"
@@ -19,7 +19,7 @@ const FullAnime = () => {
   const [reviews, setReviews] = useState([])
   const { id } = useParams();
 
-  const fetchFullAnime = async () => {
+  const fetchFullAnime = useCallback(async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}`);
       const animeData = response.data.data;
@@ -28,31 +28,31 @@ const FullAnime = () => {
     } catch (error) {
       console.log(error);
     }
-  }
-  const fetchAnimePictures = async () => {
+  }, [id])
+  const fetchAnimePictures = useCallback(async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/pictures`)
       setAnimePictures(response.data.data)
     } catch (error) {
       console.log(error)
     }
-  }
-  const fetchEpisodes = async () => {
+  }, [id])
+  const fetchEpisodes = useCallback(async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/episodes`)
       setEpisodes(response.data.data)
     } catch (error) {
       console.log(error)
     }
-  }
-  const fetchReviews = async () => {
+  }, [id])
+  const fetchReviews = useCallback(async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/reviews`)
       setReviews(response.data.data)
     } catch (error) {
       console.log(error)
     }
-  }
+  }, [id])
   console.log(reviews)
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const FullAnime = () => {
     fetchAnimePictures()
     fetchEpisodes()
     fetchReviews()
-  }, []);
+  }, [fetchFullAnime, fetchAnimePictures, fetchEpisodes, fetchReviews]);
 
 
   return (
@@ -129,7 +129,7 @@ const FullAnime = () => {
           </div>
         </div>
         <div className="reviews mt-5">
-          <h3 className="review__title text-3xl mb-5">Review</h3>
+          <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span>Review</span> : null}</h3>
           <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
             {reviews.map(review => <ReviewCard key={review.mal_id} {...review} />)}
           </div>
