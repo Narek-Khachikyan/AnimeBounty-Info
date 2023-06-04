@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 import 'swiper/css';
 import "swiper/css/autoplay";
+import ReviewCard from "../ReviewCard/ReviewCard";
 
 
 
@@ -15,6 +16,7 @@ const FullAnime = () => {
   const [fullAnime, setFullAnime] = useState([]);
   const [animePictures, setAnimePictures] = useState([])
   const [episodes, setEpisodes] = useState([])
+  const [reviews, setReviews] = useState([])
   const { id } = useParams();
 
   const fetchFullAnime = async () => {
@@ -35,8 +37,6 @@ const FullAnime = () => {
       console.log(error)
     }
   }
-
-  console.log(episodes)
   const fetchEpisodes = async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/episodes`)
@@ -45,11 +45,21 @@ const FullAnime = () => {
       console.log(error)
     }
   }
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/reviews`)
+      setReviews(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log(reviews)
 
   useEffect(() => {
     fetchFullAnime();
     fetchAnimePictures()
     fetchEpisodes()
+    fetchReviews()
   }, []);
 
 
@@ -63,13 +73,13 @@ const FullAnime = () => {
           </div>
           <div className="fullAnime__textWrapper">
             <h3 className="fullAnime__text text-4xl">{obj.title_english}</h3>
-            <p className="fullAnime__episodes text-xl">Episodes : <span>{obj.episodes}</span></p>
-            <p className="FullAnime__status text-xl">Status : <span>{obj.status}</span></p>
-            <p className="FullAnime__year text-xl">Year : <span>{obj.year ? obj.year : <span>registration🥲</span>}</span></p>
-            <p className="FullAnime__rating text-xl">Rating : <span>{obj.rating}</span></p>
-            <p className="FullAnime__from text-xl">From : <span>{obj.aired.from}</span></p>
-            <p className="FullAnime__to text-xl">To : <span>{obj.aired.to}</span></p>
-            <p className="FullAnime__studio text-xl">Studio : <span>{obj.studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>)}</span></p>
+            <p className="fullAnime__episodes text-xl">Episodes : <b>{obj.episodes}</b></p>
+            <p className="FullAnime__status text-xl">Status : <b>{obj.status}</b></p>
+            <p className="FullAnime__year text-xl">Year : <b>{obj.year ? obj.year : <span>registration🥲</span>}</b></p>
+            <p className="FullAnime__rating text-xl">Rating : <b>{obj.rating}</b></p>
+            <p className="FullAnime__from text-xl">From : <b>{obj.aired.from.slice(0, 10)}</b></p>
+            <p className="FullAnime__to text-xl">To : <b>{obj.aired.to.slice(0, 10)}</b></p>
+            <p className="FullAnime__studio text-xl">Studio : <b>{obj.studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>)}</b></p>
           </div>
         </div>)}
         <div className="animeImages">
@@ -116,6 +126,12 @@ const FullAnime = () => {
               {episodes.map(episode => <li key={episode.mal_id} className="text-xl">{episode.score * 2}</li>)}
             </ul>
 
+          </div>
+        </div>
+        <div className="reviews mt-5">
+          <h3 className="review__title text-3xl mb-5">Review</h3>
+          <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
+            {reviews.map(review => <ReviewCard key={review.mal_id} {...review} />)}
           </div>
         </div>
       </div>
