@@ -1,0 +1,30 @@
+.fullAnime__img{
+  position: relative;
+}
+
+.fullAnime__score{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.fullAnime__textWrapper{
+  span{
+    font-weight: 600;
+  }
+}
+
+.trailer-imgWrapper{
+  position: relative;
+  z-index: 2;
+  border: 1px solid black;
+}
+.playButton{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 3;
+}
+.trailer-img{
+  width: 100%;
+}
