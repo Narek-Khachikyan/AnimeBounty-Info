@@ -1,8 +1,10 @@
 import "./header.scss";
 import githubIcon from "../../assets/images/githubicon.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
+  const location = useLocation();
+  console.log(location.pathname)
   return (
     <div className="Header bg-white shadow-md">
       <div className="header__container">
@@ -13,11 +15,11 @@ const Header = () => {
           <nav className="navigation justify-self-center content-center">
             <ul className="navigation__list flex gap-8 text-black">
               <li className="navigation__list-item ">
-                <Link to={'/anime'} className="navigation__list-link">
+                <Link to={'/anime'} className={location.pathname === "/anime" ? "active" : "navigation__list-link"}>
                   Anime
                 </Link>
               </li>
-              <li className="navigation__list-item">
+              <li className={location.pathname === "/manga" ? "active" : "navigation__list-link"}>
                 <Link to={"/manga"} className="navigation__list-link">
                   Manga
                 </Link>

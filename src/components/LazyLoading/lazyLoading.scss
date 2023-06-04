@@ -1,41 +1,39 @@
 .line__content {
   position: relative;
   height: 100vh;
-  animation-name: lazyLoading;
-  animation-duration:6s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+
 }
 
 @keyframes lazyLoading {
   0% {
-    transform: rotate(0deg);
-  }
-  25%{
-    transform: rotate(90deg);
+    transform: translateY(-50px);
   }
   50% {
-    transform: rotate(180deg);
+    transform: translateY(0px);
   }
   75%{
-    transform: rotate(270deg);
+    transform: translateY(50px);
   }
   100% {
-    transform: rotate(360deg);
+    transform: translateY(-50px);
   }
 }
 
-.line {
+.circle {
   width: 60px;
-  height: 5px;
+  height: 60px;
+  border-radius: 50%;
   background-color: black;
   display: inline-block;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  animation-name: lazyLoading;
+  animation-duration:6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-.line.lineTwo {
-  transform: rotate(90deg);
-}
+

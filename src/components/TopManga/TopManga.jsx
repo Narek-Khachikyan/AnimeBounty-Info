@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 import 'swiper/css';
@@ -7,18 +5,7 @@ import "swiper/css/autoplay";
 import "./TopManga.scss";
 import { Link } from "react-router-dom";
 
-const TopManga = () => {
-  const [mangaData, setMangaData] = useState([]);
-
-  const fetchMangaData = useCallback(async () => {
-    const response = await axios.get('https://api.jikan.moe/v4/top/manga')
-    setMangaData(response.data.data)
-  }, [])
-  console.log(mangaData)
-  useEffect(() => {
-    fetchMangaData();
-  }, [fetchMangaData]);
-
+const TopManga = ({ mangaData }) => {
   return (
     <div className="AnimeSlide py-4">
       <h2 className='TopManga__title text-4xl text-black mt-12 mb-6'>Top Manga</h2>

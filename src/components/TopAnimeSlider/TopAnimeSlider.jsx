@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 import 'swiper/css';
@@ -7,30 +5,7 @@ import "swiper/css/autoplay";
 import "./topAnimeSlider.scss";
 import { Link } from "react-router-dom";
 
-const TopAnimeSlider = () => {
-  const [animeData, setAnimeData] = useState([]);
-
-  const fetchAnimeData = useCallback(async () => {
-    try {
-      const cachedData = localStorage.getItem("animeData");
-
-      if (cachedData) {
-        setAnimeData(JSON.parse(cachedData));
-      } else {
-        const response = await axios.get("https://api.jikan.moe/v4/top/anime");
-        const newData = response.data.data;
-
-        localStorage.setItem("animeData", JSON.stringify(newData));
-        setAnimeData(newData);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-  useEffect(() => {
-    fetchAnimeData();
-  }, [fetchAnimeData]);
-
+const TopAnimeSlider = ({ animeData }) => {
   return (
     <div className="AnimeSlide py-4">
       <h2 className='TopAnime__title text-4xl text-black mt-12 mb-6'>Top Anime</h2>
