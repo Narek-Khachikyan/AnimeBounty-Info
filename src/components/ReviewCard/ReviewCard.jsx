@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import "./reviewCard.scss";
+
 
 const ReviewCard = ({ user, review, reactions }) => {
   const [showFullReview, setShowFullReview] = useState(false);
