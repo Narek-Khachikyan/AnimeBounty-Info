@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import "./reviewCard.scss";
+import PropTypes from 'prop-types';
+
+
 
 
 const ReviewCard = ({ user, review, reactions }) => {
@@ -35,5 +38,11 @@ const ReviewCard = ({ user, review, reactions }) => {
     </div>
   );
 };
+ReviewCard.propTypes = {
+  user: PropTypes.object.isRequired,
+  review: PropTypes.string.isRequired,
+  reactions: PropTypes.object.isRequired,
+};
+
 
 export default ReviewCard;
