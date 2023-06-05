@@ -2,10 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 import TopAnimeSlider from '../components/TopAnimeSlider/TopAnimeSlider'
 import axios from 'axios';
 import LazyLoading from '../components/LazyLoading/LazyLoading';
+import Recomendations from '../components/Recomendations/Recomendations';
+
+
 
 const Anime = () => {
   const [animeData, setAnimeData] = useState([]);
+  const [recomendations, setRecomendations] = useState([])
   const [isLoading, setIsloading] = useState(true)
+
   const fetchAnimeData = useCallback(async () => {
     try {
       const cachedData = localStorage.getItem("animeData");
@@ -22,15 +27,30 @@ const Anime = () => {
       console.error(error);
     }
   }, []);
+
+  const fetchRecomendations = async () => {
+    try {
+      const response = await axios.get('https://api.jikan.moe/v4/recommendations/anime')
+      setRecomendations(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetchAnimeData();
+    fetchRecomendations()
     setIsloading(false)
-  }, [fetchAnimeData]);
+  }, []);
+
 
   return (
     <>
       {isLoading ? <LazyLoading /> : (
-        <TopAnimeSlider animeData={animeData} />
+        <>
+          <TopAnimeSlider animeData={animeData} />
+          <Recomendations recomendations={recomendations} />
+        </>
       )}
 
     </>

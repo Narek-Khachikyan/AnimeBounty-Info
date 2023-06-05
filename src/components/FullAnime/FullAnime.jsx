@@ -23,6 +23,7 @@ const FullAnime = () => {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}`);
       const animeData = response.data.data;
       const animeArray = [animeData];
+
       setFullAnime(animeArray);
     } catch (error) {
       console.log(error);
@@ -56,23 +57,24 @@ const FullAnime = () => {
     }
   }, [id]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Promise.all([
-          fetchFullAnime(),
-          fetchAnimePictures(),
-          fetchEpisodes(),
-          fetchReviews()
-        ]);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      await Promise.all([
+        fetchFullAnime(),
+        fetchAnimePictures(),
+        fetchEpisodes(),
+        fetchReviews()
+      ]);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
-  }, [fetchFullAnime, fetchAnimePictures, fetchEpisodes, fetchReviews]);
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="fullAnime__wrapper pb-10">
@@ -102,7 +104,7 @@ const FullAnime = () => {
 
         <div className="animeImages">
           <p className="text-3xl my-8">Images:</p>
-          <div className="animeImages__content flex flex-wrap gap-4">
+          <div className="animeImages__content">
             <Swiper
               modules={[Autoplay]}
               spaceBetween={50}

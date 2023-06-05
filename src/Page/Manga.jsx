@@ -15,7 +15,7 @@ const Manga = () => {
   useEffect(() => {
     fetchMangaData();
     setIsLoading(false)
-  }, [fetchMangaData]);
+  }, []);
 
   return (
     <>
