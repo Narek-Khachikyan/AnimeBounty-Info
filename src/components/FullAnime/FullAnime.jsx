@@ -57,14 +57,12 @@ const FullAnime = () => {
     }
   }, [id]);
 
-  const fetchData = async () => {
+  const fetchData = () => {
     try {
-      await Promise.all([
-        fetchFullAnime(),
+      fetchFullAnime(),
         fetchAnimePictures(),
         fetchEpisodes(),
         fetchReviews()
-      ]);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
