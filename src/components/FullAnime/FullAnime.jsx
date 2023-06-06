@@ -70,7 +70,7 @@ const FullAnime = () => {
   useEffect(() => {
     fetchData();
     window.scrollTo(0, 0);
-  }, [fetchData]);
+  }, []);
 
   return (
     <div className="fullAnime__wrapper pb-10">
