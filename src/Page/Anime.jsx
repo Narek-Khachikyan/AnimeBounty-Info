@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import TopAnimeSlider from '../components/TopAnimeSlider/TopAnimeSlider'
 import axios from 'axios';
 import LazyLoading from '../components/LazyLoading/LazyLoading';
-import Recomendations from '../components/Recomendations/Recomendations';
+import RecomendationsAnime from '../components/Recomendations/RecomendationsAnime/RecomendationsAnime';
+
 
 
 
@@ -49,7 +50,7 @@ const Anime = () => {
       {isLoading ? <LazyLoading /> : (
         <>
           <TopAnimeSlider animeData={animeData} />
-          <Recomendations recomendations={recomendations} />
+          <RecomendationsAnime recomendations={recomendations} />
         </>
       )}
 

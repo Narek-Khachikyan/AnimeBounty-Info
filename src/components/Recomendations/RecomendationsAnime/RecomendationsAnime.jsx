@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import "./recomendations.scss"
 
-const Recomendations = ({ recomendations }) => {
+const RecomendationsAnime = ({ recomendations }) => {
   return (
     <div className="py-5 rec">
       <h3 className="text-4xl rec__title mb-5">Recomendation</h3>
@@ -27,4 +27,4 @@ const Recomendations = ({ recomendations }) => {
   )
 }
 
-export default Recomendations
+export default RecomendationsAnime

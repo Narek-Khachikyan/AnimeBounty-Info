@@ -20,7 +20,7 @@ const TopManga = ({ mangaData }) => {
             <div className="slide">
               <div className="slide__content">
                 <div className="slide__img">
-                  <Link to={`anime/${obj.mal_id}`}>
+                  <Link to={`manga/${obj.mal_id}`}>
                     <img src={obj.images.webp.large_image_url} alt="" />
                     <p className="slide__score text-base bg-white text-black px-2 px1">
                       {obj.score}
