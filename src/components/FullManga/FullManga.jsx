@@ -14,6 +14,7 @@ const FullManga = () => {
   const [fullManga, setFullManga] = useState({});
   const [mangaPictures, setMangaPictures] = useState([]);
   const [mangaReviews, setMangaReviews] = useState([]);
+  const [mangaCharacters, setMangaCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
 
@@ -41,20 +42,30 @@ const FullManga = () => {
       console.log(error);
     }
   };
+  const fetchMangaCharacters = async () => {
+    const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/characters`)
+    setMangaCharacters(response.data.data)
+  }
   const fetchMangaData = async () => {
     try {
-      await Promise.all([fetchFullManga(), fetchFullMangaPictures(), fetchMangaReviews()]);
+      await Promise.all([
+        fetchFullManga(),
+        fetchFullMangaPictures(),
+        fetchMangaReviews(),
+        fetchMangaCharacters()
+      ]);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchMangaData();
     window.scrollTo(0, 0);
   }, []);
 
-  console.log(mangaReviews)
+  console.log(mangaCharacters)
   return (
     <div className="fullManga__wrapper pb-10">
       {isLoading ? (
@@ -71,9 +82,14 @@ const FullManga = () => {
               <p className="fullManga__subtext text-xl">Chapters: <b>{fullManga.chapters}</b></p>
               <p className="fullManga__subtext text-xl">Status: <b>{fullManga.status}</b></p>
               <p className="fullManga__subtext text-xl">Published: <b>{fullManga.published.string}</b></p>
-              {
-                fullManga.authors.map(author => <p key={author.mal_id} className="text-xl">Author: <b>{author.name}</b></p>)
-              }
+              <div className="authors__textWrapper flex gap-2" >
+                <p className="text-xl">Authors:</p>
+                {
+                  fullManga.authors.map(author => (
+                    <p key={author.mal_id} className="text-xl"><b>{author.name}</b></p>
+                  ))
+                }
+              </div>
             </div>
           </div>
           <div className="fullManga__descr mt-3">
@@ -121,6 +137,23 @@ const FullManga = () => {
               </Swiper>
             </div>
           </div>
+          <div className="mangaCharacters mt-8">
+            <p className="mangaCharacters__title text-3xl mb-3">Characters: </p>
+            <div className="mangaCharacters__content grid grid-cols-4 grid-rows-3 gap-16">
+              {
+                mangaCharacters.map(obj => (
+                  <div key={obj.character.mal_id} className="mangaCharacters__card">
+                    <img className="mangaCharacters__card-img" src={obj.character.images.webp.image_url} alt="" />
+                    <div className="mangaCharacters__card-textWrapepr p-2">
+                      <p className="mangaCharacters__card-text">Name : <b>{obj.character.name}</b></p>
+                      <p className="mangaCharacters__card-subText">Role: <b>{obj.role}</b></p>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+
           <div className="reviews mt-5">
             <h3 className="review__title text-3xl mb-5">{mangaReviews.length > 0 ? <span>Review</span> : null}</h3>
             <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
