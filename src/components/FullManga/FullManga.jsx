@@ -139,7 +139,7 @@ const FullManga = () => {
           </div>
           <div className="mangaCharacters mt-8">
             <p className="mangaCharacters__title text-3xl mb-3">Characters: </p>
-            <div className="mangaCharacters__content grid grid-cols-4 grid-rows-3 gap-16">
+            <div className="mangaCharacters__content grid grid-cols-4 grid-rows-3 gap-8">
               {
                 mangaCharacters.map(obj => (
                   <div key={obj.character.mal_id} className="mangaCharacters__card">
