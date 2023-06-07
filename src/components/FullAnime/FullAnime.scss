@@ -33,7 +33,7 @@
 .trailer-img{
   width: 100%;
 }
-.animeImages__image{
+.images__img{
   height: 100%;
 }
 
@@ -76,11 +76,14 @@
 .fillerEpisode{
   color: red;
 }
-
 .episodes__content{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-  }
+}
+.characters__card-img{
+  width: 100%;
+  height: 400px;
+}

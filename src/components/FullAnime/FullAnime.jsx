@@ -15,6 +15,7 @@ const FullAnime = () => {
   const [animePictures, setAnimePictures] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
 
@@ -53,12 +54,21 @@ const FullAnime = () => {
       console.log(error);
     }
   }, []);
+  const fetcCharacters = useCallback(async () => {
+    try {
+      const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
+      setCharacters(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   const fetchData = useCallback(async () => {
     try {
       await Promise.all([
         fetchFullAnime(),
         fetchAnimePictures(),
         fetchEpisodes(),
+        fetcCharacters(),
         fetchReviews()
       ]);
       setIsLoading(false);
@@ -97,9 +107,9 @@ const FullAnime = () => {
                 </div>
               </div>
             ))}
-            <div className="animeImages">
+            <div className="images">
               <p className="text-3xl my-8">Images:</p>
-              <div className="animeImages__content">
+              <div className="images__content">
                 <Swiper
                   modules={[Autoplay]}
                   spaceBetween={50}
@@ -108,7 +118,7 @@ const FullAnime = () => {
                 >
                   {animePictures.map((picture, index) => (
                     <SwiperSlide key={index}>
-                      <img className="animeImages__image" src={picture.webp.image_url} alt="" />
+                      <img className="images__img" src={picture.webp.image_url} alt="" />
                     </SwiperSlide>
                   ))}
                 </Swiper>
@@ -154,6 +164,28 @@ const FullAnime = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+            <div className="characters mt-8">
+              <p className="characters__title text-3xl mb-3">Characters: </p>
+              <div className="characters__content grid grid-cols-4 grid-rows-3 gap-8">
+                {
+                  characters.map(obj => (
+                    <div key={obj.character.mal_id} className="Characters__card">
+                      <img className="characters__card-img" src={obj.character.images.webp.image_url} alt="" />
+                      <div className="characters__card-textWrapepr p-2">
+                        <p className="characters__card-text">Name : <b>{obj.character.name}</b></p>
+                        <p className="characters__card-subText">Role: <b>{obj.role}</b></p>
+                        <p><b>Voice:</b></p>
+                        {
+                          obj.voice_actors.slice(0, 2).map(actor => (
+                            <p key={actor.person.mal_id}>{actor.language} : <b>{actor.person.name}</b></p>
+                          ))
+                        }
+                      </div>
+                    </div>
+                  ))
+                }
               </div>
             </div>
             <div className="reviews mt-5">
