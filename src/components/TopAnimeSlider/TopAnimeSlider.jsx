@@ -21,9 +21,7 @@ const TopAnimeSlider = ({ animeData }) => {
               <div className="slide">
                 <div className="slide__content">
                   <div className="slide__img">
-
                     <img src={obj.images.webp.large_image_url} alt="" />
-
                     <p className="slide__score text-base bg-white text-black px-2 px1">
                       {obj.score}
                     </p>

@@ -22,12 +22,12 @@
     font-weight: 600;
   }
 }
+.slide__img img{
+  width: 100%;
+}
 .swiper-slide{
   height: auto;
 }
 .swiper-wrapper{
   box-sizing: border-box;
-}
-.slide__img img{
-  width: 100%;
 }

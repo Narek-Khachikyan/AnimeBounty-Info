@@ -45,7 +45,8 @@ const FullAnime = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [id]);
+
   const fetchReviews = useCallback(async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/reviews`);
@@ -53,7 +54,7 @@ const FullAnime = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [id]);
   const fetcCharacters = useCallback(async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
@@ -67,8 +68,8 @@ const FullAnime = () => {
       await Promise.all([
         fetchFullAnime(),
         fetchAnimePictures(),
-        fetchEpisodes(),
         fetcCharacters(),
+        fetchEpisodes(),
         fetchReviews()
       ]);
       setIsLoading(false);

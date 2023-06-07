@@ -9,3 +9,18 @@ font-family: 'Inter', sans-serif;
   margin: 0 auto;
   padding: 0px 15px;
 }
+.searchInput-wrapper{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  margin: 40px 0px;
+}
+.searchInput{
+  border: 1px solid black;
+  padding: 5px 5px 5px 10px;
+  max-width: 300px;
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+}
