@@ -16,6 +16,7 @@ const FullManga = () => {
   const [mangaReviews, setMangaReviews] = useState([]);
   const [mangaCharacters, setMangaCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isActive, setIsActive] = useState(true);
   const { id } = useParams();
 
   const fetchFullManga = async () => {
@@ -26,6 +27,7 @@ const FullManga = () => {
       console.log(error);
     }
   };
+
   const fetchFullMangaPictures = async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/pictures`);
@@ -34,6 +36,7 @@ const FullManga = () => {
       console.log(error);
     }
   };
+
   const fetchMangaReviews = async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/reviews`);
@@ -42,16 +45,22 @@ const FullManga = () => {
       console.log(error);
     }
   };
+
   const fetchMangaCharacters = async () => {
-    const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/characters`)
-    setMangaCharacters(response.data.data)
-  }
+    try {
+      const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/characters`);
+      setMangaCharacters(response.data.data);
+      setIsActive(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchMangaData = async () => {
     try {
       const requests = [
         fetchFullManga(),
         fetchFullMangaPictures(),
-        fetchMangaCharacters(),
         fetchMangaReviews(),
       ];
 
@@ -142,6 +151,7 @@ const FullManga = () => {
           </div>
           <div className="mangaCharacters mt-8">
             <p className="mangaCharacters__title text-3xl mb-3">Characters: </p>
+            <button className={isActive ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchMangaCharacters()}>See all characters</button>
             <div className="mangaCharacters__content grid grid-cols-4 grid-rows-3 gap-8">
               {
                 mangaCharacters ? (

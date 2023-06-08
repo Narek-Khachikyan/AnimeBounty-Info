@@ -15,6 +15,7 @@ const FullAnime = () => {
   const [animePictures, setAnimePictures] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [isActive, setIsActive] = useState(true)
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
@@ -58,6 +59,7 @@ const FullAnime = () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
       setCharacters(response.data.data);
+      setIsActive(false)
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +70,6 @@ const FullAnime = () => {
         fetchFullAnime(),
         fetchAnimePictures(),
         fetchEpisodes(),
-        fetcCharacters(),
         fetchReviews()
       ];
 
@@ -169,6 +170,7 @@ const FullAnime = () => {
             </div>
             <div className="characters mt-8">
               <p className="characters__title text-3xl mb-3">Characters: </p>
+              <button className={isActive ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetcCharacters()}>See all characters</button>
               <div className="characters__content grid grid-cols-4 grid-rows-3 gap-8">
                 {
                   characters.map(obj => (
