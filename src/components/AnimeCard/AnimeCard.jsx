@@ -5,7 +5,7 @@ const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) =>
     <div className="card">
       <div className="card__content">
         <div className="card__img">
-          <img src={images.webp.image_url} alt="" />
+          <img src={images.webp.image_url ? images.webp.image_url : null} alt="" />
           {score ? <p className="card__score bg-white text-black text-base py-1 px-4">{score}</p> : null}
         </div>
         <div className="card__textWrapper p-3">
@@ -16,11 +16,13 @@ const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) =>
                 : title_english
             ) : <b>regisration</b>
           }</b></p>
-          <p className="card__episodes">Episodes: <b>{episodes}</b></p>
+          <p className="card__episodes">Episodes: <b>{episodes ? episodes : <b>registration🥲</b>}</b></p>
           <div className="card__generesWrapper flex flex-wrap gap-1">
             <p className="card__generes mb-1">Generes:</p>
             {
-              genres.map(gener => <p key={gener.mal_id}><b>{gener.name}</b></p>)
+              genres ? (
+                genres.map(gener => <p key={gener.mal_id}><b>{gener.name}</b></p>))
+                : <b>registration🥲</b>
             }
           </div>
           <p className="card__aired">Aired: <b>{aired.string}</b></p>

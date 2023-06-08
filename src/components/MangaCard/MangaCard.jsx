@@ -16,7 +16,7 @@ const MangaCard = ({ title_english, chapters, images, score, genres }) => {
                 : title_english
             ) : <b>regisration</b>
           }</b></p>
-          <p className="card__episodes">Chapters: <b>{chapters ? chapters : <b>registration</b>}</b></p>
+          <p className="card__episodes">Chapters: <b>{chapters ? chapters : <b>registration🥲</b>}</b></p>
           <div className="card__generesWrapper flex flex-wrap gap-1">
             <p className="card__generes mb-1">Generes:</p>
             {

@@ -99,14 +99,14 @@ const FullAnime = () => {
                   <p className="fullAnime__score bg-white text-black text-xl py-1 px-4">{obj.score}</p>
                 </div>
                 <div className="fullAnime__textWrapper">
-                  <h3 className="fullAnime__text text-4xl">{obj.title_english}</h3>
-                  <p className="fullAnime__episodes text-xl">Episodes: <b>{obj.episodes}</b></p>
-                  <p className="FullAnime__status text-xl">Status: <b>{obj.status}</b></p>
+                  <h3 className="fullAnime__text text-4xl">{obj.title_english ? obj.title_english : <b>registration🥲</b>}</h3>
+                  <p className="fullAnime__episodes text-xl">Episodes: <b>{obj.episodes ? obj.episodes : <b>registration🥲</b>}</b></p>
+                  <p className="FullAnime__status text-xl">Status: <b>{obj.status ? obj.status : <b>registration🥲</b>}</b></p>
                   <p className="FullAnime__year text-xl">Year: <b>{obj.year ? obj.year : <span>registration🥲</span>}</b></p>
-                  <p className="FullAnime__rating text-xl">Rating: <b>{obj.rating}</b></p>
-                  <p className="FullAnime__from text-xl">From: <b>{obj.aired.from.slice(0, 10)}</b></p>
-                  <p className="FullAnime__to text-xl">To: <b>{obj.aired.to.slice(0, 10)}</b></p>
-                  <p className="FullAnime__studio text-xl">Studio:{" "}<b>{obj.studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>)}</b></p>
+                  <p className="FullAnime__rating text-xl">Rating: <b>{obj.rating ? obj.rating : <b>registration🥲</b>}</b></p>
+                  <p className="FullAnime__from text-xl">From: <b>{obj.aired.from ? obj.aired.form.slice(0, 10) : <b>registration🥲</b>}</b></p>
+                  <p className="FullAnime__to text-xl">To: <b>{obj.aired.to ? obj.aired.to.slice(0, 10) : <b>registration🥲</b>}</b></p>
+                  <p className="FullAnime__studio text-xl">Studio:{" "}<b>{obj.studios ? obj.studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>) : null}</b></p>
                 </div>
               </div>
             ))}
