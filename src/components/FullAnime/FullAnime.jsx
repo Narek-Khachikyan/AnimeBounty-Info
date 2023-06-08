@@ -67,8 +67,8 @@ const FullAnime = () => {
       const requests = [
         fetchFullAnime(),
         fetchAnimePictures(),
-        fetcCharacters(),
         fetchEpisodes(),
+        fetcCharacters(),
         fetchReviews()
       ];
 
