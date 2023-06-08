@@ -104,8 +104,6 @@ const FullAnime = () => {
                   <p className="FullAnime__status text-xl">Status: <b>{obj.status ? obj.status : <b>registration🥲</b>}</b></p>
                   <p className="FullAnime__year text-xl">Year: <b>{obj.year ? obj.year : <span>registration🥲</span>}</b></p>
                   <p className="FullAnime__rating text-xl">Rating: <b>{obj.rating ? obj.rating : <b>registration🥲</b>}</b></p>
-                  <p className="FullAnime__from text-xl">From: <b>{obj.aired.from ? obj.aired.form : <b>registration🥲</b>}</b></p>
-                  <p className="FullAnime__to text-xl">To: <b>{obj.aired.to ? obj.aired.to : <b>registration🥲</b>}</b></p>
                   <p className="FullAnime__studio text-xl">Studio:{" "}<b>{obj.studios ? obj.studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>) : null}</b></p>
                 </div>
               </div>
