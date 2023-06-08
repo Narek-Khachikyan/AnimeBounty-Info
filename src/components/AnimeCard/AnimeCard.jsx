@@ -1,4 +1,4 @@
-import "./animeCard.scss"
+import "./AnimeCard.scss"
 
 const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) => {
   return (
