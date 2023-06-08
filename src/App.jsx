@@ -6,6 +6,7 @@ import Anime from './Page/Anime';
 import Manga from './Page/Manga';
 import FullManga from './components/FullManga/FullManga';
 import GeneralPage from './Page/GeneralPage';
+import About from './Page/About';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/anime/anime/:id" element={<FullAnime />} />
           <Route path="/manga" element={<Manga />} />
           <Route path="/manga/manga/:id" element={<FullManga />} />
+          <Route path="/about" element={<About />} />
         </Route>
       </Routes>
     </div>

@@ -46,7 +46,6 @@ const FullAnime = () => {
       console.log(error);
     }
   }, [id]);
-
   const fetchReviews = useCallback(async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/reviews`);
@@ -65,13 +64,15 @@ const FullAnime = () => {
   }, []);
   const fetchData = useCallback(async () => {
     try {
-      await Promise.all([
+      const requests = [
         fetchFullAnime(),
         fetchAnimePictures(),
         fetcCharacters(),
         fetchEpisodes(),
         fetchReviews()
-      ]);
+      ];
+
+      await Promise.all(requests);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -82,6 +83,7 @@ const FullAnime = () => {
     fetchData();
     window.scrollTo(0, 0);
   }, []);
+
 
   return (
     <div className="fullAnime__wrapper pb-10">
@@ -127,8 +129,8 @@ const FullAnime = () => {
             </div>
             {fullAnime.map((obj) => (
               <div key={obj.mal_id} className="fullAnime__trailer mt-4">
-                {obj.trailer.length > 0 ? (
-                  <p className="text-3xl mb-4">Trailer</p>
+                {obj.trailer ? (
+                  <p className="text-3xl mb-4">Trailer:</p>
                 ) : (
                   <p className="text-3xl mb-4">There is currently no trailer for this anime</p>
                 )}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import "./recomendations.scss"
+import "../recomendations.scss"
 
 const RecomendationsAnime = ({ recomendations }) => {
   return (

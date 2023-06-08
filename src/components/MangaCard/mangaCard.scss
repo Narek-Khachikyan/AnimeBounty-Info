@@ -1,0 +1,20 @@
+.mangaCard{
+  border: 1px solid black;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+.mangaCard__img{
+  position: relative;
+  img{
+   height: 425px;
+    width: 100%;
+
+    object-fit: cover;
+  }
+}
+.mangaCard__score{
+  position: absolute;
+  right: 0;
+  top: 0;
+}

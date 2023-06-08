@@ -48,13 +48,14 @@ const FullManga = () => {
   }
   const fetchMangaData = async () => {
     try {
-      await Promise.all([
+      const requests = [
         fetchFullManga(),
         fetchFullMangaPictures(),
         fetchMangaCharacters(),
         fetchMangaReviews(),
+      ];
 
-      ]);
+      await Promise.all(requests);
       setIsLoading(false);
     } catch (error) {
       console.log(error);

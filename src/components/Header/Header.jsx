@@ -15,11 +15,11 @@ const Header = () => {
           <nav className="navigation justify-self-center content-center">
             <ul className="navigation__list flex gap-8 text-black">
               <li className="navigation__list-item ">
-                <Link to={'/anime'} className={location.pathname === "/anime" ? "active" : "navigation__list-link"}>
+                <Link to={'/anime'} className={location.pathname === "/anime" ? "header__active" : "navigation__list-link"}>
                   Anime
                 </Link>
               </li>
-              <li className={location.pathname === "/manga" ? "active" : "navigation__list-link"}>
+              <li className={location.pathname === "/manga" ? "header__active" : "navigation__list-link"}>
                 <Link to={"/manga"} className="navigation__list-link">
                   Manga
                 </Link>
@@ -28,6 +28,11 @@ const Header = () => {
                 <a href="#" className="navigation__list-link">
                   Character
                 </a>
+              </li>
+              <li className={location.pathname === "/about" ? "header__active" : "navigation__list-link"}>
+                <Link to={'/about'} className="navigation__list-link">
+                  About
+                </Link>
               </li>
             </ul>
           </nav>
