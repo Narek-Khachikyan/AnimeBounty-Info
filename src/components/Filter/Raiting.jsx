@@ -6,11 +6,10 @@ const Raiting = ({ setRaiting }) => {
   const [active, setActive] = useState(3);
 
   const raiting = [
-    { id: 1, sortType: 'G' },
-    { id: 2, sortType: 'PG' },
-    { id: 3, sortType: 'PG-13' },
-    { id: 4, sortType: 'R - 17+' },
-    { id: 5, sortType: 'R+' },
+    { id: 1, sortType: 'PG' },
+    { id: 2, sortType: 'PG-13' },
+    { id: 3, sortType: 'R - 17+' },
+    { id: 4, sortType: 'R+' },
   ];
 
   const handleButtonClick = (sortType, id) => {
