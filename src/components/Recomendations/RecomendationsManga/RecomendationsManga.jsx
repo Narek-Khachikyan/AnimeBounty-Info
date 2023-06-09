@@ -12,7 +12,7 @@ const RecomendationsManga = ({ recomendationsManga }) => {
               {
                 recomendation.entry.map(item => (
                   <Link key={item.mal_id} to={`manga/${item.mal_id}`}>
-                    <div className="rec__card-content">
+                    <div className="rec__card-content p-3 pb-0">
                       <img className=" w-full rec__card-img" src={item.images.webp.image_url} alt="" />
                       <p className="text-base text-center my-2">{item.title.length > 20
                         ? `${item.title.slice(0, 21)}...`

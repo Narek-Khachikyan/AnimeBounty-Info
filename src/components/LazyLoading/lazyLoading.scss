@@ -1,39 +1,26 @@
-.line__content {
-  position: relative;
-  width: 100%;
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
 }
 
-@keyframes lazyLoading {
+.loader-circle {
+  width: 50px;
+  height: 50px;
+  background-color: black;
+  border-radius: 50%;
+  animation: loaderAnimation 1s infinite ease-in-out;
+}
+
+@keyframes loaderAnimation {
   0% {
-    transform: translateY(-50px);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(0px);
-  }
-  75%{
-    transform: translateY(50px);
+    transform: translateY(-10px);
   }
   100% {
-    transform: translateY(-50px);
+    transform: translateY(0);
   }
 }
-
-.circle {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: black;
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  animation-name: lazyLoading;
-  animation-duration:6s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-

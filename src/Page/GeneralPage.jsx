@@ -7,6 +7,8 @@ import Filter from '../components/Filter/Filter';
 import Sort from '../components/Filter/Sort';
 import MangaCard from '../components/MangaCard/MangaCard';
 import LazyLoading from "../components/LazyLoading/LazyLoading"
+import Raiting from '../components/Filter/Raiting';
+
 
 const GeneralPage = () => {
   const [query, setQuery] = useState('');
@@ -15,14 +17,15 @@ const GeneralPage = () => {
   const [valueManga, setValueManga] = useState([])
   const [orderBy, setOrderBy] = useState('')
   const [sortBy, setSortBy] = useState('')
+  const [raiting, setRaiting] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
 
   const fetchSearch = useCallback(async () => {
-    const response = await axios.get(`https://api.jikan.moe/v4/anime?order_by=${orderBy}&sort=${sortBy}&q=${query}`)
+    const response = await axios.get(`https://api.jikan.moe/v4/anime?order_by=${orderBy}&rating=${raiting}&sort=${sortBy}&q=${query}`)
     setValue(response.data.data)
 
-  }, [orderBy, sortBy, query])
+  }, [orderBy, sortBy, query, raiting])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,7 +33,7 @@ const GeneralPage = () => {
       setIsLoading(false)
     }, 1000);
     return () => clearTimeout(timer);
-  }, [query, orderBy, sortBy]);
+  }, [query, orderBy, sortBy, raiting]);
 
 
   const fetchSearchManga = useCallback(async () => {
@@ -55,6 +58,10 @@ const GeneralPage = () => {
         <div className="orderedBy">
           <p className='text-2xl mb-2'>Ordered By:</p>
           <Filter orderBy={orderBy} setOrderBy={setOrderBy} />
+        </div>
+        <div className="raiting">
+          <p className='text-2xl mb-2'>Raiting:</p>
+          <Raiting setRaiting={setRaiting} />
         </div>
         <div className="sortBy">
           <p className='text-2xl mb-2'>Sort By:</p>

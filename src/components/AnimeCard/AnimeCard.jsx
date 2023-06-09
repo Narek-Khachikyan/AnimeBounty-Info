@@ -3,7 +3,7 @@ import "./AnimeCard.scss"
 const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) => {
   return (
     <div className="card">
-      <div className="card__content">
+      <div className="card__content p-3 pb-0">
         <div className="card__img">
           <img src={images.webp.image_url ? images.webp.image_url : null} alt="" />
           {score ? <p className="card__score bg-white text-black text-base py-1 px-4">{score}</p> : null}

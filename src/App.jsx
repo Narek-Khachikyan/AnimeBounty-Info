@@ -8,6 +8,7 @@ import FullManga from './components/FullManga/FullManga';
 import GeneralPage from './Page/GeneralPage';
 import About from './Page/About';
 
+
 const App = () => {
   return (
     <div>
@@ -19,7 +20,7 @@ const App = () => {
           <Route path="/manga" element={<Manga />} />
           <Route path="/manga/manga/:id" element={<FullManga />} />
           <Route path="/about" element={<About />} />
-          <Route path="/manga/manga/:id" element={<Navigate to="/manga" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
     </div>

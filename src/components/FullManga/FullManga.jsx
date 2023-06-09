@@ -85,7 +85,7 @@ const FullManga = () => {
         <>
           <div className="fullManga__content pt-10 flex gap-10">
             <div className="fullManga__img">
-              <img src={fullManga.images.webp.large_image_url} alt="" />
+              <img src={fullManga.images.webp.large_image_url ? fullManga.images.webp.large_image_url : null} alt="" />
               <p className="fullManga__score bg-white text-black text-xl py-1 px-4">{fullManga.score}</p>
             </div>
             <div className="fullManga__textWrapper">

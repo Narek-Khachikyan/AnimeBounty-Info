@@ -19,7 +19,7 @@ const TopAnimeSlider = ({ animeData }) => {
           <SwiperSlide key={obj.mal_id}>
             <Link to={`anime/${obj.mal_id}`}>
               <div className="slide">
-                <div className="slide__content">
+                <div className="slide__content p-3 pb-0">
                   <div className="slide__img">
                     <img src={obj.images.webp.large_image_url} alt="" />
                     <p className="slide__score text-base bg-white text-black px-2 px1">

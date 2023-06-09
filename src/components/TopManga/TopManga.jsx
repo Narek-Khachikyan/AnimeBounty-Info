@@ -18,7 +18,7 @@ const TopManga = ({ mangaData }) => {
         {mangaData.map((obj) => (
           <SwiperSlide key={obj.mal_id}>
             <div className="slide">
-              <div className="slide__content">
+              <div className="slide__content p-3 pb-0">
                 <div className="slide__img">
                   <Link to={`manga/${obj.mal_id}`}>
                     <img src={obj.images.webp.large_image_url} alt="" />

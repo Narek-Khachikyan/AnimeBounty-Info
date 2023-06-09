@@ -3,7 +3,7 @@ import "./mangaCard.scss"
 const MangaCard = ({ title_english, chapters, images, score, genres }) => {
   return (
     <div className="mangaCard">
-      <div className="mangaCard__content">
+      <div className="mangaCard__content p-3 pb-0">
         <div className="mangaCard__img">
           <img src={images.webp.image_url} alt="" />
           {score ? <p className="mangaCard__score bg-white text-black text-base py-1 px-4">{score}</p> : null}
