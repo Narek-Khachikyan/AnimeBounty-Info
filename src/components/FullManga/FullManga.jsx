@@ -90,9 +90,9 @@ const FullManga = () => {
             </div>
             <div className="fullManga__textWrapper">
               <p className="fullManga__text text-4xl">{fullManga.title_english ? fullManga.title_english : <b>registration🥲</b>}</p>
-              <p className="fullManga__subtext text-xl">Chapters: <b>{fullManga.chapters ? fullManga.chapters : <b>registration🥲</b>}</b></p>
-              <p className="fullManga__subtext text-xl">Status: <b>{fullManga.status ? fullManga.status : <b>registration🥲</b>}</b></p>
-              <p className="fullManga__subtext text-xl">Published: <b>{fullManga.published.string ? fullManga.published.string : <b>registration🥲</b>}</b></p>
+              <p className="fullManga__subtext text-xl mt-1">Chapters: <b>{fullManga.chapters ? fullManga.chapters : <b>registration🥲</b>}</b></p>
+              <p className="fullManga__subtext text-xl my-2">Status: <b>{fullManga.status ? fullManga.status : <b>registration🥲</b>}</b></p>
+              <p className="fullManga__subtext text-xl mb-2">Published: <b>{fullManga.published.string ? fullManga.published.string : <b>registration🥲</b>}</b></p>
               <div className="authors__textWrapper flex gap-2" >
                 <p className="text-xl">Authors:</p>
                 {

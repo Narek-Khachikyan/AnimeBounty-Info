@@ -37,7 +37,7 @@ const Header = () => {
             </ul>
           </nav>
           <div className="github justify-self-end content-center">
-            <img width={30} height={30} src={githubIcon} alt="" />
+            <a target="_blank" href="https://github.com/magiccwarss" rel="noreferrer"><img width={30} height={30} src={githubIcon} alt="" /></a>
           </div>
         </div>
       </div>

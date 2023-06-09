@@ -6,24 +6,28 @@ import "../App.scss"
 import Filter from '../components/Filter/Filter';
 import Sort from '../components/Filter/Sort';
 import MangaCard from '../components/MangaCard/MangaCard';
+import LazyLoading from "../components/LazyLoading/LazyLoading"
 
-function GeneralPage() {
+const GeneralPage = () => {
   const [query, setQuery] = useState('');
   const [queryManga, setQueryManga] = useState('');
   const [value, setValue] = useState([])
   const [valueManga, setValueManga] = useState([])
   const [orderBy, setOrderBy] = useState('')
   const [sortBy, setSortBy] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
 
   const fetchSearch = useCallback(async () => {
     const response = await axios.get(`https://api.jikan.moe/v4/anime?order_by=${orderBy}&sort=${sortBy}&q=${query}`)
     setValue(response.data.data)
+
   }, [orderBy, sortBy, query])
 
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchSearch()
+      setIsLoading(false)
     }, 1000);
     return () => clearTimeout(timer);
   }, [query, orderBy, sortBy]);
@@ -39,12 +43,12 @@ function GeneralPage() {
     }, 1000);
     return () => clearTimeout(timer);
   }, [queryManga, orderBy, sortBy]);
-  console.log(valueManga)
+
 
   return (
     <div>
       <div className="searchInput-wrapper">
-        <p className='text-2xl'>Search your anime or <a href="#manga">manga</a>!</p>
+        <p className='text-2xl'>Search your <a id='anime'>anime</a> or <a href="#manga"><b>manga</b></a>!</p>
         <input className='searchInput' placeholder='Search Anime...' type="text" value={query} onChange={event => setQuery(event.target.value)} />
       </div>
       <div className="filter flex justify-between items-center mb-4">
@@ -59,17 +63,20 @@ function GeneralPage() {
       </div>
       <div className="search-content grid grid-cols-4 grid-rows-3 gap-4">
         {
-          value.map(obj => (
+          isLoading ? (
+            <LazyLoading />
+          ) : value.map(obj => (
             <Link key={obj.mal_id} to={`anime/anime/${obj.mal_id}`}>
               {<AnimeCard /> ? <AnimeCard {...obj} /> : null}
             </Link>
           ))
+
         }
       </div>
 
       <div id='manga' className="MangaSearch">
         <div className="searchInput-wrapper">
-          <p className='text-2xl'>Search your manga!</p>
+          <p className='text-2xl'>Search your manga or <a href="#anime"><b>anime</b></a>!</p>
           <input className='searchInput' placeholder='Search Anime...' type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
         </div>
         <div className="filter flex justify-between items-center mb-4">
