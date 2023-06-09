@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 
 
-const ReviewCard = ({ user, review, reactions }) => {
+const ReviewCard = ({ user, review }) => {
   const [showFullReview, setShowFullReview] = useState(false);
 
   const handleViewAll = () => {
@@ -14,7 +14,7 @@ const ReviewCard = ({ user, review, reactions }) => {
 
   return (
     <div className="review">
-      <div className="review__content grid py-1 px-4">
+      <div className="review__content flex p-3 flex-col text-center gap-4 sm:grid sm:text-left">
         <div className="account">
           <img src={user.images.webp.image_url} alt="" />
           <p className='text-sm'>{user.username}</p>
@@ -25,10 +25,7 @@ const ReviewCard = ({ user, review, reactions }) => {
               ? review
               : `${review.slice(0, 200)}...`}
           </p>
-          <div className="reactions text-sm flex gap-2 mt-2">
-            <p>| Confusing {reactions.confusing} | </p>
-            <p>Nice {reactions.nice} | </p>
-            <p>Love It {reactions.love_it} | </p>
+          <div className="reactions text-sm flex flex-col gap-2 mt-2 sm:flex-row sm:text-left">
             {!showFullReview && review.length > 300 && (
               <button className='review__button' onClick={handleViewAll}>View all</button>
             )}

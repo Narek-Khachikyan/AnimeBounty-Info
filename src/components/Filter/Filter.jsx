@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./filter.scss";
 
 const Filter = ({ setOrderBy }) => {
@@ -10,7 +10,7 @@ const Filter = ({ setOrderBy }) => {
     { id: 3, sortType: 'popularity' }
   ];
 
-  const handleButtonClick = (sortType, id) => {
+  const handleOrderClick = (sortType, id) => {
     setOrderBy(sortType);
     setActive(id);
   };
@@ -19,8 +19,8 @@ const Filter = ({ setOrderBy }) => {
     <div className="flex gap-4">
       {order.map((item) => (
         <button
-          className={active === item.id ? "active text-xl" : "text-xl"}
-          onClick={() => handleButtonClick(item.sortType, item.id)}
+          className={active === item.id ? "active text-base sm:text-base md:text-xl lg:text-xl xl:text-xl" : "text-base sm:text-base md:text-xl lg:text-xl xl:text-xl"}
+          onClick={() => handleOrderClick(item.sortType, item.id)}
           key={item.id}
         >
           {item.sortType}

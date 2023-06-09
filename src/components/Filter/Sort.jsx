@@ -9,7 +9,7 @@ const Sort = ({ setSortBy }) => {
     { id: 2, sortType: 'desc' },
   ];
 
-  const handleButtonClick = (sortType, id) => {
+  const handleSortClick = (sortType, id) => {
     setSortBy(sortType);
     setActive(id);
   };
@@ -18,8 +18,8 @@ const Sort = ({ setSortBy }) => {
     <div className="flex gap-4">
       {sort.map((item) => (
         <button
-          className={active === item.id ? "active text-xl" : "text-xl"}
-          onClick={() => handleButtonClick(item.sortType, item.id)}
+          className={active === item.id ? "active text-base sm:text-base md:text-xl lg:text-xl xl:text-xl" : "text-base sm:text-base md:text-xl lg:text-xl xl:text-xl"}
+          onClick={() => handleSortClick(item.sortType, item.id)}
           key={item.id}
         >
           {item.sortType}

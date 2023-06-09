@@ -16,13 +16,13 @@ const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) =>
                 : title_english
             ) : <b>regisration</b>
           }</b></p>
-          <p className="card__episodes">Episodes: <b>{episodes ? episodes : <b>registration🥲</b>}</b></p>
+          <p className="card__episodes">Episodes: <b>{episodes ? episodes : <b>registration</b>}</b></p>
           <div className="card__generesWrapper flex flex-wrap gap-1">
             <p className="card__generes mb-1">Generes:</p>
             {
               genres ? (
                 genres.map(gener => <p key={gener.mal_id}><b>{gener.name}</b></p>))
-                : <b>registration🥲</b>
+                : <b>registration</b>
             }
           </div>
           <p className="card__aired">Aired: <b>{aired.string}</b></p>

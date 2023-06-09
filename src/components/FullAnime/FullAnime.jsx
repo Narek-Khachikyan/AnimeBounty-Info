@@ -94,30 +94,52 @@ const FullAnime = () => {
         ) : (
           <>
             {fullAnime.map((obj) => (
-              <div className="fullAnime__contnet flex gap-10 pt-10" key={obj.mal_id}>
+              <div className="fullAnime__contnet flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap" key={obj.mal_id}>
                 <div className="fullAnime__img">
                   <img src={obj.images.webp.large_image_url} alt="" />
                   <p className="fullAnime__score bg-white text-black text-xl py-1 px-4">{obj.score}</p>
                 </div>
                 <div className="fullAnime__textWrapper">
-                  <h3 className="fullAnime__text text-4xl">{obj.title_english ? obj.title_english : <b>registration🥲</b>}</h3>
-                  <p className="fullAnime__episodes text-xl mt-1">Episodes: <b>{obj.episodes ? obj.episodes : <b>registration🥲</b>}</b></p>
-                  <p className="FullAnime__status text-xl my-2">Status: <b>{obj.status ? obj.status : <b>registration🥲</b>}</b></p>
-                  <p className="FullAnime__year text-xl">Year: <b>{obj.year ? obj.year : <span>registration🥲</span>}</b></p>
-                  <p className="FullAnime__rating text-xl my-2">Rating: <b>{obj.rating ? obj.rating : <b>registration🥲</b>}</b></p>
-                  <p className="FullAnime__studio text-xl">Studio:{" "}<b>{obj.studios ? obj.studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>) : null}</b></p>
+                  <h3 className="fullAnime__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{obj.title_english ? obj.title_english : <b>registration</b>}</h3>
+                  <p className="fullAnime__episodes mt-1 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Episodes: <b>{obj.episodes ? obj.episodes : <b>registration</b>}</b></p>
+                  <p className="FullAnime__status my-2 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Status: <b>{obj.status ? obj.status : <b>registration</b>}</b></p>
+                  <p className="FullAnime__year text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Year: <b>{obj.year ? obj.year : <span>registration</span>}</b></p>
+                  <p className="FullAnime__rating my-2 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Rating: <b>{obj.rating ? obj.rating : <b>registration</b>}</b></p>
+                  <p className="FullAnime__studio text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Studio:{" "}<b>{obj.studios ? obj.studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>) : null}</b></p>
                 </div>
               </div>
             ))}
             <div className="images">
-              <p className="text-3xl my-8">Images:</p>
+              <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
               <div className="images__content">
                 <Swiper
                   modules={[Autoplay]}
                   spaceBetween={50}
+                  breakpoints={{
+                    320: {
+                      slidesPerView: 1,
+                      spaceBetween: 20
+                    },
+                    425: {
+                      slidesPerView: 2,
+                      spaceBetween: 20
+                    },
+                    640: {
+                      slidesPerView: 2,
+                      spaceBetween: 20
+                    },
+                    768: {
+                      slidesPerView: 3,
+                      spaceBetween: 30
+                    },
+                    1024: {
+                      slidesPerView: 5,
+                      spaceBetween: 40
+                    }
+                  }}
                   slidesPerView={5}
-                  autoplay={{ delay: 3000 }}
-                >
+                  autoplay={{ delay: 3000 }
+                  }>
                   {animePictures.map((picture, index) => (
                     <SwiperSlide key={index}>
                       <img className="images__img" src={picture.webp.image_url} alt="" />
@@ -129,9 +151,9 @@ const FullAnime = () => {
             {fullAnime.map((obj) => (
               <div key={obj.mal_id} className="fullAnime__trailer mt-4">
                 {obj.trailer ? (
-                  <p className="text-3xl mb-4">Trailer:</p>
+                  <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">Trailer:</p>
                 ) : (
-                  <p className="text-3xl mb-4">There is currently no trailer for this anime</p>
+                  <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">There is currently no trailer for this anime</p>
                 )}
                 <a className="trailer-imgWrapepr" href={obj.trailer.url}>
                   <div className="trailer-imgWrapper">
@@ -142,26 +164,26 @@ const FullAnime = () => {
               </div>
             ))}
             <div className="episodes">
-              <p className="episodes__text text-3xl my-4">Episodes:</p>
+              <p className="episodes__text text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Episodes:</p>
               <div className="episodes__type flex gap-4 items-center">
-                <p className="episode__canon canonEpisode text-2xl mb-5">Canon color</p>
-                <p className="episode__filter fillerEpisode text-2xl mb-5">Filler color</p>
+                <p className="episode__canon canonEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Canon color</p>
+                <p className="episode__filter fillerEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Filler color</p>
               </div>
               <div className="episodes__content">
                 <ol className="episode__name">
-                  <h3 className="text-2xl mb-3">Episode name</h3>
+                  <h3 className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Episode name</h3>
                   {episodes.map((episode) => (
                     <Link to={episode.url} key={episode.mal_id}>
-                      <li className={episode.filler ? "fillerEpisode text-xl" : "canonEpisode text-xl"}>
+                      <li className={episode.filler ? "fillerEpisode text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl" : "canonEpisode text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl"}>
                         {episode.title}
                       </li>
                     </Link>
                   ))}
                 </ol>
                 <ul className="episode__score justify-self-end">
-                  <h3 className="text-2xl mb-3">Episode Score</h3>
+                  <h3 className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Episode Score</h3>
                   {episodes.map((episode) => (
-                    <li key={episode.mal_id} className="text-xl">
+                    <li key={episode.mal_id} className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">
                       {episode.score * 2}
                     </li>
                   ))}
@@ -169,9 +191,9 @@ const FullAnime = () => {
               </div>
             </div>
             <div className="characters mt-8">
-              <p className="characters__title text-3xl mb-3">Characters: </p>
+              <p className="characters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
               <button className={isActive ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetcCharacters()}>See all characters</button>
-              <div className="characters__content grid grid-cols-4 grid-rows-3 gap-8">
+              <div className="characters__content grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
                 {
                   characters.map(obj => (
                     <div key={obj.character.mal_id} className="Characters__card">
@@ -192,7 +214,7 @@ const FullAnime = () => {
               </div>
             </div>
             <div className="reviews mt-5">
-              <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span>Review</span> : null}</h3>
+              <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
               <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
                 {reviews.map((review) => (
                   <ReviewCard key={review.mal_id} {...review} />
@@ -204,7 +226,7 @@ const FullAnime = () => {
       </div>
 
 
-    </div>
+    </div >
   );
 };
 

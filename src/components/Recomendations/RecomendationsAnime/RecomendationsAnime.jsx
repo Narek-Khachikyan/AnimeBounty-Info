@@ -5,7 +5,7 @@ const RecomendationsAnime = ({ recomendations }) => {
   return (
     <div className="py-5 rec">
       <h3 className="text-4xl rec__title mb-5">Recomendation</h3>
-      <div className="rec__content grid grid-cols-4 grid-rows-3 gap-9">
+      <div className="rec__content grid gap-9 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
         {
           recomendations.map((obj) => (
             <>

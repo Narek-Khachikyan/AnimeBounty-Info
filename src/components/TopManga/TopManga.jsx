@@ -13,6 +13,24 @@ const TopManga = ({ mangaData }) => {
         modules={[Autoplay]}
         spaceBetween={50}
         slidesPerView={5}
+        breakpoints={{
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 20
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30
+          },
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 40
+          }
+        }}
         autoplay={{ delay: 3000 }}
       >
         {mangaData.map((obj) => (
@@ -31,9 +49,9 @@ const TopManga = ({ mangaData }) => {
                   <p className="slide__text text-base my-1">
                     {obj.title_english ? (obj.title_english.length > 20
                       ? `${obj.title_english.slice(0, 21)}...`
-                      : obj.title_english) : <span>Registration 🥲 </span>}
+                      : obj.title_english) : <span>Registration</span>}
                   </p>
-                  <p className="slide__chapters">Chapters: {obj.chapters ? obj.chapters : <span>Registration 🥲</span>}</p>
+                  <p className="slide__chapters">Chapters: {obj.chapters ? obj.chapters : <span>Registration</span>}</p>
                 </div>
               </div>
             </div>
