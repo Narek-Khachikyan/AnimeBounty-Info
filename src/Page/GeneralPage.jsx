@@ -83,7 +83,7 @@ const GeneralPage = () => {
 
       <div id='manga' className="MangaSearch pt-8">
         <div className="searchInputManga-wrapper flex flex-col gap-3  my-5 sm:flex-col sm:gap-3 md:flex-row md:justify-between md:items-center" >
-          <p className='text-base sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Search your manga or <a onClick={() => scrollTo(0, 0)}><b>anime</b></a>!</p>
+          <p className='text-base sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Search your manga or <a onClick={() => scrollTo(0, 0)}><b className=' cursor-pointer'>anime</b></a>!</p>
           <input className='searchInput' placeholder='Search Manga...' type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
         </div>
         <div className="filter mb-8 sm:flex sm:flex-col sm:gap-3 md:flex md:justify-between md:items-center md:flex-row">
