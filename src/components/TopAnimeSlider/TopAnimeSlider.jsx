@@ -5,9 +5,10 @@ import "swiper/css/autoplay";
 import "./topAnimeSlider.scss";
 import { Link } from "react-router-dom";
 
+
 const TopAnimeSlider = ({ animeData }) => {
   return (
-    <div className="AnimeSlide py-4">
+    <div data-aos="fade-up" className="AnimeSlide py-4">
       <h2 className='TopAnime__title text-4xl text-black mt-12 mb-6'>Top Anime</h2>
       <Swiper
         modules={[Autoplay]}

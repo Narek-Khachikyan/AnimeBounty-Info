@@ -3,7 +3,8 @@ import TopAnimeSlider from '../components/TopAnimeSlider/TopAnimeSlider'
 import axios from 'axios';
 import LazyLoading from '../components/LazyLoading/LazyLoading';
 import RecomendationsAnime from '../components/Recomendations/RecomendationsAnime/RecomendationsAnime';
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 
 
@@ -41,6 +42,8 @@ const Anime = () => {
   useEffect(() => {
     fetchAnimeData();
     fetchRecomendations()
+    AOS.init()
+    AOS.refresh();
     setIsloading(false)
   }, []);
 

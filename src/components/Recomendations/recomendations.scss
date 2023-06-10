@@ -3,4 +3,12 @@
 }
 .rec__card-content{
   border: 1px solid black;
+  transition: all 0.5s ease-in-out;
+  &:hover{
+    position: relative;
+    z-index: 3;
+    transform: scale(1.1);
+    background-color: black;
+    color: white;
+  }
 }

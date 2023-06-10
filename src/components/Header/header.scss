@@ -1,55 +1,90 @@
-.header{
+.header {
   position: sticky;
   width: 100%;
   z-index: 35;
   top: 0;
 }
-.header__container{
+
+.header__container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0px 15px;
 }
 
-.header__active{
-  border-bottom: 1px solid black;
+.header__logo {
+  padding: 5px 10px;
+  transition: all 0.4s ease-in-out;
+  &:hover {
+    background-color: black;
+    color: white;
+
+  }
 }
-.header__content{
+
+.navigation__list-link {
+  p {
+    padding: 5px 10px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+}
+
+.header__active {
+  p {
+    padding: 5px 10px;
+    transition: all 0.3s ease-in-out;
+    background-color: black;
+    color: white;
+  }
+}
+
+.header__content {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
   align-items: center;
 }
 
-.github-mobile{
+.github-mobile {
   display: none;
 }
-.burger{
+
+.burger {
   width: 30px;
   height: 30px;
   display: inline-block;
   display: none;
-  &__line{
+
+  &__line {
     width: 30px;
     height: 1px;
     background-color: black;
     margin-bottom: 5px;
-     &:last-child{
+
+    &:last-child {
       margin-bottom: 0;
-     }
+    }
   }
 }
 
 @media (max-width:720px) {
 
-  .burger{
+  .burger {
     display: inline-block;
     position: relative;
     z-index: 40;
   }
-  .github,.header__logo{
+
+  .github,
+  .header__logo {
     z-index: 40;
   }
-  .navigation{
+
+  .navigation {
     position: fixed;
     top: 0;
     right: -100%;
@@ -57,7 +92,8 @@
     width: 100%;
     height: 100vh;
     transition: all 0.3s ease-in-out;
-    &__list{
+
+    &__list {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -65,20 +101,23 @@
       height: 100%;
     }
   }
-  .navigation.show{
+
+  .navigation.show {
     right: 0%;
     z-index: 30;
   }
-  .header__content{
+
+  .header__content {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .github-mobile{
+
+  .github-mobile {
     display: block;
   }
-  .github{
+
+  .github {
     display: none;
   }
 }
-

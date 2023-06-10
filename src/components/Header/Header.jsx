@@ -25,17 +25,17 @@ const Header = () => {
             <ul className="navigation__list flex gap-8 text-black">
               <li className="navigation__list-item ">
                 <Link onClick={() => setIsActive(false)} to={'/anime'} className={location.pathname === "/anime" ? "header__active" : "navigation__list-link"}>
-                  Anime
+                  <p>Anime</p>
                 </Link>
               </li>
               <li className={location.pathname === "/manga" ? "header__active" : "navigation__list-link"}>
                 <Link onClick={() => setIsActive(false)} to={"/manga"} className="navigation__list-link">
-                  Manga
+                  <p>Manga</p>
                 </Link>
               </li>
               <li className={location.pathname === "/about" ? "header__active" : "navigation__list-link"}>
                 <Link onClick={() => setIsActive(false)} to={'/about'} className="navigation__list-link">
-                  About
+                  <p>About</p>
                 </Link>
               </li>
               <li className="github-mobile">

@@ -6,10 +6,12 @@ import { Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/autoplay";
 import ReviewCard from "../ReviewCard/ReviewCard";
-// import LazyLoading from "../LazyLoading/LazyLoading";
+import LazyLoading from "../LazyLoading/LazyLoading";
 import playButton from "../../assets/images/playButton.svg";
 import "./FullAnime.scss";
-import LazyLoading from "../LazyLoading/LazyLoading";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 const FullAnime = () => {
   const [fullAnime, setFullAnime] = useState([]);
@@ -85,6 +87,8 @@ const FullAnime = () => {
 
   useEffect(() => {
     fetchData();
+    AOS.init()
+    AOS.refresh();
     window.scrollTo(0, 0);
   }, []);
 
@@ -100,7 +104,7 @@ const FullAnime = () => {
         ) : (
           <>
             {fullAnime.map((obj) => (
-              <div className="fullAnime__contnet flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap" key={obj.mal_id}>
+              <div data-aos="fade-up" className="fullAnime__contnet flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap" key={obj.mal_id}>
                 <div className="fullAnime__img">
                   <img src={obj.images.webp.large_image_url} alt="" />
                   <p className="fullAnime__score bg-white text-black text-xl py-1 px-4">{obj.score}</p>
@@ -115,7 +119,7 @@ const FullAnime = () => {
                 </div>
               </div>
             ))}
-            <div className="images">
+            <div className="images" data-aos="fade-up">
               <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
               <div className="images__content">
                 <Swiper
@@ -155,7 +159,7 @@ const FullAnime = () => {
               </div>
             </div>
             {fullAnime.map((obj) => (
-              <div key={obj.mal_id} className="fullAnime__trailer mt-4">
+              <div key={obj.mal_id} data-aos="fade-up" className="fullAnime__trailer mt-4">
                 {obj.trailer ? (
                   <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">Trailer:</p>
                 ) : (
@@ -221,13 +225,20 @@ const FullAnime = () => {
               </div>
             </div>
             <div className="reviews mt-5">
-              <button className={isActiveReviews ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchReviews()}>See all reviews</button>
-              <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
-              <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
-                {reviews.map((review) => (
-                  <ReviewCard key={review.mal_id} {...review} />
-                ))}
-              </div>
+              {
+                reviews ? (
+                  <>
+                    <button className={isActiveReviews ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchReviews()}>See all reviews</button>
+                    <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
+                    <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
+                      {reviews.map((review) => (
+                        <ReviewCard key={review.mal_id} {...review} />
+                      ))}
+                    </div>
+                  </>
+                ) : null
+              }
+
             </div>
           </>
         )}

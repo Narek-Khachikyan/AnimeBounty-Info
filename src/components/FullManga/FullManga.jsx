@@ -8,6 +8,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import ReviewCard from "../ReviewCard/ReviewCard";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 
 const FullManga = () => {
@@ -70,6 +72,8 @@ const FullManga = () => {
 
   useEffect(() => {
     fetchMangaData();
+    AOS.init()
+    AOS.refresh();
     window.scrollTo(0, 0);
   }, []);
 
@@ -83,7 +87,7 @@ const FullManga = () => {
         </>
       ) : (
         <>
-          <div className="fullManga__content flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap">
+          <div data-aos="fade-up" className="fullManga__content flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap">
             <div className="fullManga__img">
               <img src={fullManga.images.webp.large_image_url ? fullManga.images.webp.large_image_url : null} alt="" />
               <p className="fullManga__score bg-white text-black text-xl py-1 px-4">{fullManga.score}</p>
@@ -104,51 +108,55 @@ const FullManga = () => {
               </div>
             </div>
           </div>
-          <div className="fullManga__descr mt-3">
+          <div data-aos="fade-up" className="fullManga__descr mt-3">
             <p className="fullManga__descr-title text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl my-4"><b>Description</b></p>
             <p className="fullManga__descr-text text-base sm:text-sm md:text-base">
               {fullManga.background ? fullManga.background : <b>registration</b>}
             </p>
           </div>
-          <div className="mangaImages">
-            <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
-            <div className="animeImages__content">
-              <Swiper
-                modules={[Autoplay]}
-                spaceBetween={50}
-                slidesPerView={5}
-                autoplay={{ delay: 3000 }}
-                breakpoints={{
-                  320: {
-                    slidesPerView: 1,
-                    spaceBetween: 20
-                  },
-                  425: {
-                    slidesPerView: 2,
-                    spaceBetween: 20
-                  },
-                  640: {
-                    slidesPerView: 2,
-                    spaceBetween: 20
-                  },
-                  768: {
-                    slidesPerView: 3,
-                    spaceBetween: 30
-                  },
-                  1024: {
-                    slidesPerView: 5,
-                    spaceBetween: 40
-                  }
-                }}
-              >
-                {mangaPictures.map((picture, index) => (
-                  <SwiperSlide key={index}>
-                    <img key={index} className="mangaImages__image" src={picture.webp.image_url} alt="" />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-          </div>
+          {
+            fetchFullMangaPictures ? (
+              <div data-aos="fade-up" className="mangaImages">
+                <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
+                <div className="animeImages__content">
+                  <Swiper
+                    modules={[Autoplay]}
+                    spaceBetween={50}
+                    slidesPerView={5}
+                    autoplay={{ delay: 3000 }}
+                    breakpoints={{
+                      320: {
+                        slidesPerView: 1,
+                        spaceBetween: 20
+                      },
+                      425: {
+                        slidesPerView: 2,
+                        spaceBetween: 20
+                      },
+                      640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20
+                      },
+                      768: {
+                        slidesPerView: 3,
+                        spaceBetween: 30
+                      },
+                      1024: {
+                        slidesPerView: 5,
+                        spaceBetween: 40
+                      }
+                    }}
+                  >
+                    {mangaPictures.map((picture, index) => (
+                      <SwiperSlide key={index}>
+                        <img key={index} className="mangaImages__image" src={picture.webp.image_url} alt="" />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
+              </div>) : null
+          }
+
           <div className="mangaCharacters mt-8">
             <p className="mangaCharacters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
             <button className={isActive ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchMangaCharacters()}>See all characters</button>

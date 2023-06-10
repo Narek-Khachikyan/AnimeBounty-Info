@@ -17,12 +17,30 @@ html,body{
 .searchInput{
   border: 1px solid black;
   padding: 5px 5px 5px 10px;
-  max-width: 300px;
+  max-width: 200px;
   width: 100%;
-
   display: flex;
   justify-content: flex-end;
+  transition: all 0.5s ease-in-out;
+  &:focus{
+    max-width: 300px;
+    outline: none;
+  }
 }
+.moving-background {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url("./assets/images/naruto-manga.jpg");
+}
+
+.moving-background .content {
+  position: relative;
+  z-index: 1;
+  /* Стили для вашего контента */
+}
+
 
 @media (max-width:720px) {
   .genralWrapper{

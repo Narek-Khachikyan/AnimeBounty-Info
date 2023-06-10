@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const TopManga = ({ mangaData }) => {
   return (
-    <div className="AnimeSlide py-4">
+    <div data-aos="fade-down" className="AnimeSlide py-4">
       <h2 className='TopManga__title text-4xl text-black mt-12 mb-6'>Top Manga</h2>
       <Swiper
         modules={[Autoplay]}

@@ -3,6 +3,8 @@ import TopManga from "../components/TopManga/TopManga"
 import axios from "axios";
 import LazyLoading from "../components/LazyLoading/LazyLoading"
 import RecomendationsManga from "../components/Recomendations/RecomendationsManga/RecomendationsManga";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Manga = () => {
   const [mangaData, setMangaData] = useState([]);
@@ -21,6 +23,8 @@ const Manga = () => {
   useEffect(() => {
     fetchMangaData();
     fetchRecomendationsManga()
+    AOS.init()
+    AOS.refresh();
     setIsLoading(false)
   }, []);
 

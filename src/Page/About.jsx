@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <div className="flex flex-col gap-3 py-8">
+    <div data-aos="fade-up" className="flex flex-col gap-3 py-8">
       <p className="text-xl">Are you a passionate anime and manga enthusiast? Are you constantly seeking new adventures within the vast world of Japanese animation? Look no further, because AnimeBounty-Info is here to satisfy your cravings for all things anime and manga!</p>
       <p className="text-xl">
         AnimeBounty-Info is a comprehensive online platform that serves as your go-to source for in-depth information on a wide range of anime, manga, and their captivating characters. Whether you are a long-time fan or a newcomer to the anime scene, this website is designed to cater to your every need.

@@ -3,3 +3,11 @@
   color: white;
   padding: 5px 10px;
 }
+.filter-btn,.raiting-btn,.sort-btn{
+  transition: all 0.3s ease-in-out;
+  &:hover{
+    background-color: black;
+    padding: 5px 10px;
+    color: white;
+  }
+}
