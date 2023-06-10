@@ -17,6 +17,7 @@ const FullManga = () => {
   const [mangaCharacters, setMangaCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isActive, setIsActive] = useState(true);
+  const [isActiveReviews, setIsActiveReviews] = useState(true)
   const { id } = useParams();
 
   const fetchFullManga = async () => {
@@ -39,6 +40,7 @@ const FullManga = () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/reviews`);
       setMangaReviews(response.data.data);
+      setIsActiveReviews(false)
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +59,6 @@ const FullManga = () => {
       const requests = [
         fetchFullManga(),
         fetchFullMangaPictures(),
-        fetchMangaReviews(),
       ];
 
       await Promise.all(requests);
@@ -165,6 +166,7 @@ const FullManga = () => {
           </div>
 
           <div className="reviews mt-5">
+            <button className={isActiveReviews ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchReviews()}>See all reviews</button>
             <h3 className="review__title text-3xl mb-5">{mangaReviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Review</span> : null}</h3>
             <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
               {mangaReviews.map((review) => (
