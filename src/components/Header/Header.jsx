@@ -33,13 +33,8 @@ const Header = () => {
                   Manga
                 </Link>
               </li>
-              <li className="navigation__list-item">
-                <a href="#" className="navigation__list-link">
-                  Character
-                </a>
-              </li>
               <li className={location.pathname === "/about" ? "header__active" : "navigation__list-link"}>
-                <Link to={'/about'} className="navigation__list-link">
+                <Link onClick={() => setIsActive(false)} to={'/about'} className="navigation__list-link">
                   About
                 </Link>
               </li>
