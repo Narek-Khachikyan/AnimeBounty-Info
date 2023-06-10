@@ -6,9 +6,10 @@ import { Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/autoplay";
 import ReviewCard from "../ReviewCard/ReviewCard";
-import LazyLoading from "../LazyLoading/LazyLoading";
+// import LazyLoading from "../LazyLoading/LazyLoading";
 import playButton from "../../assets/images/playButton.svg";
 import "./FullAnime.scss";
+import LazyLoading from "../LazyLoading/LazyLoading";
 
 const FullAnime = () => {
   const [fullAnime, setFullAnime] = useState([]);
@@ -91,8 +92,11 @@ const FullAnime = () => {
   return (
     <div className="fullAnime__wrapper pb-10">
       <div className="container">
-        {isLoading ? (
-          <LazyLoading />
+        {isLoading && fetchData && fetchEpisodes && fetcCharacters && fetchReviews ? (
+          <>
+            <p className="text-xl text-center">Your content is loading,please wait or return to the previous page :|</p>
+            <LazyLoading />
+          </>
         ) : (
           <>
             {fullAnime.map((obj) => (

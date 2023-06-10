@@ -73,11 +73,14 @@ const FullManga = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log(mangaCharacters)
+
   return (
     <div className="fullManga__wrapper pb-10">
-      {isLoading ? (
-        <LazyLoading />
+      {isLoading && fetchMangaData && fetchMangaReviews && fetchMangaCharacters ? (
+        <>
+          <p className="text-xl text-center">Your content is loading,please wait or return to the previous page :|</p>
+          <LazyLoading />
+        </>
       ) : (
         <>
           <div className="fullManga__content flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap">
