@@ -166,7 +166,7 @@ const FullManga = () => {
           </div>
 
           <div className="reviews mt-5">
-            <button className={isActiveReviews ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchReviews()}>See all reviews</button>
+            <button className={isActiveReviews ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchMangaReviews()}>See all reviews</button>
             <h3 className="review__title text-3xl mb-5">{mangaReviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Review</span> : null}</h3>
             <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
               {mangaReviews.map((review) => (
