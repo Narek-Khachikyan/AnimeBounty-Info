@@ -92,9 +92,9 @@
   height: 400px;
 }
 .show-btn{
+  border: 1px solid black;
   &:hover{
     background-color: white;
-    border: 1px solid black;
     color: black;
   }
   transition:all 0.3s ease-in-out;
