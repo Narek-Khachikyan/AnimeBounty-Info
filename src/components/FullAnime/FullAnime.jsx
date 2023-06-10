@@ -15,8 +15,10 @@ const FullAnime = () => {
   const [animePictures, setAnimePictures] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [isActive, setIsActive] = useState(true)
   const [characters, setCharacters] = useState([]);
+  const [isActiveReviews, setIsActiveReviews] = useState(true)
+  const [isActiveCharacters, setIsActiveCharacters] = useState(true)
+  const [isActiveEpisodes, setIsActiveEpisodes] = useState(true)
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
 
@@ -43,6 +45,7 @@ const FullAnime = () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/episodes`);
       setEpisodes(response.data.data);
+      setIsActiveEpisodes(false)
     } catch (error) {
       console.log(error);
     }
@@ -51,6 +54,7 @@ const FullAnime = () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/reviews`);
       setReviews(response.data.data);
+      setIsActiveReviews(false)
     } catch (error) {
       console.log(error);
     }
@@ -59,7 +63,7 @@ const FullAnime = () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
       setCharacters(response.data.data);
-      setIsActive(false)
+      setIsActiveCharacters(false)
     } catch (error) {
       console.log(error);
     }
@@ -69,8 +73,6 @@ const FullAnime = () => {
       const requests = [
         fetchFullAnime(),
         fetchAnimePictures(),
-        fetchEpisodes(),
-        fetchReviews()
       ];
 
       await Promise.all(requests);
@@ -169,6 +171,7 @@ const FullAnime = () => {
                 <p className="episode__canon canonEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Canon color</p>
                 <p className="episode__filter fillerEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Filler color</p>
               </div>
+              <button className={isActiveEpisodes ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchEpisodes()}>See all episodes</button>
               <div className="episodes__content">
                 <ol className="episode__name">
                   <h3 className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Episode name</h3>
@@ -192,7 +195,7 @@ const FullAnime = () => {
             </div>
             <div className="characters mt-8">
               <p className="characters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
-              <button className={isActive ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetcCharacters()}>See all characters</button>
+              <button className={isActiveCharacters ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetcCharacters()}>See all characters</button>
               <div className="characters__content grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
                 {
                   characters.map(obj => (
@@ -214,6 +217,7 @@ const FullAnime = () => {
               </div>
             </div>
             <div className="reviews mt-5">
+              <button className={isActiveReviews ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => fetchReviews()}>See all reviews</button>
               <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
               <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
                 {reviews.map((review) => (

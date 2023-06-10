@@ -27,7 +27,6 @@ const FullManga = () => {
       console.log(error);
     }
   };
-
   const fetchFullMangaPictures = async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/pictures`);
@@ -36,7 +35,6 @@ const FullManga = () => {
       console.log(error);
     }
   };
-
   const fetchMangaReviews = async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/reviews`);
@@ -45,7 +43,6 @@ const FullManga = () => {
       console.log(error);
     }
   };
-
   const fetchMangaCharacters = async () => {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${id}/characters`);
@@ -55,7 +52,6 @@ const FullManga = () => {
       console.log(error);
     }
   };
-
   const fetchMangaData = async () => {
     try {
       const requests = [
