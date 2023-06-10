@@ -11,6 +11,7 @@ const Header = () => {
   const navigateToHome = () => {
     navigate('/');
     scrollTo(0, 0)
+    setIsActive(false)
   };
 
   return (
