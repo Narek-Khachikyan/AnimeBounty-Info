@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import TopAnimeSlider from '../components/TopAnimeSlider/TopAnimeSlider'
 import axios from 'axios';
 import LazyLoading from '../components/LazyLoading/LazyLoading';
-import RecomendationsAnime from '../components/Recomendations/RecomendationsAnime/RecomendationsAnime';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useGetRecomendationAnimeQuery } from '../features/apiSlice';
+import RecomendationsAnime from "../components/Recomendations/RecomendationsAnime/RecomendationsAnime"
 
 
 
@@ -12,6 +13,9 @@ const Anime = () => {
   const [animeData, setAnimeData] = useState([]);
   const [recomendations, setRecomendations] = useState([])
   const [isLoading, setIsloading] = useState(true)
+  const { data } = useGetRecomendationAnimeQuery()
+
+  console.log(data.data)
 
   const fetchAnimeData = useCallback(async () => {
     try {
@@ -30,18 +34,13 @@ const Anime = () => {
     }
   }, []);
 
-  const fetchRecomendations = async () => {
-    try {
-      const response = await axios.get('https://api.jikan.moe/v4/recommendations/anime')
-      setRecomendations(response.data.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const fetchRecomendations = () => {
+  //   setRecomendations(data.data)
+  // }
 
   useEffect(() => {
     fetchAnimeData();
-    fetchRecomendations()
+    // fetchRecomendations()
     AOS.init()
     AOS.refresh();
     setIsloading(false)
@@ -53,7 +52,7 @@ const Anime = () => {
       {isLoading ? <LazyLoading /> : (
         <>
           <TopAnimeSlider animeData={animeData} />
-          <RecomendationsAnime recomendations={recomendations} />
+          {/* <RecomendationsAnime recomendations={data.data} /> */}
         </>
       )}
 

@@ -4,7 +4,7 @@ import "../recomendations.scss";
 import LazyLoading from "../../LazyLoading/LazyLoading";
 
 const RecomendationsAnime = ({ recomendations }) => {
-  const [visibleItems, setVisibleItems] = useState(6); // Количество видимых элементов
+  const [visibleItems, setVisibleItems] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleScroll = () => {

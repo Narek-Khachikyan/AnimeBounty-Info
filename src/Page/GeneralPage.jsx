@@ -24,7 +24,7 @@ const GeneralPage = () => {
 
 
   const fetchSearch = useCallback(async () => {
-    const response = await axios.get(`https://api.jikan.moe/v4/anime?order_by=${orderBy}&rating=${raiting}&sort=${sortBy}&q=${query}`)
+    const response = await axios.get(`https://api.jikan.moe/v4/anime?order_by=${orderBy}&q=${query}`)
     setValue(response.data.data)
 
   }, [orderBy, sortBy, query, raiting])
@@ -41,7 +41,7 @@ const GeneralPage = () => {
 
 
   const fetchSearchManga = useCallback(async () => {
-    const response = await axios.get(`https://api.jikan.moe/v4/manga?order_by=${orderBy}&sort=${sortBy}&q=${queryManga}`)
+    const response = await axios.get(`https://api.jikan.moe/v4/manga?q=${queryManga}`)
     setValueManga(response.data.data)
   }, [orderBy, sortBy, queryManga])
   useEffect(() => {
@@ -61,7 +61,7 @@ const GeneralPage = () => {
       <div data-aos="fade-up" className="filter mb-8 sm:flex sm:flex-col sm:gap-3 md:flex md:justify-between md:items-center md:flex-row">
         <div className="orderedBy">
           <p className='text-base mb-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Ordered By:</p>
-          <Filter orderBy={orderBy} setOrderBy={setOrderBy} />
+          <Filter setOrderBy={setOrderBy} />
         </div>
         <div className="raiting">
           <p className='text-base mt-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Raiting:</p>
