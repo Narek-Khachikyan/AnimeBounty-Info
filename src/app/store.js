@@ -1,13 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { recomendationApi, topApi } from '../features/apiSlice';
+import { fetchDataApi } from '../features/apiSlice';
 
 const store = configureStore({
   reducer: {
-    [topApi.reducerPath]: topApi.reducer,
-    [recomendationApi.reducerPath]: recomendationApi.reducer,
+    [fetchDataApi.reducerPath]: fetchDataApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(recomendationApi.middleware, topApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(fetchDataApi.middleware),
 });
 
 setupListeners(store.dispatch);

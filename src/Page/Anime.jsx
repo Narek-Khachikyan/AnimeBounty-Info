@@ -3,12 +3,18 @@ import TopAnimeSlider from '../components/TopAnimeSlider/TopAnimeSlider'
 import LazyLoading from '../components/LazyLoading/LazyLoading';
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useGetRecomendationAnimeQuery, useGetTopAnimeQuery } from '../features/apiSlice';
+
 import RecomendationsAnime from "../components/Recomendations/RecomendationsAnime/RecomendationsAnime"
+import { useGetRecomendationAnimeQuery, useGetTopAnimeQuery } from '../features/apiSlice';
+
+
 
 const Anime = () => {
   const { data: topAnime, isLoading: topAnimeLoading } = useGetTopAnimeQuery()
   const { data: recomendationAnime, isLoading: recomendationAnimeLoading } = useGetRecomendationAnimeQuery()
+
+
+
 
   useEffect(() => {
     AOS.init()

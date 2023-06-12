@@ -38,7 +38,7 @@
 }
 .images__img{
   width: 100%;
-  height: 100%;
+  height: 330px;
 }
 
 .canonEpisode{
@@ -103,3 +103,12 @@
 .display-none{
  display: none;
 }
+
+
+@media (max-width:425px) {
+  .images__img{
+    height: 100%;
+  }
+}
+
+
