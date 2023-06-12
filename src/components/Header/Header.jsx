@@ -13,7 +13,10 @@ const Header = () => {
     scrollTo(0, 0)
     setIsActive(false)
   };
-
+  const scrollUp = () => {
+    setIsActive(false);
+    window.scrollTo(0, 0);
+  };
   return (
     <div className="header bg-white shadow-md">
       <div className="header__container">
@@ -24,17 +27,17 @@ const Header = () => {
           <nav className={isActive ? "navigation show" : "navigation justify-self-center content-center"}>
             <ul className="navigation__list flex gap-8 text-black">
               <li className="navigation__list-item ">
-                <Link onClick={() => setIsActive(false)} to={'/anime'} className={location.pathname === "/anime" ? "header__active" : "navigation__list-link"}>
+                <Link onClick={() => scrollUp()} to={'/anime'} className={location.pathname === "/anime" ? "header__active" : "navigation__list-link"}>
                   <p>Anime</p>
                 </Link>
               </li>
               <li className={location.pathname === "/manga" ? "header__active" : "navigation__list-link"}>
-                <Link onClick={() => setIsActive(false)} to={"/manga"} className="navigation__list-link">
+                <Link onClick={() => scrollUp()} to={"/manga"} className="navigation__list-link">
                   <p>Manga</p>
                 </Link>
               </li>
               <li className={location.pathname === "/about" ? "header__active" : "navigation__list-link"}>
-                <Link onClick={() => setIsActive(false)} to={'/about'} className="navigation__list-link">
+                <Link onClick={() => scrollUp()} to={'/about'} className="navigation__list-link">
                   <p>About</p>
                 </Link>
               </li>

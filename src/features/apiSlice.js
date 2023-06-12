@@ -36,9 +36,14 @@ export const fetchDataApi = createApi({
     getAnimeEpisodes: builder.query({
       query: (id) => `/anime/${id}/episodes`,
     }),
-    getMangaEpisodes: builder.query({
-      query: (id) => `/manga/${id}/episodes`,
+
+    getAnimeCharacters: builder.query({
+      query: (id) => `/anime/${id}/characters`,
     }),
+    getMangaCharacters: builder.query({
+      query: (id) => `/manga/${id}/characters`,
+    }),
+
 
     getAnimeReviews: builder.query({
       query: (id) => `/anime/${id}/reviews`,
@@ -52,14 +57,22 @@ export const fetchDataApi = createApi({
 export const {
   useGetRecomendationAnimeQuery,
   useGetRecomendationMangaQuery,
+
   useGetTopAnimeQuery,
   useGetTopMangaQuery,
+
   useGetFullAnimeQuery,
   useGetFullMangaQuery,
+
   useGetAnimePicturesQuery,
   useGetMangaPicturesQuery,
+
   useGetAnimeEpisodesQuery,
   useGetMangaEpisodesQuery,
+
+  useGetAnimeCharactersQuery,
+  useGetMangaCharactersQuery,
+
   useGetAnimeReviewsQuery,
   useGetMangaReviewsQuery
 } = fetchDataApi;

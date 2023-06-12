@@ -10,6 +10,7 @@ import LazyLoading from "../LazyLoading/LazyLoading";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useGetFullMangaQuery, useGetMangaPicturesQuery, useGetMangaReviewsQuery } from "../../features/apiSlice";
 
 
 const FullManga = () => {
@@ -21,6 +22,10 @@ const FullManga = () => {
   const [isActive, setIsActive] = useState(true);
   const [isActiveReviews, setIsActiveReviews] = useState(true)
   const { id } = useParams();
+
+  const { data: fullAnimeData } = useGetFullMangaQuery(id)
+  const { data: animePictures } = useGetMangaPicturesQuery(id)
+  const { data: animeReviews } = useGetMangaReviewsQuery(id)
 
   const fetchFullManga = async () => {
     try {

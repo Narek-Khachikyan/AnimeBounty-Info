@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
@@ -11,57 +10,23 @@ import playButton from "../../assets/images/playButton.svg";
 import "./FullAnime.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useGetAnimeEpisodesQuery, useGetAnimePicturesQuery, useGetFullAnimeQuery } from "../../features/apiSlice";
+import { useGetAnimeCharactersQuery, useGetAnimeEpisodesQuery, useGetAnimePicturesQuery, useGetAnimeReviewsQuery, useGetFullAnimeQuery } from "../../features/apiSlice";
 
 
 const FullAnime = () => {
-  const [isActiveReviews, setIsActiveReviews] = useState(true)
-  const [isActiveCharacters, setIsActiveCharacters] = useState(true)
-  const [isActiveEpisodes, setIsActiveEpisodes] = useState(true)
-  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
-
-
+  const [isActiveCharacters, setIsActiveCharacters] = useState(false)
   const { data: fullAnimeData } = useGetFullAnimeQuery(id)
   const { data: animePictures } = useGetAnimePicturesQuery(id)
   const { data: animeEpisodes } = useGetAnimeEpisodesQuery(id)
-  animePictures && console.log(fullAnimeData)
-
-
-  const fetchEpisodes = useCallback(async () => {
-    try {
-      const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/episodes`);
-      setEpisodes(response.data.data);
-      setIsActiveEpisodes(false)
-    } catch (error) {
-      console.log(error);
-    }
-  }, [id]);
-  const fetchReviews = useCallback(async () => {
-    try {
-      const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/reviews`);
-      setReviews(response.data.data);
-      setIsActiveReviews(false)
-    } catch (error) {
-      console.log(error);
-    }
-  }, [id]);
-  const fetcCharacters = useCallback(async () => {
-    try {
-      const response = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
-      setCharacters(response.data.data);
-      setIsActiveCharacters(false)
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const { data: animeCharacters } = useGetAnimeCharactersQuery(id)
+  const { data: animeReviews } = useGetAnimeReviewsQuery(id)
 
   useEffect(() => {
     AOS.init()
     AOS.refresh();
     window.scrollTo(0, 0);
   }, []);
-
 
   return (
     <div className="fullAnime__wrapper pb-10">
@@ -121,7 +86,7 @@ const FullAnime = () => {
                 </Swiper>
               </div>
             </div>
-            <div key={fullAnimeData.data.mal_id} data-aos="fade-up" className="fullAnime__trailer mt-4">
+            <div key={fullAnimeData.data.trailer.youtube_id} data-aos="fade-up" className="fullAnime__trailer mt-4">
               {fullAnimeData.data.trailer ? (
                 <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">Trailer:</p>
               ) : (
@@ -160,6 +125,43 @@ const FullAnime = () => {
                   ))}
                 </ul>
               </div>
+            </div>
+            <div className="characters mt-8">
+              <p className="characters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
+              <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>See all characters</button>
+              <div className="characters__content grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
+                {animeCharacters && isActiveCharacters && animeCharacters.data.map(obj => (
+                  <div key={obj.character.mal_id} className="Characters__card">
+                    <img className="characters__card-img" src={obj.character.images.webp.image_url} alt="" />
+                    <div className="characters__card-textWrapepr p-2">
+                      <p className="characters__card-text">Name : <b>{obj.character.name}</b></p>
+                      <p className="characters__card-subText">Role: <b>{obj.role}</b></p>
+                      <p><b>Voice:</b></p>
+                      {
+                        obj.voice_actors.slice(0, 2).map(actor => (
+                          <p key={actor.person.mal_id}>{actor.language} : <b>{actor.person.name}</b></p>
+                        ))
+                      }
+                    </div>
+                  </div>
+                ))
+                }
+              </div>
+            </div>
+            <div className="reviews mt-5">
+              {
+                animeReviews && (
+                  <>
+                    <h3 className="review__title text-3xl mb-5">{animeReviews.data.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
+                    <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
+                      {animeReviews.data.map((review) => (
+                        <ReviewCard key={review.mal_id} {...review} />
+                      ))}
+                    </div>
+                  </>
+                )
+              }
+
             </div>
           </>
         ) : <LazyLoading />}
