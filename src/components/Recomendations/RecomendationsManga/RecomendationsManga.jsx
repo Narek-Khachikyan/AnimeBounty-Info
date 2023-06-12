@@ -4,7 +4,7 @@ import "../recomendations.scss";
 import LazyLoading from "../../LazyLoading/LazyLoading";
 
 
-const RecomendationsManga = ({ recomendationsManga }) => {
+const RecomendationsManga = ({ data }) => {
   const [visibleItems, setVisibleItems] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,7 +38,7 @@ const RecomendationsManga = ({ recomendationsManga }) => {
     <div data-aos="fade-up" className="py-5 rec">
       <h3 className="text-4xl rec__title mb-5">Recomendation</h3>
       <div className="rec__content grid gap-9 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
-        {recomendationsManga.slice(0, visibleItems).map(recomendation =>
+        {data.slice(0, visibleItems).map(recomendation =>
           recomendation.entry.map(item => (
             <Link key={item.mal_id} to={`manga/${item.mal_id}`}>
               <div className="rec__card-content p-3 pb-0">

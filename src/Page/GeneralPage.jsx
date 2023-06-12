@@ -24,7 +24,7 @@ const GeneralPage = () => {
 
 
   const fetchSearch = useCallback(async () => {
-    const response = await axios.get(`https://api.jikan.moe/v4/anime?order_by=${orderBy}&q=${query}`)
+    const response = await axios.get(`https://api.jikan.moe/v4/anime?&q=${query}`)
     setValue(response.data.data)
 
   }, [orderBy, sortBy, query, raiting])

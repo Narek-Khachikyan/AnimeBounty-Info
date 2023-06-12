@@ -5,9 +5,9 @@ import "swiper/css/autoplay";
 import "./TopManga.scss";
 import { Link } from "react-router-dom";
 
-const TopManga = ({ mangaData }) => {
+const TopManga = ({ data }) => {
   return (
-    <div data-aos="fade-down" className="AnimeSlide py-4">
+    <div data-aos="fade-up" className="AnimeSlide py-4">
       <h2 className='TopManga__title text-4xl text-black mt-12 mb-6'>Top Manga</h2>
       <Swiper
         modules={[Autoplay]}
@@ -33,7 +33,7 @@ const TopManga = ({ mangaData }) => {
         }}
         autoplay={{ delay: 3000 }}
       >
-        {mangaData.map((obj) => (
+        {data.map((obj) => (
           <SwiperSlide key={obj.mal_id}>
             <div className="slide">
               <div className="slide__content p-3 pb-0">

@@ -1,41 +1,24 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect } from "react"
 import TopManga from "../components/TopManga/TopManga"
-import axios from "axios";
 import LazyLoading from "../components/LazyLoading/LazyLoading"
 import RecomendationsManga from "../components/Recomendations/RecomendationsManga/RecomendationsManga";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useGetRecomendationMangaQuery, useGetTopMangaQuery } from "../features/apiSlice";
 
 const Manga = () => {
-  const [mangaData, setMangaData] = useState([]);
-  const [recomendationsManga, setRecomendationsManga] = useState([]);
-  const [isLoading, setIsLoading] = useState(true)
-
-  const fetchMangaData = useCallback(async () => {
-    const response = await axios.get('https://api.jikan.moe/v4/top/manga')
-    setMangaData(response.data.data)
-  }, [])
-  const fetchRecomendationsManga = useCallback(async () => {
-    const response = await axios.get('https://api.jikan.moe/v4/recommendations/manga')
-    setRecomendationsManga(response.data.data)
-  }, [])
+  const { data: topManga, isLoading: topMangaLoading } = useGetTopMangaQuery()
+  const { data: recomendationManga, isLoading: recomendationMangaLoading } = useGetRecomendationMangaQuery()
 
   useEffect(() => {
-    fetchMangaData();
-    fetchRecomendationsManga()
     AOS.init()
     AOS.refresh();
-    setIsLoading(false)
   }, []);
 
   return (
     <>
-      {isLoading ? <LazyLoading /> : (
-        <div>
-          <TopManga mangaData={mangaData} />
-          <RecomendationsManga recomendationsManga={recomendationsManga} />
-        </div>
-      )}
+      {topMangaLoading ? <LazyLoading /> : <TopManga {...topManga} />}
+      {recomendationMangaLoading ? <LazyLoading /> : <RecomendationsManga {...recomendationManga} />}
     </>
   );
 }

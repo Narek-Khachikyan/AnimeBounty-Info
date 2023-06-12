@@ -1,17 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import recomendationApi from '../features/apiSlice';
+import { recomendationApi, topApi } from '../features/apiSlice';
 
-
-// Создаем Redux store и подключаем RTK Query
 const store = configureStore({
   reducer: {
+    [topApi.reducerPath]: topApi.reducer,
     [recomendationApi.reducerPath]: recomendationApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(recomendationApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(recomendationApi.middleware, topApi.middleware),
 });
 
-// Подключаем слушатели для обработки запросов и мутаций
 setupListeners(store.dispatch);
-
 export default store;
