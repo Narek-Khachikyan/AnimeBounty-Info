@@ -16,6 +16,7 @@ import { useGetAnimeCharactersQuery, useGetAnimeEpisodesQuery, useGetAnimePictur
 const FullAnime = () => {
   const { id } = useParams();
   const [isActiveCharacters, setIsActiveCharacters] = useState(false)
+  const [isActiveReviews, setIsActiveReviews] = useState(false)
   const { data: fullAnimeData } = useGetFullAnimeQuery(id)
   const { data: animePictures } = useGetAnimePicturesQuery(id)
   const { data: animeEpisodes } = useGetAnimeEpisodesQuery(id)
@@ -149,8 +150,9 @@ const FullAnime = () => {
               </div>
             </div>
             <div className="reviews mt-5">
+              <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>See all reviews</button>
               {
-                animeReviews && (
+                isActiveReviews && animeReviews && (
                   <>
                     <h3 className="review__title text-3xl mb-5">{animeReviews.data.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
                     <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
