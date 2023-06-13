@@ -51,8 +51,17 @@ export const fetchDataApi = createApi({
     getMangaReviews: builder.query({
       query: (id) => `/anime/${id}/reviews`,
     }),
+
+    getAnimeSearch: builder.query({
+      query: (queryManga) => `https://api.jikan.moe/v4/anime?q=${queryManga}`,
+    }),
+    getMangaSearch: builder.query({
+      query: (queryManga) => `https://api.jikan.moe/v4/manga?q=${queryManga}`,
+    }),
   })
 })
+
+
 
 export const {
   useGetRecomendationAnimeQuery,
@@ -74,7 +83,10 @@ export const {
   useGetMangaCharactersQuery,
 
   useGetAnimeReviewsQuery,
-  useGetMangaReviewsQuery
+  useGetMangaReviewsQuery,
+
+  useGetAnimeSearchQuery,
+  useGetMangaSearchQuery,
 } = fetchDataApi;
 
 
