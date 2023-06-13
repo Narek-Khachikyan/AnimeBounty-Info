@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <div className="header bg-white shadow-md">
       <div className="header__container">
-        <div className="header__content py-2 shadow-md">
+        <div className="header__content py-2">
           <button onClick={() => navigateToHome()} className="header__logo text-xl text-black justify-self-start content-center">
             AnimeBounty-Info
           </button>

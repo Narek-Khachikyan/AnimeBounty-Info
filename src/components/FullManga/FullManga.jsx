@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -14,11 +13,11 @@ import { useGetFullMangaQuery, useGetMangaCharactersQuery, useGetMangaPicturesQu
 
 
 const FullManga = () => {
-  const [isActiveCharacters, setIsActiveCharacters] = useState(true);
-  const [isActiveReviews, setIsActiveReviews] = useState(true)
+  const [isActiveCharacters, setIsActiveCharacters] = useState(false);
+  const [isActiveReviews, setIsActiveReviews] = useState(false)
   const { id } = useParams();
 
-  const { data: fullMangaData, isLoading: fullMangaDataLoading } = useGetFullMangaQuery(id)
+  const { data: fullMangaData } = useGetFullMangaQuery(id)
   const { data: magnaPictures } = useGetMangaPicturesQuery(id)
   const { data: mangaCharacters } = useGetMangaCharactersQuery(id)
   const { data: mangaReviews } = useGetMangaReviewsQuery(id)
@@ -105,21 +104,37 @@ const FullManga = () => {
             }
             <div className="mangaCharacters mt-8">
               <p className="mangaCharacters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
-              <button className={isActive ? "show-btn bg-black text-white py-2 px-3" : 'display-none'} onClick={() => setIsActive(false)}>See all characters</button>
+              <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>See all characters</button>
               <div className="mangaCharacters__content  grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
                 {
-                  mangaCharacters ? (
+                  mangaCharacters && isActiveCharacters ? (
                     mangaCharacters.data.map(obj => (
                       <div key={obj.character.mal_id} className="mangaCharacters__card">
-                        <img className="mangaCharacters__card-img" src={obj.character.images.webp.image_url} alt="" />
+                        <img className="mangaCharacters__card-img" src={obj.character.images.webp.image_url ? obj.character.images.webp.image_url : null} alt="" />
                         <div className="mangaCharacters__card-textWrapepr p-2">
-                          <p className="mangaCharacters__card-text">Name : <b>{obj.character.name}</b></p>
-                          <p className="mangaCharacters__card-subText">Role: <b>{obj.role}</b></p>
+                          <p className="mangaCharacters__card-text">Name : <b>{obj.character.name ? obj.character.name : null}</b></p>
+                          <p className="mangaCharacters__card-subText">Role: <b>{obj.role ? obj.role : null}</b></p>
                         </div>
                       </div>
-                    ))) : <b>registration</b>
+                    ))) : null
                 }
               </div>
+            </div>
+            <div className="reviews mt-5">
+              <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>See all reviews</button>
+              {
+                isActiveReviews && mangaReviews && (
+                  <>
+                    <h3 className="review__title text-3xl mb-5">{mangaReviews.data.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
+                    <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
+                      {mangaReviews.data.map((review) => (
+                        <ReviewCard key={review.mal_id} {...review} />
+                      ))}
+                    </div>
+                  </>
+                )
+              }
+
             </div>
           </>
         ) : <LazyLoading />
