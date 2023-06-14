@@ -53,8 +53,9 @@ export const fetchDataApi = createApi({
     }),
 
     getAnimeSearch: builder.query({
-      query: (queryManga) => `https://api.jikan.moe/v4/anime?q=${queryManga}`,
+      query: ({ orderBy, raiting, sortBy, query }) => `anime?order_by=${orderBy}&rating=${raiting}&sort=${sortBy}&q=${query ? query : ''}`,
     }),
+
     getMangaSearch: builder.query({
       query: (queryManga) => `https://api.jikan.moe/v4/manga?q=${queryManga}`,
     }),

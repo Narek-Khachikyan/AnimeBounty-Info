@@ -83,7 +83,7 @@ const FullAnime = () => {
                     <SwiperSlide key={index}>
                       <img className="images__img" src={picture.webp.image_url} alt="" />
                     </SwiperSlide>
-                  )) : <LazyLoading />} :
+                  )) : <LazyLoading />}
                 </Swiper>
               </div>
             </div>
@@ -130,7 +130,7 @@ const FullAnime = () => {
             <div className="characters mt-8">
               <p className="characters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
               <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>See all characters</button>
-              <div className="characters__content grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
+              <div className="characters__content grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-3">
                 {animeCharacters && isActiveCharacters && animeCharacters.data.map(obj => (
                   <div key={obj.character.mal_id} className="Characters__card">
                     <img className="characters__card-img" src={obj.character.images.webp.image_url} alt="" />

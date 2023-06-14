@@ -3,13 +3,12 @@ import "./filter.scss"
 
 
 const Raiting = ({ setRaiting }) => {
-  const [active, setActive] = useState(3);
+  const [active, setActive] = useState(2);
 
   const raiting = [
-    { id: 1, sortType: 'PG' },
-    { id: 2, sortType: 'PG-13' },
-    { id: 3, sortType: 'R - 17+' },
-    { id: 4, sortType: 'R+' },
+    { id: 1, sortType: 'pg', info: "PG - Children" },
+    { id: 2, sortType: 'pg13', info: "PG-13 - Teens 13 or older" },
+    { id: 3, sortType: 'r17', info: "R - 17+ (violence & profanity)" },
   ];
 
   const handleRaitingClick = (sortType, id) => {
@@ -18,15 +17,21 @@ const Raiting = ({ setRaiting }) => {
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 flex-wrap">
       {raiting.map((item) => (
-        <button
-          className={active === item.id ? "active text-base sm:text-base md:text-xl lg:text-xl xl:text-xl" : "raiting-btn text-base sm:text-base md:text-xl lg:text-xl xl:text-xl"}
-          onClick={() => handleRaitingClick(item.sortType, item.id)}
-          key={item.id}
-        >
-          {item.sortType}
-        </button>
+        <>
+          <button
+            className={active === item.id ? "raiting-btn active text-base sm:text-base md:text-xl lg:text-xl xl:text-xl" : "raiting-btn text-base sm:text-base md:text-xl lg:text-xl xl:text-xl"}
+            onClick={() => handleRaitingClick(item.sortType, item.id)}
+            key={item.id}
+          >
+            {item.sortType}
+            <div className="info">
+              <p className="info__item"> {active === item.id && item.info}</p>
+            </div>
+          </button>
+
+        </>
       ))}
     </div>
   )

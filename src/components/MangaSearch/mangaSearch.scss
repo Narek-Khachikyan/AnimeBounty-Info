@@ -1,0 +1,13 @@
+.searchInput{
+  border: 1px solid black;
+  padding: 5px 5px 5px 10px;
+  max-width: 200px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  transition: all 0.5s ease-in-out;
+  &:focus{
+    max-width: 300px;
+    outline: none;
+  }
+}

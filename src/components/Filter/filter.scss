@@ -1,9 +1,11 @@
 .active{
   background-color: black;
   color: white;
-  padding: 5px 10px;
 }
+
+
 .filter-btn,.raiting-btn,.sort-btn{
+  padding: 5px 10px;
   transition: all 0.3s ease-in-out;
   &:hover{
     background-color: black;
@@ -11,3 +13,4 @@
     color: white;
   }
 }
+
