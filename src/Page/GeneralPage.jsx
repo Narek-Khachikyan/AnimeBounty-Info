@@ -8,9 +8,9 @@ import MangaSearch from '../components/MangaSearch/MangaSearch';
 
 
 const GeneralPage = () => {
-  const [query, setQuery] = useState('naruto');
-  const [orderBy, setOrderBy] = useState('title')
-  const [sortBy, setSortBy] = useState('asc')
+  const [query, setQuery] = useState('');
+  const [orderBy, setOrderBy] = useState('score')
+  const [sortBy, setSortBy] = useState('desc')
   const [raiting, setRaiting] = useState('pg13')
 
 

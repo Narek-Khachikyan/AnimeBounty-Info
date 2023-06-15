@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./filter.scss"
 
 const Sort = ({ setSortBy }) => {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(2);
 
   const sort = [
     { id: 1, sortType: 'asc' },
