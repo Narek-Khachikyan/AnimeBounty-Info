@@ -8,11 +8,11 @@ import LazyLoading from "../LazyLoading/LazyLoading"
 import { Link } from "react-router-dom"
 
 
-const MangaSearch = ({ orderBy, setOrderBy, setSortBy }) => {
+const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
   const [queryManga, setQueryManga] = useState("")
   const debouncedQuery = useDebounce(queryManga, 500)
 
-  const { data: mangaSearch } = useGetMangaSearchQuery(debouncedQuery)
+  const { data: mangaSearch } = useGetMangaSearchQuery({ orderBy, sortBy, query: debouncedQuery })
   return (
     <div id='manga' className="MangaSearch pt-8">
       <div className="searchInputManga-wrapper flex flex-col gap-3  my-5 sm:flex-col sm:gap-3 md:flex-row md:justify-between md:items-center" >
