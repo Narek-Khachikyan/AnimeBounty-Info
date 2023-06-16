@@ -26,3 +26,14 @@
   right: 0;
   top: 0;
 }
+
+@media (max-width:767px) {
+  .mangaCard__img{
+    img{
+     height: 100%;
+      width: 100%;
+
+      object-fit: cover;
+    }
+  }
+}
