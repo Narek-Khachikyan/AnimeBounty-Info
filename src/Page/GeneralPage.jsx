@@ -5,8 +5,6 @@ import AnimeSearch from '../components/AnimeSearch/AnimeSearch';
 import MangaSearch from '../components/MangaSearch/MangaSearch';
 
 
-
-
 const GeneralPage = () => {
   const [query, setQuery] = useState('');
   const [orderBy, setOrderBy] = useState('score')

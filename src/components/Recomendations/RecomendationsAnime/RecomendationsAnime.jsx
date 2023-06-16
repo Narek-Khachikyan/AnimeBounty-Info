@@ -54,7 +54,12 @@ const RecomendationsAnime = ({ data }) => {
           ))
         )}
       </div>
-      {isLoading && <div><LazyLoading /></div>}
+      {isLoading &&
+        <>
+          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
+          <LazyLoading />
+        </>
+      }
     </div>
   );
 };

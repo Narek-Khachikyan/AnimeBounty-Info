@@ -13,9 +13,6 @@ const Anime = () => {
   const { data: topAnime, isLoading: topAnimeLoading } = useGetTopAnimeQuery()
   const { data: recomendationAnime, isLoading: recomendationAnimeLoading } = useGetRecomendationAnimeQuery()
 
-
-
-
   useEffect(() => {
     AOS.init()
     AOS.refresh();
@@ -23,8 +20,18 @@ const Anime = () => {
 
   return (
     <>
-      {topAnimeLoading ? <LazyLoading /> : <TopAnimeSlider {...topAnime} />}
-      {recomendationAnimeLoading ? <LazyLoading /> : <RecomendationsAnime {...recomendationAnime} />}
+      {topAnimeLoading ? (
+        <>
+          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
+          <LazyLoading />
+        </>
+      ) : <TopAnimeSlider {...topAnime} />}
+      {recomendationAnimeLoading ? (
+        <>
+          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
+          <LazyLoading />
+        </>
+      ) : <RecomendationsAnime {...recomendationAnime} />}
 
     </>
   )

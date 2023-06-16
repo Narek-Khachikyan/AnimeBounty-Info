@@ -14,7 +14,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
 
   const { data: mangaSearch } = useGetMangaSearchQuery({ orderBy, sortBy, query: debouncedQuery })
   return (
-    <div id='manga' className="MangaSearch pt-8">
+    <div id='manga' className="MangaSearch py-8">
       <div className="searchInputManga-wrapper flex flex-col gap-3  my-5 sm:flex-col sm:gap-3 md:flex-row md:justify-between md:items-center" >
         <p className='text-base sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Search your manga or <a onClick={() => scrollTo(0, 0)}><b className=' cursor-pointer'>anime</b>
         </a>!</p>
@@ -38,7 +38,11 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
             </Link>
           ))
         ) : (
-          <LazyLoading />
+          <>
+            <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
+            <LazyLoading />
+          </>
+
         )}
       </div>
     </div>

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import "./filter.scss"
 
-
 const Raiting = ({ setRaiting }) => {
   const [active, setActive] = useState(2);
 
-  const raiting = [
+  const raitingArr = [
     { id: 1, sortType: 'pg', info: "PG - Children" },
     { id: 2, sortType: 'pg13', info: "PG-13 - Teens 13 or older" },
     { id: 3, sortType: 'r17', info: "R - 17+ (violence & profanity)" },
@@ -16,9 +15,10 @@ const Raiting = ({ setRaiting }) => {
     setActive(id);
   };
 
+
   return (
     <div className="flex gap-4 flex-wrap">
-      {raiting.map((item) => (
+      {raitingArr.map((item) => (
         <>
           <button
             className={active === item.id ? "raiting-btn active text-base sm:text-base md:text-xl lg:text-xl xl:text-xl" : "raiting-btn text-base sm:text-base md:text-xl lg:text-xl xl:text-xl"}

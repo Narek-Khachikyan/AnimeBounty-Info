@@ -4,7 +4,7 @@ import Raiting from "../Filter/Raiting"
 import Sort from "../Filter/Sort"
 import LazyLoading from "../LazyLoading/LazyLoading"
 import AnimeCard from "../AnimeCard/AnimeCard.jsx"
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import "./animeSearch.scss"
 import useDebounce from "../../hooks/useDebounce"
 import { useState } from "react"
@@ -30,7 +30,7 @@ const AnimeSearch = ({ setOrderBy, setRaiting, setSortBy, orderBy, raiting, sort
         </div>
         <div className="raiting">
           <p className='text-base mt-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Raiting:</p>
-          <Raiting setRaiting={setRaiting} />
+          <Raiting setRaiting={raiting, setRaiting} />
         </div>
         <div className="sortBy">
           <p className='text-base mb-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl '>Sort By:</p>
@@ -45,7 +45,10 @@ const AnimeSearch = ({ setOrderBy, setRaiting, setSortBy, orderBy, raiting, sort
             </Link>
           ))
         ) : (
-          <LazyLoading />
+          <>
+            <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
+            <LazyLoading />
+          </>
         )}
       </div>
     </div>

@@ -137,7 +137,10 @@ const FullManga = () => {
 
             </div>
           </>
-        ) : <LazyLoading />
+        ) : <>
+          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
+          <LazyLoading />
+        </>
       }
     </div>
   );

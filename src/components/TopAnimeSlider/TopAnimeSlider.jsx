@@ -6,6 +6,7 @@ import "./topAnimeSlider.scss";
 import { Link } from "react-router-dom";
 
 
+
 const TopAnimeSlider = ({ data }) => {
   return (
     <div data-aos="fade-up" className="AnimeSlide py-4">

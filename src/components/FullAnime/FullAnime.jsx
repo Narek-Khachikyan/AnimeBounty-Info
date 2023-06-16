@@ -36,8 +36,8 @@ const FullAnime = () => {
           <>
             <div data-aos="fade-up" className="fullAnime__contnet flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap" key={fullAnimeData.data.mal_id}>
               <div className="fullAnime__img">
-                <img src={fullAnimeData.data.images.webp.large_image_url} alt="" />
-                <p className="fullAnime__score bg-white text-black text-xl py-1 px-4">{fullAnimeData.data.score}</p>
+                <img src={fullAnimeData.data.images.webp.large_image_url ? fullAnimeData.data.images.webp.large_image_url : null} alt="" />
+                <p className="fullAnime__score bg-white text-black text-xl py-1 px-4">{fullAnimeData.data.score ? fullAnimeData.data.score : null}</p>
               </div>
               <div className="fullAnime__textWrapper">
                 <h3 className="fullAnime__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{fullAnimeData.data.title_english ? fullAnimeData.data.title_english : <b>registration</b>}</h3>
@@ -166,10 +166,13 @@ const FullAnime = () => {
 
             </div>
           </>
-        ) : <LazyLoading />}
+        ) :
+          <>
+            <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
+            <LazyLoading />
+          </>
+        }
       </div>
-
-
     </div>
   );
 };
