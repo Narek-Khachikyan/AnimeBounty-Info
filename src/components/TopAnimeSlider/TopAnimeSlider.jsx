@@ -4,6 +4,7 @@ import 'swiper/css';
 import "swiper/css/autoplay";
 import "./topAnimeSlider.scss";
 import { Link } from "react-router-dom";
+import AnimeSliderCard from "../AnimeSliderCard/AnimeSliderCard";
 
 
 
@@ -42,29 +43,7 @@ const TopAnimeSlider = ({ data }) => {
         {data.map((obj) => (
           <SwiperSlide key={obj.mal_id}>
             <Link to={`anime/${obj.mal_id}`}>
-              <div className="slide">
-                <div className="slide__content p-2 pb-0">
-                  <div className="slide__img">
-                    <img src={obj.images.webp.large_image_url} alt="" />
-                    <p className="slide__score text-base bg-white text-black px-2 px1">
-                      {obj.score}
-                    </p>
-                  </div>
-                  <div className="slide__textWrapper p-1">
-                    <p className="slide__text text-base my-1">
-                      {obj.title_english.length > 20
-                        ? `${obj.title_english.slice(0, 21)}...`
-                        : obj.title_english}
-                    </p>
-                    <p className="slide__subText">
-                      Episodes : <span>{obj.episodes}</span>
-                    </p>
-                    <p className="slide__statusText">
-                      Status : <span>{obj.status}</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <AnimeSliderCard {...obj} />
             </Link>
           </SwiperSlide>
         ))}
