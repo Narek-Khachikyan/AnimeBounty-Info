@@ -39,7 +39,7 @@ const RecomendationsAnime = ({ data }) => {
       <div className="rec__content grid gap-9 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
         {data.slice(0, visibleItems).map(obj =>
           obj.entry.map(item => (
-            <Link key={item.mal_id} to={`anime/${item.mal_id}`}>
+            <Link key={item.mal_id} to={`${item.mal_id}`}>
               <div className="rec__card-content p-3 pb-0">
                 <img
                   className="w-full rec__card-img"

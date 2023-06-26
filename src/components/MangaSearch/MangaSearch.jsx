@@ -33,7 +33,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
       <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-4 xl:grid-rows-3">
         {mangaSearch ? (
           mangaSearch.data.map(obj => (
-            <Link key={obj.mal_id} to={`manga/manga/${obj.mal_id}`}>
+            <Link key={obj.mal_id} to={`manga/${obj.mal_id}`}>
               <MangaCard {...obj} />
             </Link>
           ))

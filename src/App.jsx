@@ -16,9 +16,9 @@ const App = () => {
         <Route path="/" element={<MainLayout />} >
           <Route path="/" element={<GeneralPage />} />
           <Route path="/anime" element={<Anime />} />
-          <Route path="/anime/anime/:id" element={<FullAnime />} />
+          <Route path="/anime/:id" element={<FullAnime />} />
           <Route path="/manga" element={<Manga />} />
-          <Route path="/manga/manga/:id" element={<FullManga />} />
+          <Route path="/manga/:id" element={<FullManga />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>

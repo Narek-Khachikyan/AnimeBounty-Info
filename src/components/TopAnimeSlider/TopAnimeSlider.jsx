@@ -42,7 +42,7 @@ const TopAnimeSlider = ({ data }) => {
       >
         {data.map((obj) => (
           <SwiperSlide key={obj.mal_id}>
-            <Link to={`anime/${obj.mal_id}`}>
+            <Link to={`${obj.mal_id}`}>
               <AnimeSliderCard {...obj} />
             </Link>
           </SwiperSlide>

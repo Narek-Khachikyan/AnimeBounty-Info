@@ -6,7 +6,7 @@ const TopMangaCard = ({ mal_id, images, title_english, chapters, score }) => {
     <div className="slide">
       <div className="slide__content p-3 pb-0">
         <div className="slide__img">
-          <Link to={`manga/${mal_id}`}>
+          <Link to={`${mal_id}`}>
             <img src={images.webp.large_image_url} alt="" />
             <p className="slide__score text-base bg-white text-black px-2 px1">
               {score}

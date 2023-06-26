@@ -40,7 +40,7 @@ const AnimeSearch = ({ setOrderBy, setRaiting, setSortBy, orderBy, raiting, sort
       <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-3 xl:grid-rows-2">
         {animeSearch ? (
           animeSearch.data.map(obj => (
-            <Link key={obj.mal_id} to={`anime/anime/${obj.mal_id}`}>
+            <Link key={obj.mal_id} to={`anime/${obj.mal_id}`}>
               <AnimeCard {...obj} />
             </Link>
           ))
