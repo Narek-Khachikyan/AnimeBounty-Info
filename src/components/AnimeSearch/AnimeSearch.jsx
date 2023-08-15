@@ -30,7 +30,7 @@ const AnimeSearch = ({ setOrderBy, setRaiting, setSortBy, orderBy, raiting, sort
         </div>
         <div className="raiting">
           <p className='text-base mt-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Raiting:</p>
-          <Raiting setRaiting={raiting, setRaiting} />
+          <Raiting setRaiting={setRaiting} />
         </div>
         <div className="sortBy">
           <p className='text-base mb-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl '>Sort By:</p>
