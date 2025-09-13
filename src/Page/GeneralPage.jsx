@@ -9,7 +9,7 @@ const GeneralPage = () => {
   const [query, setQuery] = useState('');
   const [orderBy, setOrderBy] = useState('score')
   const [sortBy, setSortBy] = useState('desc')
-  const [raiting, setRaiting] = useState('pg13')
+  const [rating, setRating] = useState('pg13')
 
 
   return (
@@ -21,13 +21,12 @@ const GeneralPage = () => {
         setQuery={setQuery}
         setOrderBy={setOrderBy}
         setSortBy={setSortBy}
-        setRaiting={setRaiting}
-        raiting={raiting}
+        setRating={setRating}
+        rating={rating}
         orderBy={orderBy} />
 
       <MangaSearch
         sortBy={sortBy}
-        raiting={raiting}
         orderBy={orderBy}
         setOrderBy={setOrderBy}
         setSortBy={setSortBy} />

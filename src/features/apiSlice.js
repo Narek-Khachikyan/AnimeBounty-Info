@@ -49,11 +49,11 @@ export const fetchDataApi = createApi({
       query: (id) => `/anime/${id}/reviews`,
     }),
     getMangaReviews: builder.query({
-      query: (id) => `/anime/${id}/reviews`,
+      query: (id) => `/manga/${id}/reviews`,
     }),
 
     getAnimeSearch: builder.query({
-      query: ({ orderBy, raiting, sortBy, query }) => `anime?order_by=${orderBy}&rating=${raiting}&sort=${sortBy}&q=${query ? query : ''}`,
+      query: ({ orderBy, rating, sortBy, query }) => `anime?order_by=${orderBy}&rating=${rating}&sort=${sortBy}&q=${query ? query : ''}`,
     }),
 
     getMangaSearch: builder.query({
@@ -79,7 +79,6 @@ export const {
   useGetMangaPicturesQuery,
 
   useGetAnimeEpisodesQuery,
-  useGetMangaEpisodesQuery,
 
   useGetAnimeCharactersQuery,
   useGetMangaCharactersQuery,

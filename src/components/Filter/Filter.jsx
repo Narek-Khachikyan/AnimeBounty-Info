@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./filter.scss";
 
 const Filter = ({ setOrderBy }) => {
@@ -28,6 +29,9 @@ const Filter = ({ setOrderBy }) => {
       ))}
     </div>
   );
+};
+Filter.propTypes = {
+  setOrderBy: PropTypes.func.isRequired,
 };
 
 export default Filter;

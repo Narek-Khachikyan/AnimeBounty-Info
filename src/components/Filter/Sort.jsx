@@ -1,5 +1,6 @@
 import { useState } from "react";
-import "./filter.scss"
+import PropTypes from "prop-types";
+import "./filter.scss";
 
 const Sort = ({ setSortBy }) => {
   const [active, setActive] = useState(2);
@@ -29,5 +30,9 @@ const Sort = ({ setSortBy }) => {
     </div>
   )
 }
+
+Sort.propTypes = {
+  setSortBy: PropTypes.func.isRequired,
+};
 
 export default Sort
