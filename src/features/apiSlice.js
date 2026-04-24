@@ -1,5 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+export const buildSearchQuery = (resource, params) => {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) {
+      searchParams.set(key, value);
+    }
+  });
+
+  const queryString = searchParams.toString();
+
+  return queryString ? `${resource}?${queryString}` : resource;
+};
 
 export const fetchDataApi = createApi({
   reducerPath: "fetchDataApi",
@@ -53,11 +66,20 @@ export const fetchDataApi = createApi({
     }),
 
     getAnimeSearch: builder.query({
-      query: ({ orderBy, rating, sortBy, query }) => `anime?order_by=${orderBy}&rating=${rating}&sort=${sortBy}&q=${query ? query : ''}`,
+      query: ({ orderBy, rating, sortBy, query }) => buildSearchQuery("anime", {
+        order_by: orderBy,
+        rating,
+        sort: sortBy,
+        q: query,
+      }),
     }),
 
     getMangaSearch: builder.query({
-      query: ({ orderBy, sortBy, query }) => `manga?order_by=${orderBy}&sort=${sortBy}&q=${query ? query : ''}`,
+      query: ({ orderBy, sortBy, query }) => buildSearchQuery("manga", {
+        order_by: orderBy,
+        sort: sortBy,
+        q: query,
+      }),
     }),
 
   })
@@ -89,6 +111,4 @@ export const {
   useGetAnimeSearchQuery,
   useGetMangaSearchQuery,
 } = fetchDataApi;
-
-
 

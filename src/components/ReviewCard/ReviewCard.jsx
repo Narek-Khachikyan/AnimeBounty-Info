@@ -7,6 +7,9 @@ import PropTypes from 'prop-types';
 
 const ReviewCard = ({ user, review }) => {
   const [showFullReview, setShowFullReview] = useState(false);
+  const reviewText = review || "";
+  const userName = user?.username || "Unknown";
+  const userImageUrl = user?.images?.webp?.image_url;
 
   const handleViewAll = () => {
     setShowFullReview(true);
@@ -16,17 +19,17 @@ const ReviewCard = ({ user, review }) => {
     <div className="review">
       <div className="review__content flex p-3 flex-col text-center gap-4 sm:grid sm:text-left">
         <div className="account">
-          <img src={user.images.webp.image_url} alt="" />
-          <p className='text-sm'>{user.username}</p>
+          {userImageUrl ? <img src={userImageUrl} alt={userName} /> : null}
+          <p className='text-sm'>{userName}</p>
         </div>
         <div className='review__textWrapper'>
           <p className="review__text text-sm">
-            {showFullReview || review.length <= 300
-              ? review
-              : `${review.slice(0, 200)}...`}
+            {showFullReview || reviewText.length <= 300
+              ? reviewText
+              : `${reviewText.slice(0, 200)}...`}
           </p>
           <div className="reactions text-sm flex flex-col gap-2 mt-2 sm:flex-row sm:text-left">
-            {!showFullReview && review.length > 300 && (
+            {!showFullReview && reviewText.length > 300 && (
               <button className='review__button' onClick={handleViewAll}>View all</button>
             )}
           </div>
@@ -36,9 +39,15 @@ const ReviewCard = ({ user, review }) => {
   );
 };
 ReviewCard.propTypes = {
-  user: PropTypes.object.isRequired,
-  review: PropTypes.string.isRequired,
-  reactions: PropTypes.object.isRequired,
+  user: PropTypes.shape({
+    username: PropTypes.string,
+    images: PropTypes.shape({
+      webp: PropTypes.shape({
+        image_url: PropTypes.string,
+      }),
+    }),
+  }),
+  review: PropTypes.string,
 };
 
 
