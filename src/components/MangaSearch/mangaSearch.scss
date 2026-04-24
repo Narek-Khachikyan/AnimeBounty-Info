@@ -1,13 +1,16 @@
-.searchInput{
-  border: 1px solid black;
-  padding: 5px 5px 5px 10px;
-  max-width: 200px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  transition: all 0.5s ease-in-out;
-  &:focus{
-    max-width: 300px;
-    outline: none;
+.search-panel--manga {
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(139, 92, 246, 0.08)),
+    var(--surface);
+
+  .search-panel__copy {
+    h2 {
+      color: var(--text-primary);
+      font-size: clamp(1.9rem, 4vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.02;
+      margin-top: 12px;
+      max-width: 720px;
+    }
   }
 }

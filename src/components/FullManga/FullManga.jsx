@@ -86,10 +86,7 @@ const FullManga = () => {
   return (
     <div className="fullManga__wrapper pb-10">
       {fullMangaLoading ? (
-        <>
-          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
-          <LazyLoading />
-        </>
+        <LazyLoading message="Loading manga details..." count={6} />
       ) : fullMangaError ? (
         <ErrorState
           message="Manga details could not be loaded."
@@ -127,7 +124,7 @@ const FullManga = () => {
           <div data-aos="fade-up" className="mangaImages">
             <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
             <div className="animeImages__content">
-              {mangaPicturesLoading ? <LazyLoading /> : mangaPicturesError ? (
+              {mangaPicturesLoading ? <LazyLoading message="Loading manga images..." count={5} /> : mangaPicturesError ? (
                 <ErrorState
                   message="Manga images could not be loaded."
                   onRetry={refetchMangaPictures}
@@ -157,7 +154,7 @@ const FullManga = () => {
           <div className="mangaCharacters mt-8">
             <p className="mangaCharacters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
             <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>See all characters</button>
-            {mangaCharactersLoading && isActiveCharacters ? <LazyLoading /> : mangaCharactersError && isActiveCharacters ? (
+            {mangaCharactersLoading && isActiveCharacters ? <LazyLoading message="Loading manga characters..." count={8} /> : mangaCharactersError && isActiveCharacters ? (
               <ErrorState
                 message="Manga characters could not be loaded."
                 onRetry={refetchMangaCharacters}
@@ -185,7 +182,7 @@ const FullManga = () => {
           </div>
           <div className="reviews mt-5">
             <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>See all reviews</button>
-            {mangaReviewsLoading && isActiveReviews ? <LazyLoading /> : mangaReviewsError && isActiveReviews ? (
+            {mangaReviewsLoading && isActiveReviews ? <LazyLoading message="Loading manga reviews..." count={4} /> : mangaReviewsError && isActiveReviews ? (
               <ErrorState
                 message="Manga reviews could not be loaded."
                 onRetry={refetchMangaReviews}

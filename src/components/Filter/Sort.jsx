@@ -6,8 +6,8 @@ const Sort = ({ setSortBy }) => {
   const [active, setActive] = useState(2);
 
   const sort = [
-    { id: 1, sortType: 'asc' },
-    { id: 2, sortType: 'desc' },
+    { id: 1, sortType: "asc", label: "Ascending" },
+    { id: 2, sortType: "desc", label: "Descending" },
   ];
 
   const handleSortClick = (sortType, id) => {
@@ -17,14 +17,16 @@ const Sort = ({ setSortBy }) => {
 
 
   return (
-    <div className="flex gap-4">
+    <div className="filter-control" role="group" aria-label="Sort direction">
       {sort.map((item) => (
         <button
-          className={active === item.id ? "sort-btn active text-base sm:text-base md:text-xl lg:text-xl xl:text-xl" : "sort-btn text-base sm:text-base md:text-xl lg:text-xl xl:text-xl"}
+          className={active === item.id ? "sort-btn active" : "sort-btn"}
           onClick={() => handleSortClick(item.sortType, item.id)}
           key={item.id}
+          type="button"
+          aria-pressed={active === item.id}
         >
-          {item.sortType}
+          {item.label}
         </button>
       ))}
     </div>

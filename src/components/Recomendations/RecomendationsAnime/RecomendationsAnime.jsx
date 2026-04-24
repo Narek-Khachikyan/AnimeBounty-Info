@@ -64,10 +64,7 @@ const RecomendationsAnime = ({ data }) => {
       </div>
       <div ref={loadMoreRef} />
       {isLoading &&
-        <>
-          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
-          <LazyLoading />
-        </>
+        <LazyLoading message="Loading more anime recommendations..." count={5} />
       }
     </div>
   );

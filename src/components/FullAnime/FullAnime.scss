@@ -1,5 +1,13 @@
 .fullAnime__img{
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  overflow: hidden;
   position: relative;
+
+  img {
+    display: block;
+  }
 }
 .container{
   max-width: 1280px;
@@ -8,9 +16,13 @@
 }
 
 .fullAnime__score{
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-radius: 999px;
+  color: #111827 !important;
+  font-weight: 900;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 12px;
+  top: 12px;
 }
 .trailer-imgWrapepr{
   span{
@@ -19,12 +31,16 @@
   position: relative;
 }
 .Characters__card{
-  border: 1px solid black;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .trailer-img{
   z-index: 2;
-  border: 1px solid black;
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
 }
 .playButton{
   position: absolute;
@@ -37,6 +53,7 @@
   width: 100%;
 }
 .images__img{
+  border-radius: 8px;
   width: 100%;
   height: 330px;
 }
@@ -91,13 +108,28 @@
   width: 100%;
   height: 400px;
 }
-.show-btn{
-  border: 1px solid black;
-  &:hover{
-    background-color: white;
-    color: black;
+
+.fullAnime__contnet,
+.images,
+.fullAnime__trailer,
+.episodes,
+.characters,
+.reviews {
+  background: rgba(23, 26, 35, 0.58);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  margin-top: 24px;
+  padding: 22px;
+}
+
+.fullAnime__textWrapper,
+.characters__card-textWrapepr {
+  color: var(--text-muted);
+
+  b,
+  span {
+    color: var(--text-primary);
   }
-  transition:all 0.3s ease-in-out;
 }
 
 .display-none{
@@ -110,5 +142,4 @@
     height: 100%;
   }
 }
-
 

@@ -1,3 +1,28 @@
+.slide {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  cursor: pointer;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    border-color: rgba(139, 92, 246, 0.34);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+    transform: translateY(-4px);
+  }
+}
+
+.slide__score {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-radius: 999px;
+  color: #111827 !important;
+  font-weight: 900;
+  padding: 6px 10px;
+}
+
 .manga__card-img{
   img{
     width: 225px;

@@ -1,33 +1,113 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-*{
-font-family: 'Inter', sans-serif;
+
+:root {
+  --app-bg: #0f1117;
+  --app-bg-soft: #131722;
+  --surface: #171a23;
+  --surface-strong: #1f2430;
+  --surface-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #f7f8fb;
+  --text-muted: #a8afc0;
+  --text-subtle: #737b90;
+  --accent: #8b5cf6;
+  --accent-cyan: #22d3ee;
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.28);
 }
 
-html,body{
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+html,
+body {
   scroll-behavior: smooth;
 }
 
-
-.container{
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0px 15px;
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(139, 92, 246, 0.16), transparent 34rem),
+    radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.08), transparent 28rem),
+    var(--app-bg);
+  color: var(--text-primary);
 }
 
-.searchInput{
-  border: 1px solid black;
-  padding: 5px 5px 5px 10px;
-  max-width: 200px;
+#root,
+.app,
+.Wrapper {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.searchInput {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(15, 17, 23, 0.86);
+  color: var(--text-primary);
+  padding: 15px 16px;
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  transition: all 0.5s ease-in-out;
-  &:focus{
-    max-width: 300px;
+  min-height: 54px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+
+  &::placeholder {
+    color: var(--text-subtle);
+  }
+
+  &:focus {
     outline: none;
+    border-color: rgba(34, 211, 238, 0.72);
+    box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1);
+    background: rgba(20, 24, 34, 0.98);
   }
 }
 
+.section-title,
+.TopAnime__title,
+.TopManga__title,
+.rec__title {
+  color: var(--text-primary) !important;
+  letter-spacing: 0;
+}
 
+.section-kicker {
+  color: var(--accent-cyan);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.muted-text {
+  color: var(--text-muted);
+}
+
+.show-btn {
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #6d5dfc) !important;
+  color: white !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(139, 92, 246, 0.28);
+  }
+}
+
+.error-state {
+  background: rgba(23, 26, 35, 0.72);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  margin: 24px 0;
+}
 
 

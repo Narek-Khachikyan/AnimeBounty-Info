@@ -7,34 +7,34 @@ const MangaCard = ({ title_english, chapters, images, score, genres }) => {
   const mangaGenres = Array.isArray(genres) ? genres : [];
 
   return (
-    <div className="mangaCard">
-      <div className="mangaCard__content p-3 pb-0">
+    <article className="mangaCard">
+      <div className="mangaCard__content">
         <div className="mangaCard__img">
           {imageUrl ? <img src={imageUrl} alt={title} /> : null}
-          {score ? <p className="mangaCard__score bg-white text-black text-base py-1 px-4">{score}</p> : null}
+          {score ? <p className="mangaCard__score">{score}</p> : null}
         </div>
-        <div className="card__textWrapper p-3">
-          <p className="card__text">
-            Name: <strong>{title.length > 20 ? `${title.slice(0, 21)}...` : title}</strong>
-          </p>
-          <p className="card__episodes">
-            Chapters: <strong>{chapters || "Unknown"}</strong>
-          </p>
-          <div className="card__generesWrapper flex flex-wrap gap-1">
-            <p className="card__generes mb-1">Generes:</p>
+        <div className="card__textWrapper">
+          <p className="card__eyebrow">Manga</p>
+          <h3 className="card__title">{title.length > 42 ? `${title.slice(0, 43)}...` : title}</h3>
+          <div className="card__meta">
+            <span>Chapters</span>
+            <strong>{chapters || "Unknown"}</strong>
+          </div>
+          <div className="card__genresWrapper">
+            <span>Genres</span>
+            <div className="card__genresList">
             {mangaGenres.length > 0 ? (
-              mangaGenres.map((gener) => (
-                <p key={gener.mal_id}>
-                  <strong>{gener.name}</strong>
-                </p>
+              mangaGenres.slice(0, 3).map((gener) => (
+                <strong key={gener.mal_id}>{gener.name}</strong>
               ))
             ) : (
               <strong>Unknown</strong>
             )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

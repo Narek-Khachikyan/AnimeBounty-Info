@@ -30,14 +30,14 @@ const Manga = () => {
 
   return (
     <>
-      {topMangaLoading ? <LazyLoading /> : topMangaError ? (
+      {topMangaLoading ? <LazyLoading message="Loading top manga..." count={5} /> : topMangaError ? (
         <ErrorState
           message="Top manga could not be loaded."
           onRetry={refetchTopManga}
           isRetrying={topMangaFetching}
         />
       ) : <TopManga data={topManga?.data ?? []} />}
-      {recomendationMangaLoading ? <LazyLoading /> : recomendationMangaError ? (
+      {recomendationMangaLoading ? <LazyLoading message="Loading manga recommendations..." count={10} /> : recomendationMangaError ? (
         <ErrorState
           message="Manga recommendations could not be loaded."
           onRetry={refetchRecomendationManga}

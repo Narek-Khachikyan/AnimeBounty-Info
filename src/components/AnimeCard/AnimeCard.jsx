@@ -7,35 +7,38 @@ const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) =>
   const animeGenres = Array.isArray(genres) ? genres : [];
 
   return (
-    <div className="card">
-      <div className="card__content p-3 pb-0">
+    <article className="card">
+      <div className="card__content">
         <div className="card__img">
           {imageUrl ? <img src={imageUrl} alt={title} /> : null}
-          {score ? <p className="card__score bg-white text-black text-base py-1 px-4">{score}</p> : null}
+          {score ? <p className="card__score">{score}</p> : null}
         </div>
-        <div className="card__textWrapper p-3">
-          <p className="card__text">
-            Name: <strong>{title.length > 20 ? `${title.slice(0, 21)}...` : title}</strong>
-          </p>
-          <p className="card__episodes">
-            Episodes: <strong>{episodes || "Unknown"}</strong>
-          </p>
-          <div className="card__generesWrapper flex flex-wrap gap-1">
-            <p className="card__generes mb-1">Generes:</p>
+        <div className="card__textWrapper">
+          <p className="card__eyebrow">Anime</p>
+          <h3 className="card__title">{title.length > 42 ? `${title.slice(0, 43)}...` : title}</h3>
+          <div className="card__meta">
+            <span>Episodes</span>
+            <strong>{episodes || "Unknown"}</strong>
+          </div>
+          <div className="card__genresWrapper">
+            <span>Genres</span>
+            <div className="card__genresList">
             {animeGenres.length > 0 ? (
-              animeGenres.map((gener) => (
-                <p key={gener.mal_id}>
-                  <strong>{gener.name}</strong>
-                </p>
+              animeGenres.slice(0, 3).map((gener) => (
+                <strong key={gener.mal_id}>{gener.name}</strong>
               ))
             ) : (
               <strong>Unknown</strong>
             )}
+            </div>
           </div>
-          <p className="card__aired">Aired: <strong>{aired?.string || "Unknown"}</strong></p>
+          <div className="card__meta">
+            <span>Aired</span>
+            <strong>{aired?.string || "Unknown"}</strong>
+          </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

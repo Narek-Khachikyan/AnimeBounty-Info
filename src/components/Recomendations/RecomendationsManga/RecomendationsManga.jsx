@@ -64,7 +64,7 @@ const RecomendationsManga = ({ data }) => {
         )}
       </div>
       <div ref={loadMoreRef} />
-      {isLoading && <div><LazyLoading /></div>}
+      {isLoading && <LazyLoading message="Loading more manga recommendations..." count={5} />}
     </div>
   );
 };
