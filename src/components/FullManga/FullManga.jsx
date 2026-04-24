@@ -101,7 +101,8 @@ const FullManga = () => {
               {manga.score ? <p className="fullManga__score bg-white text-black text-xl py-1 px-4">{manga.score}</p> : null}
             </div>
             <div className="fullManga__textWrapper">
-              <p className="fullManga__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{mangaTitle}</p>
+              <p className="section-kicker">Manga profile</p>
+              <h1 className="fullManga__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{mangaTitle}</h1>
               <p className="fullManga__subtext mt-1 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Chapters: <b>{manga.chapters || "Unknown"}</b></p>
               <p className="fullManga__subtext my-2 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Status: <b>{manga.status || "Unknown"}</b></p>
               <p className="fullManga__subtext text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-2">Published: <b>{manga.published?.string || "Unknown"}</b></p>
@@ -116,13 +117,13 @@ const FullManga = () => {
             </div>
           </div>
           <div data-aos="fade-up" className="fullManga__descr mt-3">
-            <p className="fullManga__descr-title text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl my-4"><b>Description</b></p>
+            <h2 className="fullManga__descr-title detail-section__title text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl my-4">Description</h2>
             <p className="fullManga__descr-text text-base sm:text-sm md:text-base">
               {manga.background || manga.synopsis || "No description available."}
             </p>
           </div>
           <div data-aos="fade-up" className="mangaImages">
-            <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
+            <h2 className="detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Poster gallery</h2>
             <div className="animeImages__content">
               {mangaPicturesLoading ? <LazyLoading message="Loading manga images..." count={5} /> : mangaPicturesError ? (
                 <ErrorState
@@ -152,8 +153,8 @@ const FullManga = () => {
             </div>
           </div>
           <div className="mangaCharacters mt-8">
-            <p className="mangaCharacters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
-            <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>See all characters</button>
+            <h2 className="mangaCharacters__title detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters</h2>
+            <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>Browse character list</button>
             {mangaCharactersLoading && isActiveCharacters ? <LazyLoading message="Loading manga characters..." count={8} /> : mangaCharactersError && isActiveCharacters ? (
               <ErrorState
                 message="Manga characters could not be loaded."
@@ -181,7 +182,7 @@ const FullManga = () => {
             )}
           </div>
           <div className="reviews mt-5">
-            <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>See all reviews</button>
+            <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>Read community reviews</button>
             {mangaReviewsLoading && isActiveReviews ? <LazyLoading message="Loading manga reviews..." count={4} /> : mangaReviewsError && isActiveReviews ? (
               <ErrorState
                 message="Manga reviews could not be loaded."

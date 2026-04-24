@@ -1,40 +1,83 @@
 .slide {
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 42%), var(--surface);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   color: var(--text-primary);
   cursor: pointer;
   height: 100%;
   overflow: hidden;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 
   &:hover {
-    border-color: rgba(139, 92, 246, 0.34);
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
-    transform: translateY(-4px);
+    border-color: rgba(134, 215, 198, 0.36);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-3px);
+
+    img {
+      transform: scale(1.03);
+    }
   }
 }
 
 .slide__score {
-  background: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(246, 240, 229, 0.93) !important;
   border-radius: 999px;
-  color: #111827 !important;
+  color: #181613 !important;
   font-weight: 900;
+  position: absolute;
+  right: 10px;
+  top: 10px;
   padding: 6px 10px;
 }
 
-.manga__card-img{
-  img{
+.slide__content {
+  padding: 10px !important;
+}
+
+.slide__img {
+  background: var(--surface-strong);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 2 / 2.9;
+  width: 100%;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    transition: transform 240ms ease;
+    width: 100%;
+  }
+}
+
+.slide__textWrapper {
+  display: grid;
+  gap: 6px;
+  padding: 10px 2px 2px !important;
+}
+
+.slide__text {
+  color: var(--text-primary);
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.manga__card-img {
+  img {
     width: 225px;
     height: 350px;
   }
 }
-.AnimeSlide{
+.AnimeSlide {
   min-height: 545px;
 }
 
-.slide__chapters{
-  span{
+.slide__chapters {
+  color: var(--text-subtle);
+  font-size: 0.88rem;
+  line-height: 1.35;
+
+  span {
     font-weight: 600;
   }
 }

@@ -2,8 +2,8 @@ import { Link } from "react-router-dom"
 import "./topMangaCard.scss"
 import PropTypes from "prop-types";
 
-const TopMangaCard = ({ mal_id, images, title_english, chapters, score }) => {
-  const title = title_english || "No title";
+const TopMangaCard = ({ mal_id, images, title_english, title: originalTitle, chapters, score }) => {
+  const title = title_english || originalTitle || "Untitled manga";
   const imageUrl = images?.webp?.large_image_url || images?.webp?.image_url;
 
   return (
@@ -39,6 +39,7 @@ TopMangaCard.propTypes = {
     }),
   }),
   title_english: PropTypes.string,
+  title: PropTypes.string,
   chapters: PropTypes.number,
   score: PropTypes.number,
 };

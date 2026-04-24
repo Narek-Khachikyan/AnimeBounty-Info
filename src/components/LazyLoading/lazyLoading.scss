@@ -1,6 +1,6 @@
 .loader {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   grid-column: 1 / -1;
   width: 100%;
 }
@@ -21,7 +21,7 @@
 .skeleton-card {
   background: var(--surface);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   display: grid;
   gap: 12px;
   overflow: hidden;
@@ -32,7 +32,7 @@
 .skeleton-card__line,
 .skeleton-card__chips span {
   animation: skeletonPulse 1.35s ease-in-out infinite;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.06));
+  background: linear-gradient(90deg, rgba(246, 240, 229, 0.055), rgba(246, 240, 229, 0.13), rgba(246, 240, 229, 0.055));
   background-size: 200% 100%;
 }
 

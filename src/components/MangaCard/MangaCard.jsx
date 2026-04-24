@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import "./mangaCard.scss";
 
-const MangaCard = ({ title_english, chapters, images, score, genres }) => {
+const MangaCard = ({ title_english, title: originalTitle, chapters, images, score, genres }) => {
   const imageUrl = images?.webp?.image_url;
-  const title = title_english || "No title";
+  const title = title_english || originalTitle || "Untitled manga";
   const mangaGenres = Array.isArray(genres) ? genres : [];
 
   return (
@@ -40,6 +40,7 @@ const MangaCard = ({ title_english, chapters, images, score, genres }) => {
 
 MangaCard.propTypes = {
   title_english: PropTypes.string,
+  title: PropTypes.string,
   chapters: PropTypes.number,
   images: PropTypes.shape({
     webp: PropTypes.shape({

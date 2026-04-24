@@ -1,39 +1,51 @@
-.fullManga__img{
+.fullManga__img {
   background: var(--surface);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
   display: inline-block;
+  flex: 0 0 min(330px, 100%);
   overflow: hidden;
   position: relative;
+
+  img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
 }
-.fullManga__score{
-  background: rgba(255, 255, 255, 0.92) !important;
+
+.fullManga__score {
+  background: rgba(246, 240, 229, 0.93) !important;
   border-radius: 999px;
-  color: #111827 !important;
+  color: #181613 !important;
   font-weight: 900;
   position: absolute;
   right: 12px;
   top: 12px;
 }
 
-.mangaImages__image{
-  border-radius: 8px;
+.mangaImages__image {
+  border-radius: var(--radius);
   height: 100%;
   width: 100%;
 }
 
-.card-news__img{
+.card-news__img {
   max-width: 225px;
   width: 100%;
 }
-.mangaCharacters__card-img{
+.mangaCharacters__card-img {
   width: 100%;
-  height: 300px;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  object-fit: cover;
 }
-.mangaCharacters__card{
-  background: var(--surface);
+.mangaCharacters__card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 42%), var(--surface);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   overflow: hidden;
 }
 
@@ -42,14 +54,34 @@
 .mangaImages,
 .mangaCharacters,
 .reviews {
-  background: rgba(23, 26, 35, 0.58);
+  background: rgba(28, 26, 23, 0.66);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   margin-top: 24px;
-  padding: 22px;
+  padding: clamp(18px, 3vw, 28px);
 }
 
-.fullManga__textWrapper,
+.fullManga__textWrapper {
+  display: grid;
+  gap: 10px;
+  max-width: 780px;
+}
+
+.fullManga__text {
+  color: var(--text-primary);
+  font-size: clamp(2rem, 4vw, 3.75rem) !important;
+  font-weight: 900;
+  line-height: 1.04;
+}
+
+.fullManga__descr-title,
+.detail-section__title {
+  color: var(--text-primary);
+  font-size: clamp(1.25rem, 2.6vw, 1.8rem) !important;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
 .fullManga__descr-text,
 .mangaCharacters__card-textWrapepr {
   color: var(--text-muted);
@@ -57,4 +89,8 @@
   b {
     color: var(--text-primary);
   }
+}
+
+.display-none {
+  display: none;
 }

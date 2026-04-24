@@ -5,28 +5,28 @@ const About = () => {
     <main className="about-page">
       <section className="about-hero">
         <p className="section-kicker">About AnimeBounty-Info</p>
-        <h1>A focused catalogue for finding anime and manga faster.</h1>
+        <h1>A quieter way to browse anime and manga.</h1>
         <p>
-          AnimeBounty-Info brings search, ratings, recommendations, and poster-first discovery into one clean interface for fans who want signal without the clutter.
+          AnimeBounty-Info keeps the poster art up front, trims the noise, and gives fans a faster path from a familiar title to the next shelf worth opening.
         </p>
       </section>
 
       <section className="about-stats" aria-label="Catalogue highlights">
         <div className="about-stat">
           <strong>Anime</strong>
-          <span>Search and top-ranked titles</span>
+          <span>Ranked series and films</span>
         </div>
         <div className="about-stat">
           <strong>Manga</strong>
-          <span>Browse titles and chapters</span>
+          <span>Titles, chapters, and authors</span>
         </div>
         <div className="about-stat">
           <strong>Ratings</strong>
-          <span>Filter by audience fit</span>
+          <span>Audience fit at a glance</span>
         </div>
         <div className="about-stat">
           <strong>Recs</strong>
-          <span>Discover similar picks</span>
+          <span>Adjacent picks from Jikan</span>
         </div>
       </section>
 

@@ -1,9 +1,10 @@
-.account{
+.account {
   width: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  img{
+
+  img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -11,17 +12,34 @@
     max-width: none;
   }
 }
-.review{
-  border: 1px solid black;
+.review {
+  background: rgba(28, 26, 23, 0.72);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
 }
-.review__content{
+
+.review__content {
   grid-template-columns: 100px 1fr;
   grid-template-rows: 1fr;
   gap: 20px;
 }
-.account{
+
+.account {
   margin: 0 auto;
+
+  p {
+    color: var(--text-primary);
+    font-weight: 800;
+    margin-top: 8px;
+  }
 }
-.review__button{
+
+.review__text {
+  line-height: 1.65;
+}
+
+.review__button {
+  color: var(--accent);
   font-weight: 600;
 }

@@ -36,8 +36,11 @@ const RecomendationsManga = ({ data }) => {
   }, [hasMoreItems, isLoading, mangaRecommendations.length]);
 
   return (
-    <div data-aos="fade-up" className="py-5 rec">
-      <h3 className="text-4xl rec__title mb-5">Recomendation</h3>
+    <section data-aos="fade-up" className="py-5 rec" aria-labelledby="manga-recommendations-title">
+      <div className="section-heading">
+        <p className="section-kicker">Adjacent shelves</p>
+        <h3 id="manga-recommendations-title" className="text-4xl rec__title mb-5">Recommended manga</h3>
+      </div>
       <div className="rec__content grid gap-9 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
         {mangaRecommendations.slice(0, visibleItems).map(recomendation =>
           (Array.isArray(recomendation.entry) ? recomendation.entry : []).map(item => {
@@ -65,7 +68,7 @@ const RecomendationsManga = ({ data }) => {
       </div>
       <div ref={loadMoreRef} />
       {isLoading && <LazyLoading message="Loading more manga recommendations..." count={5} />}
-    </div>
+    </section>
   );
 };
 

@@ -30,8 +30,8 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
       <div className="search-panel">
         <div className="search-panel__copy">
           <p className="section-kicker">Anime catalogue</p>
-          <h1>Find your next watch in seconds.</h1>
-          <p className="search-panel__subtitle">Search the anime library, tune the rating, and sort by score, popularity, or title.</p>
+          <h1>Find a title that fits tonight.</h1>
+          <p className="search-panel__subtitle">A cleaner shelf for top-rated series, films, and comfort rewatches. Search first, then tune the list by rating and mood.</p>
         </div>
         <div className="search-panel__actions">
           <div className="media-toggle" aria-label="Choose catalogue type">
@@ -42,6 +42,10 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
         </div>
       </div>
       <div className="filter search-filters">
+        <div className="search-filters__summary">
+          <span>Current shelf</span>
+          <strong>{orderBy} / {rating} / {sortBy}</strong>
+        </div>
         <div className="search-filters__group">
           <p>Order by</p>
           <Filter setOrderBy={setOrderBy} />

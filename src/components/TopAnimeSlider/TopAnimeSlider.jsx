@@ -13,8 +13,11 @@ const TopAnimeSlider = ({ data }) => {
   const animeItems = Array.isArray(data) ? data : [];
 
   return (
-    <div data-aos="fade-up" className="AnimeSlide py-4">
-      <h2 className='TopAnime__title text-4xl text-black mt-12 mb-6'>Top Anime</h2>
+    <section data-aos="fade-up" className="AnimeSlide py-4" aria-labelledby="top-anime-title">
+      <div className="section-heading">
+        <p className="section-kicker">Highest rated</p>
+        <h2 id="top-anime-title" className='TopAnime__title text-4xl text-black mt-12 mb-6'>Top Anime</h2>
+      </div>
       <Swiper
         modules={[Autoplay]}
         spaceBetween={50}
@@ -51,7 +54,7 @@ const TopAnimeSlider = ({ data }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </section>
   );
 };
 

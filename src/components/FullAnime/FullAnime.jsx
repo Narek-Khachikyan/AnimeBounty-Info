@@ -112,7 +112,8 @@ const FullAnime = () => {
                 {anime.score ? <p className="fullAnime__score bg-white text-black text-xl py-1 px-4">{anime.score}</p> : null}
               </div>
               <div className="fullAnime__textWrapper">
-                <h3 className="fullAnime__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{animeTitle}</h3>
+                <p className="section-kicker">Anime profile</p>
+                <h1 className="fullAnime__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{animeTitle}</h1>
                 <p className="fullAnime__episodes mt-1 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Episodes: <b>{anime.episodes || "Unknown"}</b></p>
                 <p className="FullAnime__status my-2 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Status: <b>{anime.status || "Unknown"}</b></p>
                 <p className="FullAnime__year text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Year: <b>{anime.year || "Unknown"}</b></p>
@@ -125,7 +126,7 @@ const FullAnime = () => {
               </div>
             </div>
             <div className="images" data-aos="fade-up">
-              <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
+              <h2 className="detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Poster gallery</h2>
               <div className="images__content">
                 {animePicturesLoading ? <LazyLoading message="Loading anime images..." count={5} /> : animePicturesError ? (
                   <ErrorState
@@ -157,7 +158,7 @@ const FullAnime = () => {
             <div data-aos="fade-up" className="fullAnime__trailer mt-4">
               {trailerUrl && trailerImageUrl ? (
                 <>
-                  <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">Trailer:</p>
+                  <h2 className="detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">Trailer</h2>
                   <a className="trailer-imgWrapepr" href={trailerUrl}>
                     <div className="trailer-imgWrapper">
                       <img className="trailer-img" src={trailerImageUrl} alt={`${animeTitle} trailer`} />
@@ -166,11 +167,11 @@ const FullAnime = () => {
                   </a>
                 </>
               ) : (
-                <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">There is currently no trailer for this anime</p>
+                <p className="detail-empty text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">No trailer is available for this anime yet.</p>
               )}
             </div>
             <div className="episodes">
-              <p className="episodes__text text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Episodes:</p>
+              <h2 className="episodes__text detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Episodes</h2>
               <div className="episodes__type flex gap-4 items-center">
                 <p className="episode__canon canonEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Canon color</p>
                 <p className="episode__filter fillerEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Filler color</p>
@@ -205,8 +206,8 @@ const FullAnime = () => {
               ) : <p>There are currently no episodes for this anime.</p>}
             </div>
             <div className="characters mt-8">
-              <p className="characters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
-              <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>See all characters</button>
+              <h2 className="characters__title detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters</h2>
+              <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>Browse character list</button>
               {animeCharactersLoading && isActiveCharacters ? <LazyLoading message="Loading characters..." count={8} /> : animeCharactersError && isActiveCharacters ? (
                 <ErrorState
                   message="Anime characters could not be loaded."
@@ -239,7 +240,7 @@ const FullAnime = () => {
               )}
             </div>
             <div className="reviews mt-5">
-              <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>See all reviews</button>
+              <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>Read community reviews</button>
               {animeReviewsLoading && isActiveReviews ? <LazyLoading message="Loading reviews..." count={4} /> : animeReviewsError && isActiveReviews ? (
                 <ErrorState
                   message="Anime reviews could not be loaded."

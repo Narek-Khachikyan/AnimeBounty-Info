@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import "./AnimeCard.scss";
 
-const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) => {
+const AnimeCard = ({ title_english, title: originalTitle, images, score, episodes, genres, aired }) => {
   const imageUrl = images?.webp?.image_url;
-  const title = title_english || "No title";
+  const title = title_english || originalTitle || "Untitled anime";
   const animeGenres = Array.isArray(genres) ? genres : [];
 
   return (
@@ -44,6 +44,7 @@ const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) =>
 
 AnimeCard.propTypes = {
   title_english: PropTypes.string,
+  title: PropTypes.string,
   images: PropTypes.shape({
     webp: PropTypes.shape({
       image_url: PropTypes.string,

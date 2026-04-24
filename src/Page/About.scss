@@ -1,24 +1,25 @@
 .about-page {
   display: grid;
-  gap: 28px;
-  padding: 42px 0 64px;
+  gap: var(--content-gap);
+  padding: clamp(30px, 5vw, 54px) 0 64px;
 }
 
 .about-hero {
   background:
-    linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(34, 211, 238, 0.08)),
-    var(--surface);
+    linear-gradient(135deg, rgba(217, 164, 65, 0.1), transparent 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+    var(--surface-soft);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
-  padding: 32px;
+  padding: clamp(24px, 4vw, 38px);
 }
 
 .about-hero h1 {
   color: var(--text-primary);
-  font-size: clamp(2rem, 5vw, 4.7rem);
+  font-size: clamp(2rem, 5vw, 4.2rem);
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.04;
   margin-top: 12px;
   max-width: 900px;
 }
@@ -45,9 +46,9 @@
 .about-stat,
 .about-card,
 .about-actions {
-  background: rgba(23, 26, 35, 0.8);
+  background: rgba(28, 26, 23, 0.72);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 
 .about-stat {
@@ -102,8 +103,9 @@
 }
 
 .about-actions li {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  background: rgba(246, 240, 229, 0.055);
+  border: 1px solid rgba(240, 220, 184, 0.08);
+  border-radius: var(--radius);
   padding: 14px;
 }
 

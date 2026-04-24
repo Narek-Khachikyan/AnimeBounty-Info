@@ -28,8 +28,8 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
       <div className="search-panel search-panel--manga">
         <div className="search-panel__copy">
           <p className="section-kicker">Manga catalogue</p>
-          <h2>Browse manga worth adding to your shelf.</h2>
-          <p className="search-panel__subtitle">Search manga titles, then sort the catalogue with the same clean controls.</p>
+          <h2>Browse the shelf before you commit.</h2>
+          <p className="search-panel__subtitle">Move from popular series to quieter finds with the same simple search and sort rhythm.</p>
         </div>
         <div className="search-panel__actions">
           <div className="media-toggle" aria-label="Choose catalogue type">
@@ -40,6 +40,10 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
         </div>
       </div>
       <div className="filter search-filters">
+        <div className="search-filters__summary">
+          <span>Current shelf</span>
+          <strong>{orderBy} / {sortBy}</strong>
+        </div>
         <div className="search-filters__group">
           <p>Order by</p>
           <Filter orderBy={orderBy} setOrderBy={setOrderBy} />

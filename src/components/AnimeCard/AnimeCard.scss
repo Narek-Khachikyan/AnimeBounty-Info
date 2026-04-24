@@ -1,22 +1,22 @@
 .card {
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 40%), var(--surface);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
   color: var(--text-primary);
   display: block;
   height: 100%;
   overflow: hidden;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
   width: 100%;
 
   &:hover {
-    border-color: rgba(34, 211, 238, 0.34);
-    box-shadow: 0 22px 55px rgba(0, 0, 0, 0.34);
-    transform: translateY(-4px);
+    border-color: rgba(217, 164, 65, 0.38);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-3px);
 
     img {
-      transform: scale(1.04);
+      transform: scale(1.035);
     }
   }
 }
@@ -34,7 +34,7 @@
   position: relative;
 
   &::after {
-    background: linear-gradient(180deg, transparent 45%, rgba(15, 17, 23, 0.86));
+    background: linear-gradient(180deg, transparent 48%, rgba(16, 16, 15, 0.82));
     content: "";
     inset: 0;
     position: absolute;
@@ -44,15 +44,15 @@
     display: block;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.35s ease;
+    transition: transform 240ms ease;
     width: 100%;
   }
 }
 
 .card__score {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(246, 240, 229, 0.93);
   border-radius: 999px;
-  color: #111827;
+  color: #181613;
   font-size: 0.92rem;
   font-weight: 900;
   position: absolute;
@@ -65,12 +65,12 @@
 .card__textWrapper {
   display: grid;
   flex: 1;
-  gap: 12px;
+  gap: 11px;
   padding: 16px;
 }
 
 .card__eyebrow {
-  color: var(--accent-cyan);
+  color: var(--accent);
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.1em;
@@ -79,7 +79,7 @@
 
 .card__title {
   color: var(--text-primary);
-  font-size: 1.06rem;
+  font-size: 1.04rem;
   font-weight: 850;
   line-height: 1.35;
 }
@@ -100,7 +100,8 @@
 
   strong {
     color: var(--text-muted);
-    font-weight: 700;
+    font-size: 0.94rem;
+    font-weight: 650;
     line-height: 1.35;
   }
 }
@@ -111,8 +112,8 @@
   gap: 6px;
 
   strong {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(246, 240, 229, 0.07);
+    border: 1px solid rgba(240, 220, 184, 0.1);
     border-radius: 999px;
     color: var(--text-primary);
     font-size: 0.78rem;

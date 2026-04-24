@@ -1,8 +1,8 @@
 import "./topAnimeSlider.scss"
 import PropTypes from "prop-types";
 
-const AnimeSliderCard = ({ images, score, title_english, episodes, status }) => {
-  const title = title_english || "No title";
+const AnimeSliderCard = ({ images, score, title_english, title: originalTitle, episodes, status }) => {
+  const title = title_english || originalTitle || "Untitled anime";
   const imageUrl = images?.webp?.large_image_url || images?.webp?.image_url;
 
   return (
@@ -41,6 +41,7 @@ AnimeSliderCard.propTypes = {
   }),
   score: PropTypes.number,
   title_english: PropTypes.string,
+  title: PropTypes.string,
   episodes: PropTypes.number,
   status: PropTypes.string,
 };

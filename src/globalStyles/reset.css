@@ -10,8 +10,13 @@ a, a:visited, a:hover {
   text-decoration: none;
 }
 
-a:focus, a:active {
+a:active {
   outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(134, 215, 198, 0.85);
+  outline-offset: 4px;
 }
 
 h1, h2, h3, h4, h5, h6, p {
