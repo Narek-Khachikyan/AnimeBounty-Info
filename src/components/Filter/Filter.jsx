@@ -6,9 +6,9 @@ const Filter = ({ setOrderBy }) => {
   const [active, setActive] = useState(2);
 
   const order = [
-    { id: 1, sortType: 'title' },
-    { id: 2, sortType: 'score' },
-    { id: 3, sortType: 'popularity' },
+    { id: 1, sortType: "title", label: "Title" },
+    { id: 2, sortType: "score", label: "Score" },
+    { id: 3, sortType: "popularity", label: "Popularity" },
   ];
 
   const handleOrderClick = (sortType, id) => {
@@ -17,14 +17,16 @@ const Filter = ({ setOrderBy }) => {
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="filter-control" role="group" aria-label="Order results by">
       {order.map((item) => (
         <button
-          className={active === item.id ? "filter-btn active text-base sm:text-base md:text-xl lg:text-xl xl:text-xl" : "filter-btn text-base sm:text-base md:text-xl lg:text-xl xl:text-xl"}
+          className={active === item.id ? "filter-btn active" : "filter-btn"}
           onClick={() => handleOrderClick(item.sortType, item.id)}
           key={item.id}
+          type="button"
+          aria-pressed={active === item.id}
         >
-          {item.sortType}
+          {item.label}
         </button>
       ))}
     </div>
@@ -35,5 +37,4 @@ Filter.propTypes = {
 };
 
 export default Filter;
-
 

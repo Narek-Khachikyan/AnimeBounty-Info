@@ -8,6 +8,7 @@ import Sort from "../Filter/Sort";
 import MangaCard from "../MangaCard/MangaCard.jsx";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
+import "./mangaSearch.scss";
 
 const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
   const [queryManga, setQueryManga] = useState("");
@@ -23,27 +24,34 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
   const mangaSearchItems = mangaSearch?.data ?? [];
 
   return (
-    <div id='manga' className="MangaSearch py-8">
-      <div className="searchInputManga-wrapper flex flex-col gap-3  my-5 sm:flex-col sm:gap-3 md:flex-row md:justify-between md:items-center" >
-        <p className='text-base sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Search your manga or <span className='cursor-pointer font-bold' onClick={() => scrollTo(0, 0)}>anime</span>!</p>
-        <input className='searchInput' placeholder='Search Manga...' type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
+    <section id="manga" className="MangaSearch catalogue-search py-8">
+      <div className="search-panel search-panel--manga">
+        <div className="search-panel__copy">
+          <p className="section-kicker">Manga catalogue</p>
+          <h2>Browse manga worth adding to your shelf.</h2>
+          <p className="search-panel__subtitle">Search manga titles, then sort the catalogue with the same clean controls.</p>
+        </div>
+        <div className="search-panel__actions">
+          <div className="media-toggle" aria-label="Choose catalogue type">
+            <a className="media-toggle__item" href="#anime">Anime</a>
+            <span className="media-toggle__item media-toggle__item--active">Manga</span>
+          </div>
+          <input className="searchInput" placeholder="Search manga..." type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
+        </div>
       </div>
-      <div className="filter mb-8 sm:flex sm:flex-col sm:gap-3 md:flex md:justify-between md:items-center md:flex-row">
-        <div className="orderedBy">
-          <p className='text-base mb-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Ordered By:</p>
+      <div className="filter search-filters">
+        <div className="search-filters__group">
+          <p>Order by</p>
           <Filter orderBy={orderBy} setOrderBy={setOrderBy} />
         </div>
-        <div className="sortBy">
-          <p className='text-base mb-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl '>Sort By:</p>
+        <div className="search-filters__group">
+          <p>Sort</p>
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
       <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-4 xl:grid-rows-3">
         {isLoading ? (
-          <>
-            <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
-            <LazyLoading />
-          </>
+          <LazyLoading message="Loading manga matches..." count={8} />
         ) : isError ? (
           <ErrorState
             message="Manga search could not be loaded."
@@ -58,7 +66,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
           ))
         )}
       </div>
-    </div>
+    </section>
   )
 }
 

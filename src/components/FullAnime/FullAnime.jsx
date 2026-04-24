@@ -97,10 +97,7 @@ const FullAnime = () => {
     <div className="fullAnime__wrapper pb-10">
       <div className="container">
         {fullAnimeLoading ? (
-          <>
-            <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
-            <LazyLoading />
-          </>
+          <LazyLoading message="Loading anime details..." count={6} />
         ) : fullAnimeError ? (
           <ErrorState
             message="Anime details could not be loaded."
@@ -130,7 +127,7 @@ const FullAnime = () => {
             <div className="images" data-aos="fade-up">
               <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Images:</p>
               <div className="images__content">
-                {animePicturesLoading ? <LazyLoading /> : animePicturesError ? (
+                {animePicturesLoading ? <LazyLoading message="Loading anime images..." count={5} /> : animePicturesError ? (
                   <ErrorState
                     message="Anime images could not be loaded."
                     onRetry={refetchAnimePictures}
@@ -178,7 +175,7 @@ const FullAnime = () => {
                 <p className="episode__canon canonEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Canon color</p>
                 <p className="episode__filter fillerEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Filler color</p>
               </div>
-              {animeEpisodesLoading ? <LazyLoading /> : animeEpisodesError ? (
+              {animeEpisodesLoading ? <LazyLoading message="Loading episodes..." count={4} /> : animeEpisodesError ? (
                 <ErrorState
                   message="Anime episodes could not be loaded."
                   onRetry={refetchAnimeEpisodes}
@@ -210,7 +207,7 @@ const FullAnime = () => {
             <div className="characters mt-8">
               <p className="characters__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters: </p>
               <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>See all characters</button>
-              {animeCharactersLoading && isActiveCharacters ? <LazyLoading /> : animeCharactersError && isActiveCharacters ? (
+              {animeCharactersLoading && isActiveCharacters ? <LazyLoading message="Loading characters..." count={8} /> : animeCharactersError && isActiveCharacters ? (
                 <ErrorState
                   message="Anime characters could not be loaded."
                   onRetry={refetchAnimeCharacters}
@@ -243,7 +240,7 @@ const FullAnime = () => {
             </div>
             <div className="reviews mt-5">
               <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>See all reviews</button>
-              {animeReviewsLoading && isActiveReviews ? <LazyLoading /> : animeReviewsError && isActiveReviews ? (
+              {animeReviewsLoading && isActiveReviews ? <LazyLoading message="Loading reviews..." count={4} /> : animeReviewsError && isActiveReviews ? (
                 <ErrorState
                   message="Anime reviews could not be loaded."
                   onRetry={refetchAnimeReviews}

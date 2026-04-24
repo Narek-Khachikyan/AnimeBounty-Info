@@ -26,31 +26,38 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
 
 
   return (
-    <div className="animeSearch">
-      <div className="searchInput-wrapper flex flex-col gap-3 my-5 sm:flex-col sm:gap-3 md:flex-row md:justify-between md:items-center">
-        <p className='text-base sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Search your <span className="font-bold">anime</span> or <span className="font-bold">manga</span>!</p>
-        <input className='searchInput' placeholder='Search Anime...' type="text" value={query} onChange={event => setQuery(event.target.value)} />
+    <section id="anime" className="animeSearch catalogue-search">
+      <div className="search-panel">
+        <div className="search-panel__copy">
+          <p className="section-kicker">Anime catalogue</p>
+          <h1>Find your next watch in seconds.</h1>
+          <p className="search-panel__subtitle">Search the anime library, tune the rating, and sort by score, popularity, or title.</p>
+        </div>
+        <div className="search-panel__actions">
+          <div className="media-toggle" aria-label="Choose catalogue type">
+            <span className="media-toggle__item media-toggle__item--active">Anime</span>
+            <a className="media-toggle__item" href="#manga">Manga</a>
+          </div>
+          <input className="searchInput" placeholder="Search anime..." type="text" value={query} onChange={event => setQuery(event.target.value)} />
+        </div>
       </div>
-      <div className="filter mb-8 sm:flex sm:flex-col sm:gap-3 md:flex md:justify-between md:items-center md:flex-row">
-        <div className="orderedBy">
-          <p className='text-base mb-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Ordered By:</p>
+      <div className="filter search-filters">
+        <div className="search-filters__group">
+          <p>Order by</p>
           <Filter setOrderBy={setOrderBy} />
         </div>
-        <div className="rating">
-          <p className='text-base mt-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl'>Rating:</p>
+        <div className="search-filters__group">
+          <p>Rating</p>
           <Rating setRating={setRating} />
         </div>
-        <div className="sortBy">
-          <p className='text-base mb-2 sm:text-base md:text-xl lg:text-2xl xl:text-2xl '>Sort By:</p>
+        <div className="search-filters__group">
+          <p>Sort</p>
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
       <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-3 xl:grid-rows-2">
         {isLoading ? (
-          <>
-            <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
-            <LazyLoading />
-          </>
+          <LazyLoading message="Loading anime matches..." count={6} />
         ) : isError ? (
           <ErrorState
             message="Anime search could not be loaded."
@@ -65,7 +72,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
           ))
         )}
       </div>
-    </div>
+    </section>
   )
 }
 

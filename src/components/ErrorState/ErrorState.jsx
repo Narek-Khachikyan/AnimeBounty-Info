@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const ErrorState = ({ message, onRetry, isRetrying = false }) => {
   return (
-    <div className="text-center py-8">
+    <div className="error-state text-center py-8">
       <p className="mb-4">{message}</p>
       {onRetry ? (
         <button

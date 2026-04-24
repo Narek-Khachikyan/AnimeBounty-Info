@@ -11,7 +11,7 @@ import About from './Page/About';
 
 const App = () => {
   return (
-    <div>
+    <div className="app">
       <Routes>
         <Route path="/" element={<MainLayout />} >
           <Route path="/" element={<GeneralPage />} />

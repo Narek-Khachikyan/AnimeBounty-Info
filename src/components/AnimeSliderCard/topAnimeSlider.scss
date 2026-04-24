@@ -1,8 +1,14 @@
 .slide{
-  transition: all 0.5s ease-in-out;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   &:hover{
-    background-color: black;
-    color: white;
+    border-color: rgba(34, 211, 238, 0.34);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+    transform: translateY(-4px);
   }
 }
 
@@ -17,16 +23,20 @@
   }
 }
 .slide__score{
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-radius: 999px;
+  color: #111827 !important;
+  font-weight: 900;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
 }
 .slide{
   cursor: pointer;
   height: 100%;
-  border: 1px solid black;
   span{
     font-weight: 600;
+    color: var(--text-muted);
   }
 }
 .slide__img img{

@@ -34,10 +34,7 @@ const Anime = () => {
   return (
     <>
       {topAnimeLoading ? (
-        <>
-          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
-          <LazyLoading />
-        </>
+        <LazyLoading message="Loading top anime..." count={5} />
       ) : topAnimeError ? (
         <ErrorState
           message="Top anime could not be loaded."
@@ -46,10 +43,7 @@ const Anime = () => {
         />
       ) : <TopAnimeSlider data={topAnime?.data ?? []} />}
       {recomendationAnimeLoading ? (
-        <>
-          <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
-          <LazyLoading />
-        </>
+        <LazyLoading message="Loading anime recommendations..." count={10} />
       ) : recomendationAnimeError ? (
         <ErrorState
           message="Anime recommendations could not be loaded."
