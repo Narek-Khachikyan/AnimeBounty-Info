@@ -2,33 +2,37 @@ import PropTypes from "prop-types";
 import "./AnimeCard.scss";
 
 const AnimeCard = ({ title_english, images, score, episodes, genres, aired }) => {
+  const imageUrl = images?.webp?.image_url;
+  const title = title_english || "No title";
+  const animeGenres = Array.isArray(genres) ? genres : [];
+
   return (
     <div className="card">
       <div className="card__content p-3 pb-0">
         <div className="card__img">
-          <img src={images.webp.image_url ? images.webp.image_url : null} alt="" />
+          {imageUrl ? <img src={imageUrl} alt={title} /> : null}
           {score ? <p className="card__score bg-white text-black text-base py-1 px-4">{score}</p> : null}
         </div>
         <div className="card__textWrapper p-3">
           <p className="card__text">
-            Name: <strong>{title_english ? (title_english.length > 20 ? `${title_english.slice(0, 21)}...` : title_english) : "registration"}</strong>
+            Name: <strong>{title.length > 20 ? `${title.slice(0, 21)}...` : title}</strong>
           </p>
           <p className="card__episodes">
-            Episodes: <strong>{episodes ? episodes : "registration"}</strong>
+            Episodes: <strong>{episodes || "Unknown"}</strong>
           </p>
           <div className="card__generesWrapper flex flex-wrap gap-1">
             <p className="card__generes mb-1">Generes:</p>
-            {genres ? (
-              genres.map((gener) => (
+            {animeGenres.length > 0 ? (
+              animeGenres.map((gener) => (
                 <p key={gener.mal_id}>
                   <strong>{gener.name}</strong>
                 </p>
               ))
             ) : (
-              <strong>registration</strong>
+              <strong>Unknown</strong>
             )}
           </div>
-          <p className="card__aired">Aired: <strong>{aired.string}</strong></p>
+          <p className="card__aired">Aired: <strong>{aired?.string || "Unknown"}</strong></p>
         </div>
       </div>
     </div>
@@ -40,8 +44,8 @@ AnimeCard.propTypes = {
   images: PropTypes.shape({
     webp: PropTypes.shape({
       image_url: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
+    }),
+  }),
   score: PropTypes.number,
   episodes: PropTypes.number,
   genres: PropTypes.arrayOf(
@@ -51,9 +55,8 @@ AnimeCard.propTypes = {
     })
   ),
   aired: PropTypes.shape({
-    string: PropTypes.string.isRequired,
-  }).isRequired,
+    string: PropTypes.string,
+  }),
 };
 
 export default AnimeCard;
-

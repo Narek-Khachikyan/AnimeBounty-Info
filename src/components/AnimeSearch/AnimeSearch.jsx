@@ -6,6 +6,7 @@ import Filter from "../Filter/Filter";
 import Rating from "../Filter/Rating";
 import Sort from "../Filter/Sort";
 import LazyLoading from "../LazyLoading/LazyLoading";
+import ErrorState from "../ErrorState/ErrorState";
 import AnimeCard from "../AnimeCard/AnimeCard.jsx";
 import "./animeSearch.scss";
 import useDebounce from "../../hooks/useDebounce";
@@ -13,7 +14,14 @@ import useDebounce from "../../hooks/useDebounce";
 const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy }) => {
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
-  const { data: animeSearch } = useGetAnimeSearchQuery({ orderBy, rating, sortBy, query: debouncedQuery });
+  const {
+    data: animeSearch,
+    isLoading,
+    isFetching,
+    isError,
+    refetch,
+  } = useGetAnimeSearchQuery({ orderBy, rating, sortBy, query: debouncedQuery });
+  const animeSearchItems = animeSearch?.data ?? [];
 
 
 
@@ -38,17 +46,23 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
         </div>
       </div>
       <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-3 xl:grid-rows-2">
-        {animeSearch ? (
-          animeSearch.data.map(obj => (
-            <Link key={obj.mal_id} to={`anime/${obj.mal_id}`}>
-              <AnimeCard {...obj} />
-            </Link>
-          ))
-        ) : (
+        {isLoading ? (
           <>
             <p className="text-center">If the content does not load for a long time, then reload the page or go back</p>
             <LazyLoading />
           </>
+        ) : isError ? (
+          <ErrorState
+            message="Anime search could not be loaded."
+            onRetry={refetch}
+            isRetrying={isFetching}
+          />
+        ) : (
+          animeSearchItems.map(obj => (
+            <Link key={obj.mal_id} to={`anime/${obj.mal_id}`}>
+              <AnimeCard {...obj} />
+            </Link>
+          ))
         )}
       </div>
     </div>
