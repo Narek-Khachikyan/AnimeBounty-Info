@@ -11,7 +11,7 @@ import AnimeCard from "../AnimeCard/AnimeCard.jsx";
 import "./animeSearch.scss";
 import useDebounce from "../../hooks/useDebounce";
 
-const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy }) => {
+const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true }) => {
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const {
@@ -34,10 +34,12 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
           <p className="search-panel__subtitle">A cleaner shelf for top-rated series, films, and comfort rewatches. Search first, then tune the list by rating and mood.</p>
         </div>
         <div className="search-panel__actions">
-          <div className="media-toggle" aria-label="Choose catalogue type">
-            <span className="media-toggle__item media-toggle__item--active">Anime</span>
-            <a className="media-toggle__item" href="#manga">Manga</a>
-          </div>
+          {showMediaToggle ? (
+            <div className="media-toggle" aria-label="Choose catalogue type">
+              <span className="media-toggle__item media-toggle__item--active">Anime</span>
+              <a className="media-toggle__item" href="#manga">Manga</a>
+            </div>
+          ) : null}
           <input className="searchInput" placeholder="Search anime..." type="text" value={query} onChange={event => setQuery(event.target.value)} />
         </div>
       </div>
@@ -59,7 +61,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
-      <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-3 xl:grid-rows-2">
+      <div className="search-content catalogue-grid">
         {isLoading ? (
           <LazyLoading message="Loading anime matches..." count={6} />
         ) : isError ? (
@@ -70,7 +72,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
           />
         ) : (
           animeSearchItems.map(obj => (
-            <Link key={obj.mal_id} to={`anime/${obj.mal_id}`}>
+            <Link key={obj.mal_id} to={`/anime/${obj.mal_id}`}>
               <AnimeCard {...obj} />
             </Link>
           ))
@@ -87,6 +89,7 @@ AnimeSearch.propTypes = {
   orderBy: PropTypes.string.isRequired,
   rating: PropTypes.string.isRequired,
   sortBy: PropTypes.string.isRequired,
+  showMediaToggle: PropTypes.bool,
 };
 
 export default AnimeSearch;

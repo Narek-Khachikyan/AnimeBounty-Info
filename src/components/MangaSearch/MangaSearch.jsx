@@ -10,7 +10,7 @@ import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
 import "./mangaSearch.scss";
 
-const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
+const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true }) => {
   const [queryManga, setQueryManga] = useState("");
   const debouncedQuery = useDebounce(queryManga, 500);
 
@@ -32,10 +32,12 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
           <p className="search-panel__subtitle">Move from popular series to quieter finds with the same simple search and sort rhythm.</p>
         </div>
         <div className="search-panel__actions">
-          <div className="media-toggle" aria-label="Choose catalogue type">
-            <a className="media-toggle__item" href="#anime">Anime</a>
-            <span className="media-toggle__item media-toggle__item--active">Manga</span>
-          </div>
+          {showMediaToggle ? (
+            <div className="media-toggle" aria-label="Choose catalogue type">
+              <a className="media-toggle__item" href="#anime">Anime</a>
+              <span className="media-toggle__item media-toggle__item--active">Manga</span>
+            </div>
+          ) : null}
           <input className="searchInput" placeholder="Search manga..." type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
         </div>
       </div>
@@ -53,7 +55,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
-      <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-4 xl:grid-rows-3">
+      <div className="search-content catalogue-grid">
         {isLoading ? (
           <LazyLoading message="Loading manga matches..." count={8} />
         ) : isError ? (
@@ -64,7 +66,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
           />
         ) : (
           mangaSearchItems.map(obj => (
-            <Link key={obj.mal_id} to={`manga/${obj.mal_id}`}>
+            <Link key={obj.mal_id} to={`/manga/${obj.mal_id}`}>
               <MangaCard {...obj} />
             </Link>
           ))
@@ -79,6 +81,7 @@ MangaSearch.propTypes = {
   setOrderBy: PropTypes.func.isRequired,
   setSortBy: PropTypes.func.isRequired,
   sortBy: PropTypes.string.isRequired,
+  showMediaToggle: PropTypes.bool,
 };
 
 export default MangaSearch;
