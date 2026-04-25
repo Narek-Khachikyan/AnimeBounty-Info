@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import TopAnimeSlider from '../components/TopAnimeSlider/TopAnimeSlider'
 import LazyLoading from '../components/LazyLoading/LazyLoading';
 import ErrorState from '../components/ErrorState/ErrorState';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import AnimeSearch from '../components/AnimeSearch/AnimeSearch';
 
 import RecomendationsAnime from "../components/Recomendations/RecomendationsAnime/RecomendationsAnime"
 import { useGetRecomendationAnimeQuery, useGetTopAnimeQuery } from '../features/apiSlice';
@@ -11,6 +12,9 @@ import { useGetRecomendationAnimeQuery, useGetTopAnimeQuery } from '../features/
 
 
 const Anime = () => {
+  const [orderBy, setOrderBy] = useState('score')
+  const [sortBy, setSortBy] = useState('desc')
+  const [rating, setRating] = useState('pg13')
   const {
     data: topAnime,
     isLoading: topAnimeLoading,
@@ -33,6 +37,15 @@ const Anime = () => {
 
   return (
     <>
+      <AnimeSearch
+        sortBy={sortBy}
+        setOrderBy={setOrderBy}
+        setSortBy={setSortBy}
+        setRating={setRating}
+        rating={rating}
+        orderBy={orderBy}
+        showMediaToggle={false}
+      />
       {topAnimeLoading ? (
         <LazyLoading message="Loading top anime..." count={5} />
       ) : topAnimeError ? (
