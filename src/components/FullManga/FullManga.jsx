@@ -10,7 +10,12 @@ import ErrorState from "../ErrorState/ErrorState";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useGetFullMangaQuery, useGetMangaCharactersQuery, useGetMangaPicturesQuery, useGetMangaReviewsQuery } from "../../features/apiSlice";
+import {
+  useGetFullMangaQuery,
+  useGetMangaPicturesQuery,
+  useLazyGetMangaCharactersQuery,
+  useLazyGetMangaReviewsQuery,
+} from "../../features/apiSlice";
 
 const swiperBreakpoints = {
   320: {
@@ -47,27 +52,35 @@ const FullManga = () => {
     isError: fullMangaError,
     refetch: refetchFullManga,
   } = useGetFullMangaQuery(id)
+  const manga = fullMangaData?.data;
+  const canLoadMangaSecondary = Boolean(id && manga);
   const {
     data: mangaPictures,
     isLoading: mangaPicturesLoading,
     isFetching: mangaPicturesFetching,
     isError: mangaPicturesError,
     refetch: refetchMangaPictures,
-  } = useGetMangaPicturesQuery(id)
-  const {
-    data: mangaCharacters,
-    isLoading: mangaCharactersLoading,
-    isFetching: mangaCharactersFetching,
-    isError: mangaCharactersError,
-    refetch: refetchMangaCharacters,
-  } = useGetMangaCharactersQuery(id)
-  const {
-    data: mangaReviews,
-    isLoading: mangaReviewsLoading,
-    isFetching: mangaReviewsFetching,
-    isError: mangaReviewsError,
-    refetch: refetchMangaReviews,
-  } = useGetMangaReviewsQuery(id)
+  } = useGetMangaPicturesQuery(id, { skip: !canLoadMangaSecondary })
+  const [
+    triggerMangaCharacters,
+    {
+      data: mangaCharacters,
+      isLoading: mangaCharactersLoading,
+      isFetching: mangaCharactersFetching,
+      isUninitialized: mangaCharactersUninitialized,
+      isError: mangaCharactersError,
+    },
+  ] = useLazyGetMangaCharactersQuery()
+  const [
+    triggerMangaReviews,
+    {
+      data: mangaReviews,
+      isLoading: mangaReviewsLoading,
+      isFetching: mangaReviewsFetching,
+      isUninitialized: mangaReviewsUninitialized,
+      isError: mangaReviewsError,
+    },
+  ] = useLazyGetMangaReviewsQuery()
 
   useEffect(() => {
     AOS.init()
@@ -75,13 +88,36 @@ const FullManga = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const manga = fullMangaData?.data;
   const mangaTitle = manga?.title_english || manga?.title || "No title";
   const mangaImageUrl = manga?.images?.webp?.large_image_url || manga?.images?.webp?.image_url;
   const authors = Array.isArray(manga?.authors) ? manga.authors : [];
   const pictures = Array.isArray(mangaPictures?.data) ? mangaPictures.data : [];
   const characters = Array.isArray(mangaCharacters?.data) ? mangaCharacters.data : [];
   const reviews = Array.isArray(mangaReviews?.data) ? mangaReviews.data : [];
+  const showMangaCharactersLoader = isActiveCharacters && (
+    mangaCharactersUninitialized ||
+    mangaCharactersLoading ||
+    mangaCharactersFetching
+  );
+  const showMangaReviewsLoader = isActiveReviews && (
+    mangaReviewsUninitialized ||
+    mangaReviewsLoading ||
+    mangaReviewsFetching
+  );
+  const handleShowMangaCharacters = () => {
+    setIsActiveCharacters(true);
+
+    if (id) {
+      triggerMangaCharacters(id, true);
+    }
+  };
+  const handleShowMangaReviews = () => {
+    setIsActiveReviews(true);
+
+    if (id) {
+      triggerMangaReviews(id, true);
+    }
+  };
 
   return (
     <div className="fullManga__wrapper pb-10">
@@ -154,16 +190,16 @@ const FullManga = () => {
           </div>
           <div className="mangaCharacters mt-8">
             <h2 className="mangaCharacters__title detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters</h2>
-            <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>Browse character list</button>
-            {mangaCharactersLoading && isActiveCharacters ? <LazyLoading message="Loading manga characters..." count={8} /> : mangaCharactersError && isActiveCharacters ? (
+            <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowMangaCharacters}>Browse character list</button>
+            {showMangaCharactersLoader ? <LazyLoading message="Loading manga characters..." count={8} /> : mangaCharactersError && isActiveCharacters ? (
               <ErrorState
                 message="Manga characters could not be loaded."
-                onRetry={refetchMangaCharacters}
+                onRetry={() => triggerMangaCharacters(id, false)}
                 isRetrying={mangaCharactersFetching}
               />
-            ) : (
+            ) : isActiveCharacters && characters.length > 0 ? (
               <div className="mangaCharacters__content  grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
-                {isActiveCharacters && characters.map(obj => {
+                {characters.map(obj => {
                   const character = obj.character;
                   const characterName = character?.name || "Unknown";
                   const characterImageUrl = character?.images?.webp?.image_url;
@@ -179,26 +215,26 @@ const FullManga = () => {
                   );
                 })}
               </div>
-            )}
+            ) : isActiveCharacters ? <p>There are currently no characters for this manga.</p> : null}
           </div>
           <div className="reviews mt-5">
-            <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>Read community reviews</button>
-            {mangaReviewsLoading && isActiveReviews ? <LazyLoading message="Loading manga reviews..." count={4} /> : mangaReviewsError && isActiveReviews ? (
+            <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowMangaReviews}>Read community reviews</button>
+            {showMangaReviewsLoader ? <LazyLoading message="Loading manga reviews..." count={4} /> : mangaReviewsError && isActiveReviews ? (
               <ErrorState
                 message="Manga reviews could not be loaded."
-                onRetry={refetchMangaReviews}
+                onRetry={() => triggerMangaReviews(id, false)}
                 isRetrying={mangaReviewsFetching}
               />
-            ) : isActiveReviews && (
+            ) : isActiveReviews && reviews.length > 0 ? (
               <>
-                <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
+                <h3 className="review__title text-3xl mb-5"><span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span></h3>
                 <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
                   {reviews.map((review) => (
                     <ReviewCard key={review.mal_id} {...review} />
                   ))}
                 </div>
               </>
-            )}
+            ) : isActiveReviews ? <p>There are currently no reviews for this manga.</p> : null}
           </div>
         </>
       ) : (
