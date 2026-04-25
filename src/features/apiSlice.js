@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
 
 export const buildSearchQuery = (resource, params) => {
   const searchParams = new URLSearchParams();
@@ -14,9 +14,28 @@ export const buildSearchQuery = (resource, params) => {
   return queryString ? `${resource}?${queryString}` : resource;
 };
 
+const isTransientJikanError = (error) => {
+  const status = error?.status;
+
+  return (
+    status === 429 ||
+    status === "FETCH_ERROR" ||
+    status === "TIMEOUT_ERROR" ||
+    (typeof status === "number" && status >= 500)
+  );
+};
+
+const staggeredBaseQuery = retry(
+  fetchBaseQuery({ baseUrl: 'https://api.jikan.moe/v4' }),
+  {
+    maxRetries: 2,
+    retryCondition: (error) => isTransientJikanError(error),
+  }
+);
+
 export const fetchDataApi = createApi({
   reducerPath: "fetchDataApi",
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.jikan.moe/v4' }),
+  baseQuery: staggeredBaseQuery,
   endpoints: (builder) => ({
     getTopAnime: builder.query({
       query: () => '/top/anime',
@@ -104,11 +123,14 @@ export const {
 
   useGetAnimeCharactersQuery,
   useGetMangaCharactersQuery,
+  useLazyGetAnimeCharactersQuery,
+  useLazyGetMangaCharactersQuery,
 
   useGetAnimeReviewsQuery,
   useGetMangaReviewsQuery,
+  useLazyGetAnimeReviewsQuery,
+  useLazyGetMangaReviewsQuery,
 
   useGetAnimeSearchQuery,
   useGetMangaSearchQuery,
 } = fetchDataApi;
-

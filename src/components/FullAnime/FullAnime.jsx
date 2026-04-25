@@ -11,7 +11,13 @@ import playButton from "../../assets/images/playButton.svg";
 import "./FullAnime.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useGetAnimeCharactersQuery, useGetAnimeEpisodesQuery, useGetAnimePicturesQuery, useGetAnimeReviewsQuery, useGetFullAnimeQuery } from "../../features/apiSlice";
+import {
+  useGetAnimeEpisodesQuery,
+  useGetAnimePicturesQuery,
+  useGetFullAnimeQuery,
+  useLazyGetAnimeCharactersQuery,
+  useLazyGetAnimeReviewsQuery,
+} from "../../features/apiSlice";
 
 const swiperBreakpoints = {
   320: {
@@ -47,34 +53,42 @@ const FullAnime = () => {
     isError: fullAnimeError,
     refetch: refetchFullAnime,
   } = useGetFullAnimeQuery(id)
+  const anime = fullAnimeData?.data;
+  const canLoadAnimeSecondary = Boolean(id && anime);
   const {
     data: animePictures,
     isLoading: animePicturesLoading,
     isFetching: animePicturesFetching,
     isError: animePicturesError,
     refetch: refetchAnimePictures,
-  } = useGetAnimePicturesQuery(id)
+  } = useGetAnimePicturesQuery(id, { skip: !canLoadAnimeSecondary })
   const {
     data: animeEpisodes,
     isLoading: animeEpisodesLoading,
     isFetching: animeEpisodesFetching,
     isError: animeEpisodesError,
     refetch: refetchAnimeEpisodes,
-  } = useGetAnimeEpisodesQuery(id)
-  const {
-    data: animeCharacters,
-    isLoading: animeCharactersLoading,
-    isFetching: animeCharactersFetching,
-    isError: animeCharactersError,
-    refetch: refetchAnimeCharacters,
-  } = useGetAnimeCharactersQuery(id)
-  const {
-    data: animeReviews,
-    isLoading: animeReviewsLoading,
-    isFetching: animeReviewsFetching,
-    isError: animeReviewsError,
-    refetch: refetchAnimeReviews,
-  } = useGetAnimeReviewsQuery(id)
+  } = useGetAnimeEpisodesQuery(id, { skip: !canLoadAnimeSecondary })
+  const [
+    triggerAnimeCharacters,
+    {
+      data: animeCharacters,
+      isLoading: animeCharactersLoading,
+      isFetching: animeCharactersFetching,
+      isUninitialized: animeCharactersUninitialized,
+      isError: animeCharactersError,
+    },
+  ] = useLazyGetAnimeCharactersQuery()
+  const [
+    triggerAnimeReviews,
+    {
+      data: animeReviews,
+      isLoading: animeReviewsLoading,
+      isFetching: animeReviewsFetching,
+      isUninitialized: animeReviewsUninitialized,
+      isError: animeReviewsError,
+    },
+  ] = useLazyGetAnimeReviewsQuery()
 
   useEffect(() => {
     AOS.init()
@@ -82,7 +96,6 @@ const FullAnime = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const anime = fullAnimeData?.data;
   const animeTitle = anime?.title_english || anime?.title || "No title";
   const animeImageUrl = anime?.images?.webp?.large_image_url || anime?.images?.webp?.image_url;
   const studios = Array.isArray(anime?.studios) ? anime.studios : [];
@@ -92,6 +105,30 @@ const FullAnime = () => {
   const reviews = Array.isArray(animeReviews?.data) ? animeReviews.data : [];
   const trailerUrl = anime?.trailer?.url;
   const trailerImageUrl = anime?.trailer?.images?.maximum_image_url;
+  const showAnimeCharactersLoader = isActiveCharacters && (
+    animeCharactersUninitialized ||
+    animeCharactersLoading ||
+    animeCharactersFetching
+  );
+  const showAnimeReviewsLoader = isActiveReviews && (
+    animeReviewsUninitialized ||
+    animeReviewsLoading ||
+    animeReviewsFetching
+  );
+  const handleShowAnimeCharacters = () => {
+    setIsActiveCharacters(true);
+
+    if (id) {
+      triggerAnimeCharacters(id, true);
+    }
+  };
+  const handleShowAnimeReviews = () => {
+    setIsActiveReviews(true);
+
+    if (id) {
+      triggerAnimeReviews(id, true);
+    }
+  };
 
   return (
     <div className="fullAnime__wrapper pb-10">
@@ -207,16 +244,16 @@ const FullAnime = () => {
             </div>
             <div className="characters mt-8">
               <h2 className="characters__title detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters</h2>
-              <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveCharacters(true)}>Browse character list</button>
-              {animeCharactersLoading && isActiveCharacters ? <LazyLoading message="Loading characters..." count={8} /> : animeCharactersError && isActiveCharacters ? (
+              <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowAnimeCharacters}>Browse character list</button>
+              {showAnimeCharactersLoader ? <LazyLoading message="Loading characters..." count={8} /> : animeCharactersError && isActiveCharacters ? (
                 <ErrorState
                   message="Anime characters could not be loaded."
-                  onRetry={refetchAnimeCharacters}
+                  onRetry={() => triggerAnimeCharacters(id, false)}
                   isRetrying={animeCharactersFetching}
                 />
-              ) : (
+              ) : isActiveCharacters && characters.length > 0 ? (
                 <div className="characters__content grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-3">
-                  {isActiveCharacters && characters.map(obj => {
+                  {characters.map(obj => {
                     const character = obj.character;
                     const characterName = character?.name || "Unknown";
                     const characterImageUrl = character?.images?.webp?.image_url;
@@ -237,26 +274,26 @@ const FullAnime = () => {
                     );
                   })}
                 </div>
-              )}
+              ) : isActiveCharacters ? <p>There are currently no characters for this anime.</p> : null}
             </div>
             <div className="reviews mt-5">
-              <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={() => setIsActiveReviews(true)}>Read community reviews</button>
-              {animeReviewsLoading && isActiveReviews ? <LazyLoading message="Loading reviews..." count={4} /> : animeReviewsError && isActiveReviews ? (
+              <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowAnimeReviews}>Read community reviews</button>
+              {showAnimeReviewsLoader ? <LazyLoading message="Loading reviews..." count={4} /> : animeReviewsError && isActiveReviews ? (
                 <ErrorState
                   message="Anime reviews could not be loaded."
-                  onRetry={refetchAnimeReviews}
+                  onRetry={() => triggerAnimeReviews(id, false)}
                   isRetrying={animeReviewsFetching}
                 />
-              ) : isActiveReviews && (
+              ) : isActiveReviews && reviews.length > 0 ? (
                 <>
-                  <h3 className="review__title text-3xl mb-5">{reviews.length > 0 ? <span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span> : null}</h3>
+                  <h3 className="review__title text-3xl mb-5"><span className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Review</span></h3>
                   <div className="reviews__content grid grid-cols-1 grid-rows-1 gap-4">
                     {reviews.map((review) => (
                       <ReviewCard key={review.mal_id} {...review} />
                     ))}
                   </div>
                 </>
-              )}
+              ) : isActiveReviews ? <p>There are currently no reviews for this anime.</p> : null}
             </div>
           </>
         ) : (
