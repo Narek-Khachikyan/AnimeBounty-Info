@@ -59,7 +59,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
-      <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-3 xl:grid-rows-2">
+      <div className="search-content catalogue-grid">
         {isLoading ? (
           <LazyLoading message="Loading anime matches..." count={6} />
         ) : isError ? (

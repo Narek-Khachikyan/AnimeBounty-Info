@@ -114,6 +114,38 @@ a {
   }
 }
 
+.catalogue-grid {
+  display: grid;
+  gap: clamp(14px, 2vw, 20px);
+  grid-template-columns: minmax(0, 1fr);
+
+  > * {
+    min-width: 0;
+  }
+
+  .error-state {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 640px) {
+  .catalogue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 820px) {
+  .catalogue-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1120px) {
+  .catalogue-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
 .show-btn {
   border: 1px solid rgba(217, 164, 65, 0.45);
   border-radius: var(--radius);

@@ -53,7 +53,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy }) => {
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
-      <div className="search-content grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-4 xl:grid-rows-3">
+      <div className="search-content catalogue-grid">
         {isLoading ? (
           <LazyLoading message="Loading manga matches..." count={8} />
         ) : isError ? (
