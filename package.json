@@ -9,9 +9,10 @@
     "harness:check": "node scripts/verify-harness-docs.mjs",
     "pwa:check": "node scripts/verify-pwa.mjs",
     "pwa:dist-check": "node scripts/verify-pwa-dist.mjs",
+    "pwa:e2e": "playwright test",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "verify": "npm run harness:check && npm run pwa:check && npm run lint && npm run build && npm run pwa:dist-check"
+    "verify": "npm run harness:check && npm run pwa:check && npm run lint && npm run build && npm run pwa:dist-check && npm run pwa:e2e"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
@@ -25,6 +26,7 @@
     "swiper": "^12.1.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^5.2.0",
