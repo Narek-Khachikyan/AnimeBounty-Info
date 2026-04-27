@@ -13,6 +13,20 @@ const jikanFixtures = {
       },
     ],
   },
+  'https://api.jikan.moe/v4/anime?order_by=score&rating=pg13&sort=desc': {
+    data: [
+      {
+        mal_id: 5,
+        title: 'Cached Anime Search',
+        score: 9.1,
+        episodes: 24,
+        images: { webp: {} },
+      },
+    ],
+  },
+  'https://api.jikan.moe/v4/genres/anime': {
+    data: [{ mal_id: 2, name: 'Adventure' }],
+  },
   'https://api.jikan.moe/v4/top/manga': {
     data: [
       {
@@ -23,6 +37,20 @@ const jikanFixtures = {
         images: { webp: {} },
       },
     ],
+  },
+  'https://api.jikan.moe/v4/manga?order_by=score&sort=desc': {
+    data: [
+      {
+        mal_id: 6,
+        title: 'Cached Manga Search',
+        score: 8.9,
+        chapters: 51,
+        images: { webp: {} },
+      },
+    ],
+  },
+  'https://api.jikan.moe/v4/genres/manga': {
+    data: [{ mal_id: 8, name: 'Drama' }],
   },
   'https://api.jikan.moe/v4/recommendations/anime': {
     data: [

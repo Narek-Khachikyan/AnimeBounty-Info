@@ -26,7 +26,10 @@ const isTransientJikanError = (error) => {
 };
 
 const staggeredBaseQuery = retry(
-  fetchBaseQuery({ baseUrl: 'https://api.jikan.moe/v4' }),
+  fetchBaseQuery({
+    baseUrl: 'https://api.jikan.moe/v4',
+    timeout: 15000,
+  }),
   {
     maxRetries: 2,
     retryCondition: (error) => isTransientJikanError(error),
@@ -85,20 +88,55 @@ export const fetchDataApi = createApi({
     }),
 
     getAnimeSearch: builder.query({
-      query: ({ orderBy, rating, sortBy, query }) => buildSearchQuery("anime", {
+      query: ({ orderBy, rating, sortBy, query, genreId }) => buildSearchQuery("anime", {
         order_by: orderBy,
         rating,
         sort: sortBy,
         q: query,
+        genres: genreId,
       }),
     }),
 
     getMangaSearch: builder.query({
-      query: ({ orderBy, sortBy, query }) => buildSearchQuery("manga", {
+      query: ({ orderBy, sortBy, query, genreId }) => buildSearchQuery("manga", {
         order_by: orderBy,
         sort: sortBy,
         q: query,
+        genres: genreId,
       }),
+    }),
+
+    getSeasonNow: builder.query({
+      query: () => '/seasons/now',
+    }),
+    getSeasonUpcoming: builder.query({
+      query: () => '/seasons/upcoming',
+    }),
+    getSchedules: builder.query({
+      query: ({ filter } = {}) => buildSearchQuery("schedules", { filter }),
+    }),
+
+    getAnimeGenres: builder.query({
+      query: () => '/genres/anime',
+    }),
+    getMangaGenres: builder.query({
+      query: () => '/genres/manga',
+    }),
+
+    getAnimeRelations: builder.query({
+      query: (id) => `/anime/${id}/relations`,
+    }),
+    getAnimeStreaming: builder.query({
+      query: (id) => `/anime/${id}/streaming`,
+    }),
+    getAnimeVideos: builder.query({
+      query: (id) => `/anime/${id}/videos`,
+    }),
+    getMangaRelations: builder.query({
+      query: (id) => `/manga/${id}/relations`,
+    }),
+    getCharacterFull: builder.query({
+      query: (id) => `/characters/${id}`,
     }),
 
   })
@@ -133,4 +171,17 @@ export const {
 
   useGetAnimeSearchQuery,
   useGetMangaSearchQuery,
+
+  useLazyGetSeasonNowQuery,
+  useLazyGetSeasonUpcomingQuery,
+  useLazyGetSchedulesQuery,
+
+  useGetAnimeGenresQuery,
+  useGetMangaGenresQuery,
+
+  useLazyGetAnimeRelationsQuery,
+  useLazyGetAnimeStreamingQuery,
+  useLazyGetAnimeVideosQuery,
+  useLazyGetMangaRelationsQuery,
+  useLazyGetCharacterFullQuery,
 } = fetchDataApi;

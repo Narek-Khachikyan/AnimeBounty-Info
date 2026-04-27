@@ -5,6 +5,7 @@ import ErrorState from '../components/ErrorState/ErrorState';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import AnimeSearch from '../components/AnimeSearch/AnimeSearch';
+import SeasonalSpotlight from '../components/SeasonalSpotlight/SeasonalSpotlight';
 
 import RecomendationsAnime from "../components/Recomendations/RecomendationsAnime/RecomendationsAnime"
 import { useGetRecomendationAnimeQuery, useGetTopAnimeQuery } from '../features/apiSlice';
@@ -46,6 +47,7 @@ const Anime = () => {
         orderBy={orderBy}
         showMediaToggle={false}
       />
+      <SeasonalSpotlight />
       {topAnimeLoading ? (
         <LazyLoading message="Loading top anime..." count={5} />
       ) : topAnimeError ? (

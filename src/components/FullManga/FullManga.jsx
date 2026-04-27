@@ -8,12 +8,18 @@ import { Autoplay } from "swiper/modules";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
 import ReviewCard from "../ReviewCard/ReviewCard";
+import {
+  CharacterProfilePanel,
+  RelationsPanel,
+} from "../JikanDetailExtras/JikanDetailExtras";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
   useGetFullMangaQuery,
   useGetMangaPicturesQuery,
   useLazyGetMangaCharactersQuery,
+  useLazyGetMangaRelationsQuery,
+  useLazyGetCharacterFullQuery,
   useLazyGetMangaReviewsQuery,
 } from "../../features/apiSlice";
 
@@ -43,6 +49,8 @@ const swiperBreakpoints = {
 const FullManga = () => {
   const [isActiveCharacters, setIsActiveCharacters] = useState(false);
   const [isActiveReviews, setIsActiveReviews] = useState(false)
+  const [isActiveRelations, setIsActiveRelations] = useState(false)
+  const [selectedCharacter, setSelectedCharacter] = useState(null)
   const { id } = useParams();
 
   const {
@@ -72,6 +80,24 @@ const FullManga = () => {
     },
   ] = useLazyGetMangaCharactersQuery()
   const [
+    triggerMangaRelations,
+    {
+      data: mangaRelations,
+      isLoading: mangaRelationsLoading,
+      isFetching: mangaRelationsFetching,
+      isError: mangaRelationsError,
+    },
+  ] = useLazyGetMangaRelationsQuery()
+  const [
+    triggerCharacterFull,
+    {
+      data: characterFull,
+      isLoading: characterFullLoading,
+      isFetching: characterFullFetching,
+      isError: characterFullError,
+    },
+  ] = useLazyGetCharacterFullQuery()
+  const [
     triggerMangaReviews,
     {
       data: mangaReviews,
@@ -93,6 +119,7 @@ const FullManga = () => {
   const authors = Array.isArray(manga?.authors) ? manga.authors : [];
   const pictures = Array.isArray(mangaPictures?.data) ? mangaPictures.data : [];
   const characters = Array.isArray(mangaCharacters?.data) ? mangaCharacters.data : [];
+  const relations = Array.isArray(mangaRelations?.data) ? mangaRelations.data : [];
   const reviews = Array.isArray(mangaReviews?.data) ? mangaReviews.data : [];
   const showMangaCharactersLoader = isActiveCharacters && (
     mangaCharactersUninitialized ||
@@ -117,6 +144,26 @@ const FullManga = () => {
     if (id) {
       triggerMangaReviews(id, true);
     }
+  };
+  const handleShowMangaRelations = () => {
+    setIsActiveRelations(true);
+
+    if (id) {
+      triggerMangaRelations(id, true);
+    }
+  };
+  const handleShowCharacterProfile = (character) => {
+    const characterId = character?.mal_id;
+
+    if (!characterId) {
+      return;
+    }
+
+    setSelectedCharacter({
+      id: characterId,
+      name: character?.name || "Unknown",
+    });
+    triggerCharacterFull(characterId, true);
   };
 
   return (
@@ -188,6 +235,15 @@ const FullManga = () => {
               ) : <p>There are currently no images for this manga.</p>}
             </div>
           </div>
+          <RelationsPanel
+            isActive={isActiveRelations}
+            isError={mangaRelationsError}
+            isFetching={mangaRelationsFetching}
+            isLoading={mangaRelationsLoading}
+            items={relations}
+            onOpen={handleShowMangaRelations}
+            onRetry={() => triggerMangaRelations(id, false)}
+          />
           <div className="mangaCharacters mt-8">
             <h2 className="mangaCharacters__title detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters</h2>
             <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowMangaCharacters}>Browse character list</button>
@@ -210,12 +266,27 @@ const FullManga = () => {
                       <div className="mangaCharacters__card-textWrapepr p-2">
                         <p className="mangaCharacters__card-text">Name : <b>{characterName}</b></p>
                         <p className="mangaCharacters__card-subText">Role: <b>{obj.role || "Unknown"}</b></p>
+                        <button
+                          type="button"
+                          className="character-profile-button"
+                          onClick={() => handleShowCharacterProfile(character)}
+                        >
+                          Open profile for {characterName}
+                        </button>
                       </div>
                     </div>
                   );
                 })}
               </div>
             ) : isActiveCharacters ? <p>There are currently no characters for this manga.</p> : null}
+            <CharacterProfilePanel
+              characterName={selectedCharacter?.name}
+              data={characterFull}
+              isError={characterFullError}
+              isFetching={characterFullFetching}
+              isLoading={characterFullLoading}
+              onRetry={() => triggerCharacterFull(selectedCharacter?.id, false)}
+            />
           </div>
           <div className="reviews mt-5">
             <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowMangaReviews}>Read community reviews</button>

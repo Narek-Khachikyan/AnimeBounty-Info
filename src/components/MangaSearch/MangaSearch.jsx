@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useGetMangaSearchQuery } from "../../features/apiSlice";
+import { useGetMangaGenresQuery, useGetMangaSearchQuery } from "../../features/apiSlice";
 import useDebounce from "../../hooks/useDebounce";
 import Filter from "../Filter/Filter";
 import Sort from "../Filter/Sort";
 import MangaCard from "../MangaCard/MangaCard.jsx";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
+import GenreChips from "../GenreChips/GenreChips";
 import "./mangaSearch.scss";
 
 const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true }) => {
   const [queryManga, setQueryManga] = useState("");
+  const [selectedGenreId, setSelectedGenreId] = useState(null);
   const debouncedQuery = useDebounce(queryManga, 500);
 
   const {
@@ -20,7 +22,13 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
     isFetching,
     isError,
     refetch,
-  } = useGetMangaSearchQuery({ orderBy, sortBy, query: debouncedQuery });
+  } = useGetMangaSearchQuery({ orderBy, sortBy, query: debouncedQuery, genreId: selectedGenreId });
+  const {
+    data: mangaGenres,
+    isFetching: mangaGenresFetching,
+    isError: mangaGenresError,
+    refetch: refetchMangaGenres,
+  } = useGetMangaGenresQuery();
   const mangaSearchItems = mangaSearch?.data ?? [];
 
   return (
@@ -44,7 +52,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
       <div className="filter search-filters">
         <div className="search-filters__summary">
           <span>Current shelf</span>
-          <strong>{orderBy} / {sortBy}</strong>
+          <strong>{orderBy} / {sortBy}{selectedGenreId ? " / genre" : ""}</strong>
         </div>
         <div className="search-filters__group">
           <p>Order by</p>
@@ -55,6 +63,15 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
+      <GenreChips
+        title="Manga"
+        genres={mangaGenres?.data ?? []}
+        isError={mangaGenresError}
+        isFetching={mangaGenresFetching}
+        onRetry={refetchMangaGenres}
+        selectedGenreId={selectedGenreId}
+        onSelectGenre={setSelectedGenreId}
+      />
       <div className="search-content catalogue-grid">
         {isLoading ? (
           <LazyLoading message="Loading manga matches..." count={8} />
