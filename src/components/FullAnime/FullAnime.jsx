@@ -7,6 +7,12 @@ import "swiper/css/autoplay";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
+import {
+  CharacterProfilePanel,
+  RelationsPanel,
+  StreamingPanel,
+  VideosPanel,
+} from "../JikanDetailExtras/JikanDetailExtras";
 import playButton from "../../assets/images/playButton.svg";
 import "./FullAnime.scss";
 import AOS from "aos";
@@ -15,7 +21,11 @@ import {
   useGetAnimeEpisodesQuery,
   useGetAnimePicturesQuery,
   useGetFullAnimeQuery,
+  useLazyGetAnimeRelationsQuery,
   useLazyGetAnimeCharactersQuery,
+  useLazyGetAnimeStreamingQuery,
+  useLazyGetAnimeVideosQuery,
+  useLazyGetCharacterFullQuery,
   useLazyGetAnimeReviewsQuery,
 } from "../../features/apiSlice";
 
@@ -46,6 +56,10 @@ const FullAnime = () => {
   const { id } = useParams();
   const [isActiveCharacters, setIsActiveCharacters] = useState(false)
   const [isActiveReviews, setIsActiveReviews] = useState(false)
+  const [isActiveRelations, setIsActiveRelations] = useState(false)
+  const [isActiveStreaming, setIsActiveStreaming] = useState(false)
+  const [isActiveVideos, setIsActiveVideos] = useState(false)
+  const [selectedCharacter, setSelectedCharacter] = useState(null)
   const {
     data: fullAnimeData,
     isLoading: fullAnimeLoading,
@@ -80,6 +94,42 @@ const FullAnime = () => {
     },
   ] = useLazyGetAnimeCharactersQuery()
   const [
+    triggerAnimeRelations,
+    {
+      data: animeRelations,
+      isLoading: animeRelationsLoading,
+      isFetching: animeRelationsFetching,
+      isError: animeRelationsError,
+    },
+  ] = useLazyGetAnimeRelationsQuery()
+  const [
+    triggerAnimeStreaming,
+    {
+      data: animeStreaming,
+      isLoading: animeStreamingLoading,
+      isFetching: animeStreamingFetching,
+      isError: animeStreamingError,
+    },
+  ] = useLazyGetAnimeStreamingQuery()
+  const [
+    triggerAnimeVideos,
+    {
+      data: animeVideos,
+      isLoading: animeVideosLoading,
+      isFetching: animeVideosFetching,
+      isError: animeVideosError,
+    },
+  ] = useLazyGetAnimeVideosQuery()
+  const [
+    triggerCharacterFull,
+    {
+      data: characterFull,
+      isLoading: characterFullLoading,
+      isFetching: characterFullFetching,
+      isError: characterFullError,
+    },
+  ] = useLazyGetCharacterFullQuery()
+  const [
     triggerAnimeReviews,
     {
       data: animeReviews,
@@ -102,6 +152,9 @@ const FullAnime = () => {
   const pictures = Array.isArray(animePictures?.data) ? animePictures.data : [];
   const episodes = Array.isArray(animeEpisodes?.data) ? animeEpisodes.data : [];
   const characters = Array.isArray(animeCharacters?.data) ? animeCharacters.data : [];
+  const relations = Array.isArray(animeRelations?.data) ? animeRelations.data : [];
+  const streaming = Array.isArray(animeStreaming?.data) ? animeStreaming.data : [];
+  const videos = animeVideos?.data ?? {};
   const reviews = Array.isArray(animeReviews?.data) ? animeReviews.data : [];
   const trailerUrl = anime?.trailer?.url;
   const trailerImageUrl = anime?.trailer?.images?.maximum_image_url;
@@ -128,6 +181,40 @@ const FullAnime = () => {
     if (id) {
       triggerAnimeReviews(id, true);
     }
+  };
+  const handleShowAnimeRelations = () => {
+    setIsActiveRelations(true);
+
+    if (id) {
+      triggerAnimeRelations(id, true);
+    }
+  };
+  const handleShowAnimeStreaming = () => {
+    setIsActiveStreaming(true);
+
+    if (id) {
+      triggerAnimeStreaming(id, true);
+    }
+  };
+  const handleShowAnimeVideos = () => {
+    setIsActiveVideos(true);
+
+    if (id) {
+      triggerAnimeVideos(id, true);
+    }
+  };
+  const handleShowCharacterProfile = (character) => {
+    const characterId = character?.mal_id;
+
+    if (!characterId) {
+      return;
+    }
+
+    setSelectedCharacter({
+      id: characterId,
+      name: character?.name || "Unknown",
+    });
+    triggerCharacterFull(characterId, true);
   };
 
   return (
@@ -207,6 +294,33 @@ const FullAnime = () => {
                 <p className="detail-empty text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">No trailer is available for this anime yet.</p>
               )}
             </div>
+            <RelationsPanel
+              isActive={isActiveRelations}
+              isError={animeRelationsError}
+              isFetching={animeRelationsFetching}
+              isLoading={animeRelationsLoading}
+              items={relations}
+              onOpen={handleShowAnimeRelations}
+              onRetry={() => triggerAnimeRelations(id, false)}
+            />
+            <StreamingPanel
+              isActive={isActiveStreaming}
+              isError={animeStreamingError}
+              isFetching={animeStreamingFetching}
+              isLoading={animeStreamingLoading}
+              items={streaming}
+              onOpen={handleShowAnimeStreaming}
+              onRetry={() => triggerAnimeStreaming(id, false)}
+            />
+            <VideosPanel
+              isActive={isActiveVideos}
+              isError={animeVideosError}
+              isFetching={animeVideosFetching}
+              isLoading={animeVideosLoading}
+              items={videos}
+              onOpen={handleShowAnimeVideos}
+              onRetry={() => triggerAnimeVideos(id, false)}
+            />
             <div className="episodes">
               <h2 className="episodes__text detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Episodes</h2>
               <div className="episodes__type flex gap-4 items-center">
@@ -269,12 +383,27 @@ const FullAnime = () => {
                           {voiceActors.slice(0, 2).map(actor => (
                             <p key={actor.person?.mal_id || `${actor.language}-${actor.person?.name}`}>{actor.language || "Unknown"} : <b>{actor.person?.name || "Unknown"}</b></p>
                           ))}
+                          <button
+                            type="button"
+                            className="character-profile-button"
+                            onClick={() => handleShowCharacterProfile(character)}
+                          >
+                            Open profile for {characterName}
+                          </button>
                         </div>
                       </div>
                     );
                   })}
                 </div>
               ) : isActiveCharacters ? <p>There are currently no characters for this anime.</p> : null}
+              <CharacterProfilePanel
+                characterName={selectedCharacter?.name}
+                data={characterFull}
+                isError={characterFullError}
+                isFetching={characterFullFetching}
+                isLoading={characterFullLoading}
+                onRetry={() => triggerCharacterFull(selectedCharacter?.id, false)}
+              />
             </div>
             <div className="reviews mt-5">
               <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowAnimeReviews}>Read community reviews</button>

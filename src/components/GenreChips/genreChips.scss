@@ -1,0 +1,46 @@
+.genre-chips {
+  margin-top: 18px;
+  padding-bottom: 18px;
+}
+
+.genre-chips__header {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  font-size: 0.9rem;
+  font-weight: 750;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  button {
+    border: 0;
+    color: var(--accent-cyan);
+    font-weight: 800;
+  }
+}
+
+.genre-chips__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.genre-chip {
+  background: rgba(246, 240, 229, 0.06);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 800;
+  min-height: 38px;
+  padding: 8px 11px;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+
+  &:hover,
+  &--active {
+    background: rgba(217, 164, 65, 0.16);
+    border-color: rgba(217, 164, 65, 0.68);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+}

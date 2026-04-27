@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useGetAnimeSearchQuery } from "../../features/apiSlice";
+import { useGetAnimeGenresQuery, useGetAnimeSearchQuery } from "../../features/apiSlice";
 import Filter from "../Filter/Filter";
 import Rating from "../Filter/Rating";
 import Sort from "../Filter/Sort";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
 import AnimeCard from "../AnimeCard/AnimeCard.jsx";
+import GenreChips from "../GenreChips/GenreChips";
 import "./animeSearch.scss";
 import useDebounce from "../../hooks/useDebounce";
 
 const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true }) => {
   const [query, setQuery] = useState("");
+  const [selectedGenreId, setSelectedGenreId] = useState(null);
   const debouncedQuery = useDebounce(query, 500);
   const {
     data: animeSearch,
@@ -20,7 +22,13 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
     isFetching,
     isError,
     refetch,
-  } = useGetAnimeSearchQuery({ orderBy, rating, sortBy, query: debouncedQuery });
+  } = useGetAnimeSearchQuery({ orderBy, rating, sortBy, query: debouncedQuery, genreId: selectedGenreId });
+  const {
+    data: animeGenres,
+    isFetching: animeGenresFetching,
+    isError: animeGenresError,
+    refetch: refetchAnimeGenres,
+  } = useGetAnimeGenresQuery();
   const animeSearchItems = animeSearch?.data ?? [];
 
 
@@ -46,7 +54,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
       <div className="filter search-filters">
         <div className="search-filters__summary">
           <span>Current shelf</span>
-          <strong>{orderBy} / {rating} / {sortBy}</strong>
+          <strong>{orderBy} / {rating} / {sortBy}{selectedGenreId ? " / genre" : ""}</strong>
         </div>
         <div className="search-filters__group">
           <p>Order by</p>
@@ -61,6 +69,15 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
           <Sort setSortBy={setSortBy} />
         </div>
       </div>
+      <GenreChips
+        title="Anime"
+        genres={animeGenres?.data ?? []}
+        isError={animeGenresError}
+        isFetching={animeGenresFetching}
+        onRetry={refetchAnimeGenres}
+        selectedGenreId={selectedGenreId}
+        onSelectGenre={setSelectedGenreId}
+      />
       <div className="search-content catalogue-grid">
         {isLoading ? (
           <LazyLoading message="Loading anime matches..." count={6} />
