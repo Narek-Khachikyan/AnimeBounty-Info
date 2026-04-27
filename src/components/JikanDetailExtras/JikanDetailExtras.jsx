@@ -4,8 +4,30 @@ import ErrorState from "../ErrorState/ErrorState";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import "./jikanDetailExtras.scss";
 
+const relationPriority = [
+  "Prequel",
+  "Sequel",
+  "Spin-off",
+  "Side story",
+  "Adaptation",
+  "Alternative version",
+  "Alternative setting",
+  "Parent story",
+  "Summary",
+  "Character",
+  "Other",
+];
+
+const getRelationRank = (relation) => {
+  const index = relationPriority.findIndex((item) => item.toLowerCase() === relation?.toLowerCase());
+
+  return index === -1 ? relationPriority.length : index;
+};
+
 export const RelationsPanel = ({ isActive, isError, isFetching, isLoading, items, onOpen, onRetry }) => {
-  const relationItems = Array.isArray(items) ? items : [];
+  const relationItems = Array.isArray(items)
+    ? [...items].sort((first, second) => getRelationRank(first.relation) - getRelationRank(second.relation))
+    : [];
 
   return (
     <section className="detail-extra" aria-labelledby="relations-title">
@@ -26,28 +48,32 @@ export const RelationsPanel = ({ isActive, isError, isFetching, isLoading, items
         ) : isError ? (
           <ErrorState message="Relations could not be loaded." onRetry={onRetry} isRetrying={isFetching} />
         ) : relationItems.length > 0 ? (
-          <div className="detail-extra__relation-grid">
+          <div className="detail-extra__relation-chain" aria-label="Franchise chain">
+            <p className="detail-extra__chain-label">Franchise chain</p>
             {relationItems.map((relation) => {
               const entries = Array.isArray(relation.entry) ? relation.entry : [];
 
               return (
-                <article key={relation.relation} className="detail-extra__relation-card">
-                  <h3>{relation.relation || "Related"}</h3>
-                  <div className="detail-extra__links">
-                    {entries.map((entry) => {
-                      const isInternal = entry.type === "anime" || entry.type === "manga";
-                      const target = isInternal ? `/${entry.type}/${entry.mal_id}` : entry.url;
+                <article key={relation.relation} className="detail-extra__relation-step">
+                  <div className="detail-extra__relation-marker" aria-hidden="true" />
+                  <div className="detail-extra__relation-card">
+                    <h3>{relation.relation || "Related"}</h3>
+                    <div className="detail-extra__links">
+                      {entries.map((entry) => {
+                        const isInternal = entry.type === "anime" || entry.type === "manga";
+                        const target = isInternal ? `/${entry.type}/${entry.mal_id}` : entry.url;
 
-                      return isInternal ? (
-                        <Link key={`${entry.type}-${entry.mal_id}-${entry.name}`} to={target}>
-                          {entry.name || "Untitled relation"}
-                        </Link>
-                      ) : (
-                        <a key={`${entry.type}-${entry.mal_id}-${entry.name}`} href={target} target="_blank" rel="noreferrer">
-                          {entry.name || "Untitled relation"}
-                        </a>
-                      );
-                    })}
+                        return isInternal ? (
+                          <Link key={`${entry.type}-${entry.mal_id}-${entry.name}`} to={target}>
+                            {entry.name || "Untitled relation"}
+                          </Link>
+                        ) : (
+                          <a key={`${entry.type}-${entry.mal_id}-${entry.name}`} href={target} target="_blank" rel="noreferrer">
+                            {entry.name || "Untitled relation"}
+                          </a>
+                        );
+                      })}
+                    </div>
                   </div>
                 </article>
               );

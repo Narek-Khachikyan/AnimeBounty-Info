@@ -1,0 +1,175 @@
+.character-page {
+  padding: clamp(28px, 5vw, 56px) 0 64px;
+}
+
+.character-page__hero,
+.character-page__section {
+  background: rgba(28, 26, 23, 0.72);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  margin-top: 24px;
+  padding: clamp(18px, 3vw, 30px);
+}
+
+.character-page__hero {
+  display: grid;
+  gap: clamp(20px, 4vw, 36px);
+  grid-template-columns: minmax(180px, 280px) minmax(0, 1fr);
+  margin-top: 0;
+}
+
+.character-page__portrait {
+  align-items: center;
+  aspect-ratio: 3 / 4;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  color: var(--text-subtle);
+  display: flex;
+  font-weight: 850;
+  justify-content: center;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+.character-page__portrait img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.character-page__intro {
+  align-self: center;
+  min-width: 0;
+}
+
+.character-page__intro h1 {
+  color: var(--text-primary);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 950;
+  line-height: 1;
+  margin-top: 8px;
+}
+
+.character-page__kanji {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-top: 10px;
+}
+
+.character-page__meta {
+  align-items: center;
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 18px;
+}
+
+.character-page__meta span,
+.character-page__appearance-copy span {
+  color: var(--text-subtle);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.character-page__meta strong {
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
+.character-page__nicknames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.character-page__nicknames span {
+  background: rgba(134, 215, 198, 0.1);
+  border: 1px solid rgba(134, 215, 198, 0.36);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-weight: 800;
+  padding: 7px 10px;
+}
+
+.character-page__section-header {
+  margin-bottom: 16px;
+}
+
+.character-page__biography {
+  color: var(--text-muted);
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+.character-page__appearance-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.character-page__appearance-card {
+  align-items: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 42%), var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 74px minmax(0, 1fr);
+  min-height: 104px;
+  padding: 12px;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.character-page__appearance-card:hover {
+  background: rgba(134, 215, 198, 0.1);
+  border-color: rgba(134, 215, 198, 0.48);
+  transform: translateY(-1px);
+}
+
+.character-page__appearance-media {
+  align-items: center;
+  aspect-ratio: 3 / 4;
+  background: var(--surface-strong);
+  border-radius: var(--radius);
+  color: var(--text-subtle);
+  display: flex;
+  font-size: 0.72rem;
+  font-weight: 900;
+  justify-content: center;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+.character-page__appearance-media img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.character-page__appearance-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.character-page__appearance-copy strong {
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+@media (max-width: 820px) {
+  .character-page__hero,
+  .character-page__appearance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .character-page__portrait {
+    max-width: 280px;
+  }
+}

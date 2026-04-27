@@ -2,6 +2,7 @@ import './App.scss';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import FullAnime from './components/FullAnime/FullAnime';
+import CharacterPage from './components/CharacterPage/CharacterPage';
 import Anime from './Page/Anime';
 import Manga from './Page/Manga';
 import FullManga from './components/FullManga/FullManga';
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/" element={<GeneralPage />} />
           <Route path="/anime" element={<Anime />} />
           <Route path="/anime/:id" element={<FullAnime />} />
+          <Route path="/character/:id" element={<CharacterPage />} />
           <Route path="/manga" element={<Manga />} />
           <Route path="/manga/:id" element={<FullManga />} />
           <Route path="/library" element={<Library />} />
