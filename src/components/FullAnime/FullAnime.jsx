@@ -8,7 +8,6 @@ import ReviewCard from "../ReviewCard/ReviewCard";
 import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
 import {
-  CharacterProfilePanel,
   RelationsPanel,
   StreamingPanel,
   VideosPanel,
@@ -26,7 +25,6 @@ import {
   useLazyGetAnimeCharactersQuery,
   useLazyGetAnimeStreamingQuery,
   useLazyGetAnimeVideosQuery,
-  useLazyGetCharacterFullQuery,
   useLazyGetAnimeReviewsQuery,
 } from "../../features/apiSlice";
 
@@ -60,7 +58,6 @@ const FullAnime = () => {
   const [isActiveRelations, setIsActiveRelations] = useState(false)
   const [isActiveStreaming, setIsActiveStreaming] = useState(false)
   const [isActiveVideos, setIsActiveVideos] = useState(false)
-  const [selectedCharacter, setSelectedCharacter] = useState(null)
   const {
     data: fullAnimeData,
     isLoading: fullAnimeLoading,
@@ -121,15 +118,6 @@ const FullAnime = () => {
       isError: animeVideosError,
     },
   ] = useLazyGetAnimeVideosQuery()
-  const [
-    triggerCharacterFull,
-    {
-      data: characterFull,
-      isLoading: characterFullLoading,
-      isFetching: characterFullFetching,
-      isError: characterFullError,
-    },
-  ] = useLazyGetCharacterFullQuery()
   const [
     triggerAnimeReviews,
     {
@@ -204,20 +192,6 @@ const FullAnime = () => {
       triggerAnimeVideos(id, true);
     }
   };
-  const handleShowCharacterProfile = (character) => {
-    const characterId = character?.mal_id;
-
-    if (!characterId) {
-      return;
-    }
-
-    setSelectedCharacter({
-      id: characterId,
-      name: character?.name || "Unknown",
-    });
-    triggerCharacterFull(characterId, true);
-  };
-
   return (
     <div className="fullAnime__wrapper pb-10">
       <div className="container">
@@ -385,27 +359,22 @@ const FullAnime = () => {
                           {voiceActors.slice(0, 2).map(actor => (
                             <p key={actor.person?.mal_id || `${actor.language}-${actor.person?.name}`}>{actor.language || "Unknown"} : <b>{actor.person?.name || "Unknown"}</b></p>
                           ))}
-                          <button
-                            type="button"
-                            className="character-profile-button"
-                            onClick={() => handleShowCharacterProfile(character)}
-                          >
-                            Open profile for {characterName}
-                          </button>
+                          {character?.mal_id ? (
+                            <Link
+                              className="character-profile-button"
+                              to={`/character/${character.mal_id}`}
+                            >
+                              Open profile for {characterName}
+                            </Link>
+                          ) : (
+                            <p className="detail-empty">Character profile is not available.</p>
+                          )}
                         </div>
                       </div>
                     );
                   })}
                 </div>
               ) : isActiveCharacters ? <p>There are currently no characters for this anime.</p> : null}
-              <CharacterProfilePanel
-                characterName={selectedCharacter?.name}
-                data={characterFull}
-                isError={characterFullError}
-                isFetching={characterFullFetching}
-                isLoading={characterFullLoading}
-                onRetry={() => triggerCharacterFull(selectedCharacter?.id, false)}
-              />
             </div>
             <div className="reviews mt-5">
               <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowAnimeReviews}>Read community reviews</button>

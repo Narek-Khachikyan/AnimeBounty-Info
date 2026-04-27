@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "./FullManga.scss";
@@ -9,7 +9,6 @@ import LazyLoading from "../LazyLoading/LazyLoading";
 import ErrorState from "../ErrorState/ErrorState";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import {
-  CharacterProfilePanel,
   RelationsPanel,
 } from "../JikanDetailExtras/JikanDetailExtras";
 import LibraryControls from "../LibraryControls/LibraryControls";
@@ -20,7 +19,6 @@ import {
   useGetMangaPicturesQuery,
   useLazyGetMangaCharactersQuery,
   useLazyGetMangaRelationsQuery,
-  useLazyGetCharacterFullQuery,
   useLazyGetMangaReviewsQuery,
 } from "../../features/apiSlice";
 
@@ -51,7 +49,6 @@ const FullManga = () => {
   const [isActiveCharacters, setIsActiveCharacters] = useState(false);
   const [isActiveReviews, setIsActiveReviews] = useState(false)
   const [isActiveRelations, setIsActiveRelations] = useState(false)
-  const [selectedCharacter, setSelectedCharacter] = useState(null)
   const { id } = useParams();
 
   const {
@@ -89,15 +86,6 @@ const FullManga = () => {
       isError: mangaRelationsError,
     },
   ] = useLazyGetMangaRelationsQuery()
-  const [
-    triggerCharacterFull,
-    {
-      data: characterFull,
-      isLoading: characterFullLoading,
-      isFetching: characterFullFetching,
-      isError: characterFullError,
-    },
-  ] = useLazyGetCharacterFullQuery()
   const [
     triggerMangaReviews,
     {
@@ -153,20 +141,6 @@ const FullManga = () => {
       triggerMangaRelations(id, true);
     }
   };
-  const handleShowCharacterProfile = (character) => {
-    const characterId = character?.mal_id;
-
-    if (!characterId) {
-      return;
-    }
-
-    setSelectedCharacter({
-      id: characterId,
-      name: character?.name || "Unknown",
-    });
-    triggerCharacterFull(characterId, true);
-  };
-
   return (
     <div className="fullManga__wrapper pb-10">
       {fullMangaLoading ? (
@@ -268,27 +242,22 @@ const FullManga = () => {
                       <div className="mangaCharacters__card-textWrapepr p-2">
                         <p className="mangaCharacters__card-text">Name : <b>{characterName}</b></p>
                         <p className="mangaCharacters__card-subText">Role: <b>{obj.role || "Unknown"}</b></p>
-                        <button
-                          type="button"
-                          className="character-profile-button"
-                          onClick={() => handleShowCharacterProfile(character)}
-                        >
-                          Open profile for {characterName}
-                        </button>
+                        {character?.mal_id ? (
+                          <Link
+                            className="character-profile-button"
+                            to={`/character/${character.mal_id}`}
+                          >
+                            Open profile for {characterName}
+                          </Link>
+                        ) : (
+                          <p className="detail-empty">Character profile is not available.</p>
+                        )}
                       </div>
                     </div>
                   );
                 })}
               </div>
             ) : isActiveCharacters ? <p>There are currently no characters for this manga.</p> : null}
-            <CharacterProfilePanel
-              characterName={selectedCharacter?.name}
-              data={characterFull}
-              isError={characterFullError}
-              isFetching={characterFullFetching}
-              isLoading={characterFullLoading}
-              onRetry={() => triggerCharacterFull(selectedCharacter?.id, false)}
-            />
           </div>
           <div className="reviews mt-5">
             <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowMangaReviews}>Read community reviews</button>

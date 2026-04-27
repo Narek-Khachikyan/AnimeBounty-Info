@@ -136,7 +136,7 @@ export const fetchDataApi = createApi({
       query: (id) => `/manga/${id}/relations`,
     }),
     getCharacterFull: builder.query({
-      query: (id) => `/characters/${id}`,
+      query: (id) => `/characters/${id}/full`,
     }),
 
   })
@@ -183,5 +183,6 @@ export const {
   useLazyGetAnimeStreamingQuery,
   useLazyGetAnimeVideosQuery,
   useLazyGetMangaRelationsQuery,
+  useGetCharacterFullQuery,
   useLazyGetCharacterFullQuery,
 } = fetchDataApi;

@@ -93,6 +93,10 @@ const routeJikan = async (page) => {
       body = {
         data: [
           {
+            relation: 'Prequel',
+            entry: [{ mal_id: 8, type: 'anime', name: 'Relation Prequel Fixture', url: 'https://myanimelist.net/anime/8' }],
+          },
+          {
             relation: 'Sequel',
             entry: [{ mal_id: 9, type: 'anime', name: 'Relation Anime Fixture', url: 'https://myanimelist.net/anime/9' }],
           },
@@ -148,7 +152,7 @@ const routeJikan = async (page) => {
           },
         ],
       };
-    } else if (pathname === '/v4/characters/777') {
+    } else if (pathname === '/v4/characters/777/full') {
       body = {
         data: {
           mal_id: 777,
@@ -156,7 +160,29 @@ const routeJikan = async (page) => {
           name_kanji: 'プロフィール',
           favorites: 1234,
           about: 'A short mocked character biography.',
-          images: { webp: {} },
+          images: { webp: { image_url: 'https://example.com/profile-character.webp' } },
+          anime: [
+            {
+              role: 'Main',
+              anime: {
+                mal_id: 1,
+                title: 'Character Anime Fixture',
+                url: 'https://myanimelist.net/anime/1',
+                images: { webp: {} },
+              },
+            },
+          ],
+          manga: [
+            {
+              role: 'Supporting',
+              manga: {
+                mal_id: 2,
+                title: 'Character Manga Fixture',
+                url: 'https://myanimelist.net/manga/2',
+                images: { webp: {} },
+              },
+            },
+          ],
         },
       };
     }
@@ -199,6 +225,9 @@ test('anime details expose relations, streaming, videos, and character profile o
   await page.goto('/anime/1');
 
   await page.getByRole('button', { name: 'Explore relations' }).click();
+  await expect(page.getByText('Franchise chain')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Prequel' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Relation Prequel Fixture' })).toHaveAttribute('href', '/anime/8');
   await expect(page.getByText('Relation Anime Fixture')).toBeVisible();
 
   await page.getByRole('button', { name: 'Find streams' }).click();
@@ -208,8 +237,8 @@ test('anime details expose relations, streaming, videos, and character profile o
   await expect(page.getByRole('link', { name: 'Promo Fixture' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Browse character list' }).click();
-  await page.getByRole('button', { name: 'Open profile for Profile Character' }).click();
-  await expect(page.getByRole('heading', { name: 'Profile Character' })).toBeVisible();
+  await page.getByRole('link', { name: 'Open profile for Profile Character' }).click();
+  await expect(page).toHaveURL(/\/character\/777$/);
   await expect(page.getByText('A short mocked character biography.')).toBeVisible();
 });
 
@@ -217,9 +246,47 @@ test('manga details expose relations and character profile on demand', async ({ 
   await page.goto('/manga/2');
 
   await page.getByRole('button', { name: 'Explore relations' }).click();
+  await expect(page.getByText('Franchise chain')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Adaptation' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Manga Relation Anime' })).toHaveAttribute('href', '/anime/1');
   await expect(page.getByText('Manga Relation Anime')).toBeVisible();
 
   await page.getByRole('button', { name: 'Browse character list' }).click();
-  await page.getByRole('button', { name: 'Open profile for Profile Character' }).click();
+  await page.getByRole('link', { name: 'Open profile for Profile Character' }).click();
+  await expect(page).toHaveURL(/\/character\/777$/);
   await expect(page.getByRole('heading', { name: 'Profile Character' })).toBeVisible();
+});
+
+test('character page shows biography and anime and manga appearances', async ({ page }) => {
+  await page.goto('/character/777');
+
+  await expect(page.getByRole('heading', { name: 'Profile Character' })).toBeVisible();
+  await expect(page.getByText('プロフィール')).toBeVisible();
+  await expect(page.getByText('A short mocked character biography.')).toBeVisible();
+  await expect(page.getByRole('link', { name: /Character Anime Fixture/ })).toHaveAttribute('href', '/anime/1');
+  await expect(page.getByRole('link', { name: /Character Manga Fixture/ })).toHaveAttribute('href', '/manga/2');
+});
+
+test('character page tolerates missing nested fields', async ({ page }) => {
+  await page.route('https://api.jikan.moe/v4/characters/999/full', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        data: {
+          mal_id: 999,
+          name: 'Sparse Character Fixture',
+          images: {},
+          anime: null,
+          manga: null,
+        },
+      }),
+    });
+  });
+
+  await page.goto('/character/999');
+
+  await expect(page.getByRole('heading', { name: 'Sparse Character Fixture' })).toBeVisible();
+  await expect(page.getByText('No character biography is available yet.')).toBeVisible();
+  await expect(page.getByText('No anime appearances are listed yet.')).toBeVisible();
+  await expect(page.getByText('No manga appearances are listed yet.')).toBeVisible();
 });
