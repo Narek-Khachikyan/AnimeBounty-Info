@@ -11,6 +11,7 @@ const Header = () => {
   const navItems = [
     { to: "/anime", label: "Anime" },
     { to: "/manga", label: "Manga" },
+    { to: "/library", label: "Library" },
     { to: "/about", label: "About" },
   ];
 

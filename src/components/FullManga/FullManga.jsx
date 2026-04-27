@@ -12,6 +12,7 @@ import {
   CharacterProfilePanel,
   RelationsPanel,
 } from "../JikanDetailExtras/JikanDetailExtras";
+import LibraryControls from "../LibraryControls/LibraryControls";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -197,6 +198,7 @@ const FullManga = () => {
                   ))) : <b>Unknown</b>
                 }
               </div>
+              <LibraryControls item={manga} type="manga" />
             </div>
           </div>
           <div data-aos="fade-up" className="fullManga__descr mt-3">
