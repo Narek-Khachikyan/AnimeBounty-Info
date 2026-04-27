@@ -13,6 +13,7 @@ import {
   StreamingPanel,
   VideosPanel,
 } from "../JikanDetailExtras/JikanDetailExtras";
+import LibraryControls from "../LibraryControls/LibraryControls";
 import playButton from "../../assets/images/playButton.svg";
 import "./FullAnime.scss";
 import AOS from "aos";
@@ -247,6 +248,7 @@ const FullAnime = () => {
                     {studios.length > 0 ? studios.map(studio => <span key={studio.mal_id}>{studio.name}</span>) : "Unknown"}
                   </b>
                 </p>
+                <LibraryControls item={anime} type="anime" />
               </div>
             </div>
             <div className="images" data-aos="fade-up">

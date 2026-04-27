@@ -7,12 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "harness:check": "node scripts/verify-harness-docs.mjs",
+    "library:check": "node scripts/verify-user-library.mjs",
     "pwa:check": "node scripts/verify-pwa.mjs",
     "pwa:dist-check": "node scripts/verify-pwa-dist.mjs",
     "pwa:e2e": "playwright test",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "verify": "npm run harness:check && npm run pwa:check && npm run lint && npm run build && npm run pwa:dist-check && npm run pwa:e2e"
+    "verify": "npm run harness:check && npm run library:check && npm run pwa:check && npm run lint && npm run build && npm run pwa:dist-check && npm run pwa:e2e"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
