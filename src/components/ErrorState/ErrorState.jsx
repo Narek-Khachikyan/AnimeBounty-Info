@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 
-const ErrorState = ({ message, onRetry, isRetrying = false }) => {
+const ErrorState = ({ message, onRetry, isRetrying = false, role }) => {
   return (
-    <div className="error-state text-center py-8">
+    <div className="error-state text-center py-8" role={role}>
       <p className="error-state__eyebrow">Shelf unavailable</p>
       <p className="error-state__message mb-4">{message}</p>
       {onRetry ? (
@@ -23,6 +23,7 @@ ErrorState.propTypes = {
   message: PropTypes.string.isRequired,
   onRetry: PropTypes.func,
   isRetrying: PropTypes.bool,
+  role: PropTypes.string,
 };
 
 export default ErrorState;

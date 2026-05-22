@@ -7,6 +7,7 @@ import './layout.scss'
 const MainLayout = () => {
   return (
     <div className='Wrapper'>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Header />
       <ServiceWorkerUpdateNotice />
       <OfflineNotice />

@@ -92,7 +92,7 @@ const CharacterPage = () => {
 
   if (isLoading) {
     return (
-      <main className="character-page">
+      <main className="character-page" id="main-content">
         <div className="container">
           <LazyLoading message="Loading character profile..." count={6} />
         </div>
@@ -102,12 +102,13 @@ const CharacterPage = () => {
 
   if (isError) {
     return (
-      <main className="character-page">
+      <main className="character-page" id="main-content">
         <div className="container">
           <ErrorState
             message="Character profile could not be loaded."
             onRetry={refetch}
             isRetrying={isFetching}
+            role="alert"
           />
         </div>
       </main>
@@ -116,7 +117,7 @@ const CharacterPage = () => {
 
   if (!character) {
     return (
-      <main className="character-page">
+      <main className="character-page" id="main-content">
         <div className="container">
           <ErrorState message="Character profile is empty." />
         </div>
@@ -129,7 +130,7 @@ const CharacterPage = () => {
   const nicknames = Array.isArray(character.nicknames) ? character.nicknames : [];
 
   return (
-    <main className="character-page">
+    <main className="character-page" id="main-content">
       <div className="container">
         <section className="character-page__hero">
           <div className="character-page__portrait">

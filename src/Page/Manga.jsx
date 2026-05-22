@@ -32,7 +32,7 @@ const Manga = () => {
   }, []);
 
   return (
-    <>
+    <main className="manga-page" id="main-content">
       <MangaSearch
         sortBy={sortBy}
         orderBy={orderBy}
@@ -45,6 +45,7 @@ const Manga = () => {
           message="Top manga could not be loaded."
           onRetry={refetchTopManga}
           isRetrying={topMangaFetching}
+          role="alert"
         />
       ) : <TopManga data={topManga?.data ?? []} />}
       {recomendationMangaLoading ? <LazyLoading message="Loading manga recommendations..." count={10} /> : recomendationMangaError ? (
@@ -52,9 +53,10 @@ const Manga = () => {
           message="Manga recommendations could not be loaded."
           onRetry={refetchRecomendationManga}
           isRetrying={recomendationMangaFetching}
+          role="alert"
         />
       ) : <RecomendationsManga data={recomendationManga?.data ?? []} />}
-    </>
+    </main>
   );
 }
 

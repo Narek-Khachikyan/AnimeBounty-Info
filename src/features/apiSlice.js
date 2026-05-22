@@ -171,6 +171,8 @@ export const {
 
   useGetAnimeSearchQuery,
   useGetMangaSearchQuery,
+  useLazyGetAnimeSearchQuery,
+  useLazyGetMangaSearchQuery,
 
   useLazyGetSeasonNowQuery,
   useLazyGetSeasonUpcomingQuery,

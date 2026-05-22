@@ -30,11 +30,12 @@ const routeJikan = async (page) => {
     } else if (pathname === '/v4/recommendations/anime') {
       body = { data: [{ entry: [animeItem(11, 'Recommended Anime Fixture')] }] };
     } else if (pathname === '/v4/anime') {
+      const query = searchParams.get('q');
       body = {
         data: [
           animeItem(
             searchParams.get('genres') === '2' ? 12 : 13,
-            searchParams.get('genres') === '2' ? 'Adventure Anime Pick' : 'Search Anime Fixture'
+            searchParams.get('genres') === '2' ? 'Adventure Anime Pick' : query ? `Anime query: ${query}` : 'Search Anime Fixture'
           ),
         ],
       };
@@ -51,11 +52,12 @@ const routeJikan = async (page) => {
     } else if (pathname === '/v4/recommendations/manga') {
       body = { data: [{ entry: [mangaItem(21, 'Recommended Manga Fixture')] }] };
     } else if (pathname === '/v4/manga') {
+      const query = searchParams.get('q');
       body = {
         data: [
           mangaItem(
             searchParams.get('genres') === '8' ? 22 : 23,
-            searchParams.get('genres') === '8' ? 'Drama Manga Pick' : 'Search Manga Fixture'
+            searchParams.get('genres') === '8' ? 'Drama Manga Pick' : query ? `Manga query: ${query}` : 'Search Manga Fixture'
           ),
         ],
       };
@@ -214,11 +216,25 @@ test('anime page lazy-loads seasonal spotlight and filters search by genre', asy
   await expect(page.getByText('Adventure Anime Pick')).toBeVisible();
 });
 
+test('anime page consumes the q query parameter for search', async ({ page }) => {
+  await page.goto('/anime?q=Samurai%20Champloo');
+
+  await expect(page.getByPlaceholder('Search anime...')).toHaveValue('Samurai Champloo');
+  await expect(page.getByText('Anime query: Samurai Champloo')).toBeVisible();
+});
+
 test('manga page filters search by manga genre', async ({ page }) => {
   await page.goto('/manga');
 
   await page.getByRole('button', { name: 'Drama' }).click();
   await expect(page.getByText('Drama Manga Pick')).toBeVisible();
+});
+
+test('manga page consumes the q query parameter for search', async ({ page }) => {
+  await page.goto('/manga?q=Berserk');
+
+  await expect(page.getByPlaceholder('Search manga...')).toHaveValue('Berserk');
+  await expect(page.getByText('Manga query: Berserk')).toBeVisible();
 });
 
 test('anime details expose relations, streaming, videos, and character profile on demand', async ({ page }) => {

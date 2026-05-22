@@ -147,6 +147,7 @@ const SeasonalSpotlight = () => {
               message="Seasonal anime could not be loaded."
               onRetry={activeState.retry}
               isRetrying={activeState.isFetching}
+              role="alert"
             />
           ) : (
             <SeasonalGrid items={items} />

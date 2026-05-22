@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useGetAnimeGenresQuery, useGetAnimeSearchQuery } from "../../features/apiSlice";
 import Filter from "../Filter/Filter";
@@ -13,7 +13,9 @@ import "./animeSearch.scss";
 import useDebounce from "../../hooks/useDebounce";
 
 const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true }) => {
-  const [query, setQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const queryParam = searchParams.get("q") || "";
+  const [query, setQuery] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
   const debouncedQuery = useDebounce(query, 500);
   const {
@@ -31,7 +33,9 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
   } = useGetAnimeGenresQuery();
   const animeSearchItems = animeSearch?.data ?? [];
 
-
+  useEffect(() => {
+    setQuery(queryParam);
+  }, [queryParam]);
 
   return (
     <section id="anime" className="animeSearch catalogue-search">
@@ -48,7 +52,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
               <a className="media-toggle__item" href="#manga">Manga</a>
             </div>
           ) : null}
-          <input className="searchInput" placeholder="Search anime..." type="text" value={query} onChange={event => setQuery(event.target.value)} />
+          <input className="searchInput" placeholder="Search anime..." aria-label="Search anime" type="text" value={query} onChange={event => setQuery(event.target.value)} />
         </div>
       </div>
       <div className="filter search-filters">
@@ -86,6 +90,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
             message="Anime search could not be loaded."
             onRetry={refetch}
             isRetrying={isFetching}
+            role="alert"
           />
         ) : (
           animeSearchItems.map(obj => (

@@ -37,7 +37,7 @@ const Anime = () => {
   }, []);
 
   return (
-    <>
+    <main className="anime-page" id="main-content">
       <AnimeSearch
         sortBy={sortBy}
         setOrderBy={setOrderBy}
@@ -55,6 +55,7 @@ const Anime = () => {
           message="Top anime could not be loaded."
           onRetry={refetchTopAnime}
           isRetrying={topAnimeFetching}
+          role="alert"
         />
       ) : <TopAnimeSlider data={topAnime?.data ?? []} />}
       {recomendationAnimeLoading ? (
@@ -64,10 +65,11 @@ const Anime = () => {
           message="Anime recommendations could not be loaded."
           onRetry={refetchRecomendationAnime}
           isRetrying={recomendationAnimeFetching}
+          role="alert"
         />
       ) : <RecomendationsAnime data={recomendationAnime?.data ?? []} />}
 
-    </>
+    </main>
   )
 }
 

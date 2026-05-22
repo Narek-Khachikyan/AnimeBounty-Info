@@ -23,3 +23,10 @@ test-results
 *.njsproj
 *.sln
 *.sw?
+
+.agents/*
+.env
+deno.lock
+skills-lock.json
+# Local Netlify folder
+.netlify

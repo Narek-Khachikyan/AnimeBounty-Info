@@ -2,7 +2,7 @@ import "./About.scss";
 
 const About = () => {
   return (
-    <main className="about-page">
+    <main className="about-page" id="main-content">
       <section className="about-hero">
         <p className="section-kicker">About AnimeBounty-Info</p>
         <h1>A quieter way to browse anime and manga.</h1>

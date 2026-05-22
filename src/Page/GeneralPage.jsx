@@ -14,7 +14,7 @@ const GeneralPage = () => {
 
   return (
 
-    <div className='genralWrapper' >
+    <main className='genralWrapper' id="main-content">
       <AnimeSearch
         sortBy={sortBy}
         query={query}
@@ -30,7 +30,7 @@ const GeneralPage = () => {
         orderBy={orderBy}
         setOrderBy={setOrderBy}
         setSortBy={setSortBy} />
-    </div>
+    </main>
   );
 }
 

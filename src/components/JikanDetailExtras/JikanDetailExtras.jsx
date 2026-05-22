@@ -46,7 +46,7 @@ export const RelationsPanel = ({ isActive, isError, isFetching, isLoading, items
         isLoading || isFetching ? (
           <LazyLoading message="Loading relations..." count={4} />
         ) : isError ? (
-          <ErrorState message="Relations could not be loaded." onRetry={onRetry} isRetrying={isFetching} />
+          <ErrorState message="Relations could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
         ) : relationItems.length > 0 ? (
           <div className="detail-extra__relation-chain" aria-label="Franchise chain">
             <p className="detail-extra__chain-label">Franchise chain</p>
@@ -107,7 +107,7 @@ export const StreamingPanel = ({ isActive, isError, isFetching, isLoading, items
         isLoading || isFetching ? (
           <LazyLoading message="Loading streaming providers..." count={3} />
         ) : isError ? (
-          <ErrorState message="Streaming links could not be loaded." onRetry={onRetry} isRetrying={isFetching} />
+          <ErrorState message="Streaming links could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
         ) : streamingItems.length > 0 ? (
           <div className="detail-extra__pill-grid">
             {streamingItems.map((item) => (
@@ -144,7 +144,7 @@ export const VideosPanel = ({ isActive, isError, isFetching, isLoading, items, o
         isLoading || isFetching ? (
           <LazyLoading message="Loading videos..." count={3} />
         ) : isError ? (
-          <ErrorState message="Videos could not be loaded." onRetry={onRetry} isRetrying={isFetching} />
+          <ErrorState message="Videos could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
         ) : videoItems.length > 0 ? (
           <div className="detail-extra__video-grid">
             {videoItems.map((item) => {
@@ -180,7 +180,7 @@ export const CharacterProfilePanel = ({ characterName, data, isError, isFetching
       {isLoading || isFetching ? (
         <LazyLoading message="Loading character profile..." count={2} />
       ) : isError ? (
-        <ErrorState message="Character profile could not be loaded." onRetry={onRetry} isRetrying={isFetching} />
+        <ErrorState message="Character profile could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
       ) : character ? (
         <>
           <div className="character-profile__media">

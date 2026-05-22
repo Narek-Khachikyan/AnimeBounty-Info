@@ -9,22 +9,22 @@ const TopMangaCard = ({ mal_id, images, title_english, title: originalTitle, cha
   return (
     <div className="slide">
       <div className="slide__content p-3 pb-0">
-        <div className="slide__img">
-          <Link to={`${mal_id}`}>
-            {imageUrl ? <img src={imageUrl} alt={title} /> : null}
+        <Link to={`/manga/${mal_id}`} className="slide__link">
+          <div className="slide__img">
+            {imageUrl ? <img src={imageUrl} alt="" /> : null}
             {score ? (
               <p className="slide__score text-base bg-white text-black px-2 px1">
                 {score}
               </p>
             ) : null}
-          </Link>
-        </div>
-        <div className="slide__textWrapper p-1">
-          <p className="slide__text text-base my-1">
-            {title.length > 20 ? `${title.slice(0, 21)}...` : title}
-          </p>
-          <p className="slide__chapters">Chapters: {chapters || "Unknown"}</p>
-        </div>
+          </div>
+          <div className="slide__textWrapper p-1">
+            <p className="slide__text text-base my-1">
+              {title.length > 20 ? `${title.slice(0, 21)}...` : title}
+            </p>
+            <p className="slide__chapters">Chapters: {chapters || "Unknown"}</p>
+          </div>
+        </Link>
       </div>
     </div>
   )

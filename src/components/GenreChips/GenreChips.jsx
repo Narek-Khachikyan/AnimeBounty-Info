@@ -12,6 +12,7 @@ const GenreChips = ({ genres, isError, isFetching, onRetry, selectedGenreId, onS
           message={`${title} genres could not be loaded.`}
           onRetry={onRetry}
           isRetrying={isFetching}
+          role="alert"
         />
       </div>
     );

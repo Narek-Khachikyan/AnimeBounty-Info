@@ -117,3 +117,5 @@
 3. Переписать сборку query-параметров через `URLSearchParams`.
 4. Обновить уязвимые зависимости.
 5. Очистить GitHub Pages-наследие и зафиксировать Netlify-конфигурацию.
+
+- AI recommendations must preserve the existing Jikan stability rules: guarded data rendering, visible error states, URLSearchParams/encoded search links, and no client-side API secrets.

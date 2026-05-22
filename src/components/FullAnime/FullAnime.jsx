@@ -193,7 +193,7 @@ const FullAnime = () => {
     }
   };
   return (
-    <div className="fullAnime__wrapper pb-10">
+    <main className="fullAnime__wrapper pb-10" id="main-content">
       <div className="container">
         {fullAnimeLoading ? (
           <LazyLoading message="Loading anime details..." count={6} />
@@ -202,6 +202,7 @@ const FullAnime = () => {
             message="Anime details could not be loaded."
             onRetry={refetchFullAnime}
             isRetrying={fullAnimeFetching}
+            role="alert"
           />
         ) : anime ? (
           <>
@@ -233,6 +234,7 @@ const FullAnime = () => {
                     message="Anime images could not be loaded."
                     onRetry={refetchAnimePictures}
                     isRetrying={animePicturesFetching}
+                    role="alert"
                   />
                 ) : pictures.length > 0 ? (
                   <Swiper
@@ -308,27 +310,32 @@ const FullAnime = () => {
                   message="Anime episodes could not be loaded."
                   onRetry={refetchAnimeEpisodes}
                   isRetrying={animeEpisodesFetching}
+                  role="alert"
                 />
               ) : episodes.length > 0 ? (
                 <div className="episodes__content">
-                  <ol className="episode__name">
-                    <h3 className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Episode name</h3>
+                  <div className="episodes__list-header text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl font-bold">
+                    <span>Episode name</span>
+                    <span className="justify-self-end text-right">Episode Score</span>
+                  </div>
+                  <ol className="episodes__list">
                     {episodes.map((episode) => (
-                      <Link to={episode.url || "#"} key={episode.mal_id}>
-                        <li className={episode.filler ? "fillerEpisode text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl" : "canonEpisode text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl"}>
-                          {episode.title || "No title"}
-                        </li>
-                      </Link>
-                    ))}
-                  </ol>
-                  <ul className="episode__score justify-self-end">
-                    <h3 className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Episode Score</h3>
-                    {episodes.map((episode) => (
-                      <li key={episode.mal_id} className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">
-                        {episode.score ? episode.score * 2 : "Unknown"}
+                      <li key={episode.mal_id} className="episode__item text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">
+                        {episode.url ? (
+                          <a href={episode.url} target="_blank" rel="noreferrer" className={episode.filler ? "fillerEpisode" : "canonEpisode"}>
+                            {episode.title || "No title"}
+                          </a>
+                        ) : (
+                          <span className={episode.filler ? "fillerEpisode" : "canonEpisode"}>
+                            {episode.title || "No title"}
+                          </span>
+                        )}
+                        <span className="episode__score-value justify-self-end text-right">
+                          {episode.score ? episode.score * 2 : "Unknown"}
+                        </span>
                       </li>
                     ))}
-                  </ul>
+                  </ol>
                 </div>
               ) : <p>There are currently no episodes for this anime.</p>}
             </div>
@@ -340,6 +347,7 @@ const FullAnime = () => {
                   message="Anime characters could not be loaded."
                   onRetry={() => triggerAnimeCharacters(id, false)}
                   isRetrying={animeCharactersFetching}
+                  role="alert"
                 />
               ) : isActiveCharacters && characters.length > 0 ? (
                 <div className="characters__content grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-3">
@@ -383,6 +391,7 @@ const FullAnime = () => {
                   message="Anime reviews could not be loaded."
                   onRetry={() => triggerAnimeReviews(id, false)}
                   isRetrying={animeReviewsFetching}
+                  role="alert"
                 />
               ) : isActiveReviews && reviews.length > 0 ? (
                 <>
@@ -400,7 +409,7 @@ const FullAnime = () => {
           <ErrorState message="Anime details are empty." />
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

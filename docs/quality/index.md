@@ -25,6 +25,14 @@ npm audit --audit-level=high
 This is not yet included in `npm run verify` because the current dependency tree
 may still contain high or critical findings from the stabilization PRD.
 
+## AI Recommendation Quality Gates
+
+- Gemini API keys must stay server-side in Netlify environment variables.
+- Client payloads must use compact library profiles, not raw localStorage dumps.
+- AI recommendations must prioritize `completed`, `plan`, and `dropped` statuses.
+- Rate-limit, network, and invalid-response failures must render visible retryable UI states.
+- Verification must include `npm run ai:check`, `npm run lint`, and `npm run build`.
+
 ## Manual Smoke Checks
 
 After user-facing changes, start the app with:

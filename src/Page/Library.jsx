@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
+import AiRecommendations from "../components/AiRecommendations/AiRecommendations";
 import { useUserLibrary } from "../features/userLibrary";
 import "./Library.scss";
 
@@ -46,7 +47,7 @@ const Library = () => {
   ), [favoritesOnly, items, statusFilter, typeFilter]);
 
   return (
-    <main className="library-page">
+    <main className="library-page" id="main-content">
       <section className="library-hero">
         <div>
           <p className="section-kicker">Offline shelf</p>
@@ -86,6 +87,8 @@ const Library = () => {
           Favorites only
         </button>
       </section>
+
+      <AiRecommendations items={items} />
 
       {filteredItems.length > 0 ? (
         <section className="library-grid" aria-label="Saved library items">

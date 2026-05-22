@@ -48,7 +48,7 @@ const RecomendationsManga = ({ data }) => {
             const imageUrl = item.images?.webp?.image_url;
 
             return (
-            <Link key={item.mal_id} to={`${item.mal_id}`}>
+            <Link key={item.mal_id} to={`/manga/${item.mal_id}`}>
               <div className="rec__card-content p-3 pb-0">
                 {imageUrl ? (
                   <img

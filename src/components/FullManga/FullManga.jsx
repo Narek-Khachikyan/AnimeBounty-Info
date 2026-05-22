@@ -142,7 +142,7 @@ const FullManga = () => {
     }
   };
   return (
-    <div className="fullManga__wrapper pb-10">
+    <main className="fullManga__wrapper pb-10" id="main-content">
       {fullMangaLoading ? (
         <LazyLoading message="Loading manga details..." count={6} />
       ) : fullMangaError ? (
@@ -150,6 +150,7 @@ const FullManga = () => {
           message="Manga details could not be loaded."
           onRetry={refetchFullManga}
           isRetrying={fullMangaFetching}
+          role="alert"
         />
       ) : manga ? (
         <>
@@ -189,6 +190,7 @@ const FullManga = () => {
                   message="Manga images could not be loaded."
                   onRetry={refetchMangaPictures}
                   isRetrying={mangaPicturesFetching}
+                  role="alert"
                 />
               ) : pictures.length > 0 ? (
                 <Swiper
@@ -228,6 +230,7 @@ const FullManga = () => {
                 message="Manga characters could not be loaded."
                 onRetry={() => triggerMangaCharacters(id, false)}
                 isRetrying={mangaCharactersFetching}
+                role="alert"
               />
             ) : isActiveCharacters && characters.length > 0 ? (
               <div className="mangaCharacters__content  grid gap-8 sm:grid-cols-1 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-3 xl:grid-cols-5 xl:grid-rows-4">
@@ -266,6 +269,7 @@ const FullManga = () => {
                 message="Manga reviews could not be loaded."
                 onRetry={() => triggerMangaReviews(id, false)}
                 isRetrying={mangaReviewsFetching}
+                role="alert"
               />
             ) : isActiveReviews && reviews.length > 0 ? (
               <>
@@ -282,7 +286,7 @@ const FullManga = () => {
       ) : (
         <ErrorState message="Manga details are empty." />
       )}
-    </div>
+    </main>
   );
 };
 

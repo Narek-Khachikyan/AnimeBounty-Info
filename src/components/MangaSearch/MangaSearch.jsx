@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useGetMangaGenresQuery, useGetMangaSearchQuery } from "../../features/apiSlice";
 import useDebounce from "../../hooks/useDebounce";
@@ -12,7 +12,9 @@ import GenreChips from "../GenreChips/GenreChips";
 import "./mangaSearch.scss";
 
 const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true }) => {
-  const [queryManga, setQueryManga] = useState("");
+  const [searchParams] = useSearchParams();
+  const queryParam = searchParams.get("q") || "";
+  const [queryManga, setQueryManga] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
   const debouncedQuery = useDebounce(queryManga, 500);
 
@@ -31,12 +33,18 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
   } = useGetMangaGenresQuery();
   const mangaSearchItems = mangaSearch?.data ?? [];
 
+  useEffect(() => {
+    setQueryManga(queryParam);
+  }, [queryParam]);
+
+  const HeadingTag = showMediaToggle ? "h2" : "h1";
+
   return (
     <section id="manga" className="MangaSearch catalogue-search py-8">
       <div className="search-panel search-panel--manga">
         <div className="search-panel__copy">
           <p className="section-kicker">Manga catalogue</p>
-          <h2>Browse the shelf before you commit.</h2>
+          <HeadingTag>Browse the shelf before you commit.</HeadingTag>
           <p className="search-panel__subtitle">Move from popular series to quieter finds with the same simple search and sort rhythm.</p>
         </div>
         <div className="search-panel__actions">
@@ -46,7 +54,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
               <span className="media-toggle__item media-toggle__item--active">Manga</span>
             </div>
           ) : null}
-          <input className="searchInput" placeholder="Search manga..." type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
+          <input className="searchInput" placeholder="Search manga..." aria-label="Search manga" type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
         </div>
       </div>
       <div className="filter search-filters">
@@ -80,6 +88,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
             message="Manga search could not be loaded."
             onRetry={refetch}
             isRetrying={isFetching}
+            role="alert"
           />
         ) : (
           mangaSearchItems.map(obj => (

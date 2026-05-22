@@ -19,3 +19,16 @@ dependency risk.
 
 The active acceptance criteria live in `PRD.md` and are implemented through
 `docs/exec-plans/active/jikan-stability-and-quality.md`.
+
+## AI Recommendations
+
+The AI helper recommends anime and manga from the user's saved library. It uses
+`completed` as the primary positive signal, `plan` as an intent signal and
+duplicate-exclusion list, and `dropped` as the strongest negative signal. The
+client maps the stored `planning` status to the AI-facing `plan` status before
+sending the compact profile to the server-side Gemini function.
+
+The first model target is `gemini-3.1-flash-lite` because the Google Gemini model
+catalog lists it as a stable Gemini 3.1 Flash-Lite model and the Gemini Developer
+API pricing page lists its Free Tier input/output as free of charge as of
+2026-05-14.
