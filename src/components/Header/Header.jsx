@@ -1,7 +1,7 @@
 import "./header.scss";
 import githubIcon from "../../assets/images/githubicon.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const location = useLocation();
@@ -17,7 +17,7 @@ const Header = () => {
 
   const navigateToHome = () => {
     navigate('/');
-    scrollTo(0, 0);
+    window.scrollTo(0, 0);
     setIsActive(false);
   };
 
@@ -26,14 +26,32 @@ const Header = () => {
     window.scrollTo(0, 0);
   };
 
+  useEffect(() => {
+    if (!isActive) return undefined;
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsActive(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isActive]);
+
   return (
     <div className="header">
       <div className="header__container">
         <div className="header__content py-2">
-          <button onClick={() => navigateToHome()} className="header__logo text-xl justify-self-start content-center">
+          <button type="button" onClick={() => navigateToHome()} className="header__logo text-xl justify-self-start content-center">
             AnimeBounty-Info
           </button>
-          <nav className={isActive ? "navigation show" : "navigation justify-self-center content-center"}>
+          <nav
+            id="primary-navigation"
+            aria-label="Primary navigation"
+            className={isActive ? "navigation show" : "navigation justify-self-center content-center"}
+          >
             <ul className="navigation__list flex gap-8">
               {navItems.map((item) => (
                 <li className="navigation__list-item" key={item.to}>
@@ -41,6 +59,7 @@ const Header = () => {
                     onClick={() => scrollUp()}
                     to={item.to}
                     className={location.pathname === item.to ? "navigation__list-link header__active" : "navigation__list-link"}
+                    aria-current={location.pathname === item.to ? "page" : undefined}
                   >
                     <span>{item.label}</span>
                   </Link>
@@ -58,12 +77,13 @@ const Header = () => {
             onClick={() => setIsActive(!isActive)}
             className={isActive ? "burger burger--open" : "burger"}
             aria-label={isActive ? "Close navigation menu" : "Open navigation menu"}
+            aria-controls="primary-navigation"
             aria-expanded={isActive}
             type="button"
           >
-            <div className="burger__line"></div>
-            <div className="burger__line"></div>
-            <div className="burger__line"></div>
+            <div className="burger__line" aria-hidden="true"></div>
+            <div className="burger__line" aria-hidden="true"></div>
+            <div className="burger__line" aria-hidden="true"></div>
           </button>
         </div>
       </div>

@@ -25,6 +25,8 @@ test-results
 *.sw?
 
 .agents/*
+!.agents/skills/
+!.agents/skills/**
 .env
 deno.lock
 skills-lock.json

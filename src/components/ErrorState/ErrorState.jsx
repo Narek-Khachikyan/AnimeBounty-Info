@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 
-const ErrorState = ({ message, onRetry, isRetrying = false, role }) => {
+const ErrorState = ({ eyebrow = "Section unavailable", message, onRetry, isRetrying = false, role }) => {
   return (
     <div className="error-state text-center py-8" role={role}>
-      <p className="error-state__eyebrow">Shelf unavailable</p>
+      <p className="error-state__eyebrow">{eyebrow}</p>
       <p className="error-state__message mb-4">{message}</p>
       {onRetry ? (
         <button
@@ -20,6 +20,7 @@ const ErrorState = ({ message, onRetry, isRetrying = false, role }) => {
 };
 
 ErrorState.propTypes = {
+  eyebrow: PropTypes.string,
   message: PropTypes.string.isRequired,
   onRetry: PropTypes.func,
   isRetrying: PropTypes.bool,

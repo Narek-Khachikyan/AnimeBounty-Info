@@ -7,7 +7,7 @@ const LazyLoading = ({ count = 6, message = "Loading catalogue..." }) => {
   return (
     <div className="loader" role="status" aria-live="polite">
       <p className="loader__message">{message}</p>
-      <div className="loader__grid">
+      <div className="loader__grid" aria-hidden="true">
         {skeletons.map((item) => (
           <div className="skeleton-card" key={item}>
             <div className="skeleton-card__poster" />

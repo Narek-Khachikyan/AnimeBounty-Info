@@ -54,6 +54,8 @@ const RecomendationsAnime = ({ data }) => {
                     className="w-full rec__card-img"
                     src={imageUrl}
                     alt={title}
+                    loading="lazy"
+                    decoding="async"
                   />
                 ) : null}
                 <p className="text-base text-center my-2">

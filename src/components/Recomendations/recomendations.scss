@@ -4,7 +4,9 @@
 
 .rec__title {
   font-size: clamp(1.75rem, 3vw, 2.5rem) !important;
-  font-weight: 900;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.04em;
   line-height: 1.1;
   margin: 6px 0 0 !important;
 }
@@ -22,7 +24,7 @@
 }
 
 .rec__card-content {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 42%), var(--surface);
+  background: linear-gradient(180deg, rgba(255, 247, 232, 0.04), transparent 42%), var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   color: var(--text-primary);
@@ -32,7 +34,7 @@
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 
   &:hover {
-    border-color: rgba(217, 164, 65, 0.36);
+    border-color: rgba(255, 93, 61, 0.4);
     box-shadow: var(--shadow-lift);
     transform: translateY(-3px);
 
@@ -42,7 +44,8 @@
   }
 
   p {
-    font-weight: 800;
-    line-height: 1.35;
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.28;
   }
 }

@@ -10,7 +10,7 @@ const MangaCard = ({ title_english, title: originalTitle, chapters, images, scor
     <article className="mangaCard">
       <div className="mangaCard__content">
         <div className="mangaCard__img">
-          {imageUrl ? <img src={imageUrl} alt={title} /> : null}
+          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : null}
           {score ? <p className="mangaCard__score">{score}</p> : null}
         </div>
         <div className="card__textWrapper">

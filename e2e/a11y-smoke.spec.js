@@ -128,6 +128,24 @@ test.describe('Accessibility Smoke Tests', () => {
     await expect(page).toHaveURL(/.*#main-content/);
   });
 
+  test('primary navigation exposes current page and mobile menu state', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/anime');
+
+    const primaryNavigation = page.getByRole('navigation', { name: 'Primary navigation' });
+    await expect(primaryNavigation.getByRole('link', { name: 'Anime', exact: true })).toHaveAttribute('aria-current', 'page');
+
+    const menuButton = page.getByRole('button', { name: 'Open navigation menu' });
+    await expect(menuButton).toHaveAttribute('aria-controls', 'primary-navigation');
+    await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+    await menuButton.click();
+    await expect(page.getByRole('button', { name: 'Close navigation menu' })).toHaveAttribute('aria-expanded', 'true');
+
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('button', { name: 'Open navigation menu' })).toHaveAttribute('aria-expanded', 'false');
+  });
+
   const routes = [
     { name: 'Home', path: '/' },
     { name: 'Anime list', path: '/anime' },

@@ -10,7 +10,7 @@ const AnimeCard = ({ title_english, title: originalTitle, images, score, episode
     <article className="card">
       <div className="card__content">
         <div className="card__img">
-          {imageUrl ? <img src={imageUrl} alt={title} /> : null}
+          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : null}
           {score ? <p className="card__score">{score}</p> : null}
         </div>
         <div className="card__textWrapper">

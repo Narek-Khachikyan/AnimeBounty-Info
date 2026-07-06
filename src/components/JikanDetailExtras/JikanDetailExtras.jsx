@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import ErrorState from "../ErrorState/ErrorState";
 import LazyLoading from "../LazyLoading/LazyLoading";
+import useAutoLoadOnVisible from "../../hooks/useAutoLoadOnVisible";
 import "./jikanDetailExtras.scss";
 
 const relationPriority = [
@@ -25,28 +26,27 @@ const getRelationRank = (relation) => {
 };
 
 export const RelationsPanel = ({ isActive, isError, isFetching, isLoading, items, onOpen, onRetry }) => {
+  const panelRef = useAutoLoadOnVisible({ enabled: !isActive, isLoaded: isActive, onLoad: onOpen });
   const relationItems = Array.isArray(items)
     ? [...items].sort((first, second) => getRelationRank(first.relation) - getRelationRank(second.relation))
     : [];
 
   return (
-    <section className="detail-extra" aria-labelledby="relations-title">
+    <section className="detail-extra" aria-labelledby="relations-title" ref={panelRef}>
       <div className="detail-extra__header">
         <div>
           <p className="section-kicker">Story map</p>
           <h2 id="relations-title" className="detail-section__title">Relations</h2>
         </div>
-        {!isActive ? (
-          <button type="button" className="show-btn" onClick={onOpen}>
-            Explore relations
-          </button>
-        ) : null}
+        <button type="button" className="show-btn" onClick={onOpen}>
+          Explore relations
+        </button>
       </div>
       {isActive ? (
         isLoading || isFetching ? (
           <LazyLoading message="Loading relations..." count={4} />
         ) : isError ? (
-          <ErrorState message="Relations could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
+          <ErrorState eyebrow="Relations unavailable" message="Relations could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
         ) : relationItems.length > 0 ? (
           <div className="detail-extra__relation-chain" aria-label="Franchise chain">
             <p className="detail-extra__chain-label">Franchise chain</p>
@@ -88,26 +88,25 @@ export const RelationsPanel = ({ isActive, isError, isFetching, isLoading, items
 };
 
 export const StreamingPanel = ({ isActive, isError, isFetching, isLoading, items, onOpen, onRetry }) => {
+  const panelRef = useAutoLoadOnVisible({ enabled: !isActive, isLoaded: isActive, onLoad: onOpen });
   const streamingItems = Array.isArray(items) ? items : [];
 
   return (
-    <section className="detail-extra" aria-labelledby="streaming-title">
+    <section className="detail-extra" aria-labelledby="streaming-title" ref={panelRef}>
       <div className="detail-extra__header">
         <div>
           <p className="section-kicker">Where to watch</p>
           <h2 id="streaming-title" className="detail-section__title">Streaming</h2>
         </div>
-        {!isActive ? (
-          <button type="button" className="show-btn" onClick={onOpen}>
-            Find streams
-          </button>
-        ) : null}
+        <button type="button" className="show-btn" onClick={onOpen}>
+          Find streams
+        </button>
       </div>
       {isActive ? (
         isLoading || isFetching ? (
           <LazyLoading message="Loading streaming providers..." count={3} />
         ) : isError ? (
-          <ErrorState message="Streaming links could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
+          <ErrorState eyebrow="Streaming unavailable" message="Streaming links could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
         ) : streamingItems.length > 0 ? (
           <div className="detail-extra__pill-grid">
             {streamingItems.map((item) => (
@@ -125,26 +124,25 @@ export const StreamingPanel = ({ isActive, isError, isFetching, isLoading, items
 };
 
 export const VideosPanel = ({ isActive, isError, isFetching, isLoading, items, onOpen, onRetry }) => {
+  const panelRef = useAutoLoadOnVisible({ enabled: !isActive, isLoaded: isActive, onLoad: onOpen });
   const videoItems = Array.isArray(items?.promo) ? items.promo : [];
 
   return (
-    <section className="detail-extra" aria-labelledby="videos-title">
+    <section className="detail-extra" aria-labelledby="videos-title" ref={panelRef}>
       <div className="detail-extra__header">
         <div>
           <p className="section-kicker">Official media</p>
           <h2 id="videos-title" className="detail-section__title">Videos</h2>
         </div>
-        {!isActive ? (
-          <button type="button" className="show-btn" onClick={onOpen}>
-            Watch videos
-          </button>
-        ) : null}
+        <button type="button" className="show-btn" onClick={onOpen}>
+          Watch videos
+        </button>
       </div>
       {isActive ? (
         isLoading || isFetching ? (
           <LazyLoading message="Loading videos..." count={3} />
         ) : isError ? (
-          <ErrorState message="Videos could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
+          <ErrorState eyebrow="Videos unavailable" message="Videos could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
         ) : videoItems.length > 0 ? (
           <div className="detail-extra__video-grid">
             {videoItems.map((item) => {
@@ -180,7 +178,7 @@ export const CharacterProfilePanel = ({ characterName, data, isError, isFetching
       {isLoading || isFetching ? (
         <LazyLoading message="Loading character profile..." count={2} />
       ) : isError ? (
-        <ErrorState message="Character profile could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
+        <ErrorState eyebrow="Character unavailable" message="Character profile could not be loaded." onRetry={onRetry} isRetrying={isFetching} role="alert" />
       ) : character ? (
         <>
           <div className="character-profile__media">

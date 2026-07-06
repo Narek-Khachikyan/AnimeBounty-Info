@@ -9,7 +9,7 @@ const AnimeSliderCard = ({ images, score, title_english, title: originalTitle, e
     <div className="slide">
       <div className="slide__content p-2 pb-0">
         <div className="slide__img">
-          {imageUrl ? <img src={imageUrl} alt={title} /> : null}
+          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : null}
           {score ? (
             <p className="slide__score text-base bg-white text-black px-2 px1">
               {score}
