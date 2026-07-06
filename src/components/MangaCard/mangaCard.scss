@@ -1,5 +1,7 @@
 .mangaCard {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 40%), var(--surface);
+  background:
+    linear-gradient(180deg, rgba(255, 247, 232, 0.04), transparent 40%),
+    var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
@@ -7,18 +9,28 @@
   display: block;
   height: 100%;
   overflow: hidden;
+  position: relative;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
   width: 100%;
 
   &:hover {
-    border-color: rgba(134, 215, 198, 0.38);
+    border-color: rgba(117, 227, 255, 0.46);
     box-shadow: var(--shadow-lift);
-    transform: translateY(-3px);
+    transform: translateY(-4px) rotate(0.35deg);
 
     img {
       transform: scale(1.035);
     }
   }
+}
+
+.mangaCard::before {
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-plum));
+  content: "";
+  height: 3px;
+  inset: 0 0 auto;
+  position: absolute;
+  z-index: 2;
 }
 
 .mangaCard__content {
@@ -34,7 +46,7 @@
   position: relative;
 
   &::after {
-    background: linear-gradient(180deg, transparent 48%, rgba(16, 16, 15, 0.82));
+    background: linear-gradient(180deg, transparent 48%, rgba(7, 9, 17, 0.86));
     content: "";
     inset: 0;
     position: absolute;
@@ -50,9 +62,11 @@
 }
 
 .mangaCard__score {
-  background: rgba(246, 240, 229, 0.93);
+  background: var(--surface-paper);
+  border: 1px solid rgba(7, 9, 17, 0.18);
   border-radius: 999px;
-  color: #181613;
+  color: #17101a;
+  font-family: var(--font-utility);
   font-size: 0.82rem;
   font-weight: 900;
   position: absolute;

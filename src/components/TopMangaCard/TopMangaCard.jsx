@@ -11,7 +11,7 @@ const TopMangaCard = ({ mal_id, images, title_english, title: originalTitle, cha
       <div className="slide__content p-3 pb-0">
         <Link to={`/manga/${mal_id}`} className="slide__link">
           <div className="slide__img">
-            {imageUrl ? <img src={imageUrl} alt="" /> : null}
+            {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : null}
             {score ? (
               <p className="slide__score text-base bg-white text-black px-2 px1">
                 {score}

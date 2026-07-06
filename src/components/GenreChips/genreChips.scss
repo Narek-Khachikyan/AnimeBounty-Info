@@ -15,6 +15,7 @@
   button {
     border: 0;
     color: var(--accent-cyan);
+    font-family: var(--font-utility);
     font-weight: 800;
   }
 }
@@ -26,11 +27,12 @@
 }
 
 .genre-chip {
-  background: rgba(246, 240, 229, 0.06);
+  background: rgba(255, 247, 232, 0.06);
   border: 1px solid var(--surface-border);
-  border-radius: var(--radius);
+  border-radius: 999px;
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-family: var(--font-utility);
+  font-size: 0.76rem;
   font-weight: 800;
   min-height: 38px;
   padding: 8px 11px;
@@ -38,8 +40,8 @@
 
   &:hover,
   &--active {
-    background: rgba(217, 164, 65, 0.16);
-    border-color: rgba(217, 164, 65, 0.68);
+    background: rgba(117, 227, 255, 0.14);
+    border-color: rgba(117, 227, 255, 0.62);
     color: var(--text-primary);
     transform: translateY(-1px);
   }

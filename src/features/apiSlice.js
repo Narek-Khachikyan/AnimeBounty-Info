@@ -18,12 +18,20 @@ const isTransientJikanError = (error) => {
   const status = error?.status;
 
   return (
-    status === 429 ||
     status === "FETCH_ERROR" ||
     status === "TIMEOUT_ERROR" ||
     (typeof status === "number" && status >= 500)
   );
 };
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const JIKAN_REQUEST_GAP_MS = 900;
+const JIKAN_429_COOLDOWN_MS = 5000;
+
+let jikanQueue = Promise.resolve();
+let nextRequestAt = 0;
+let cooldownUntil = 0;
 
 const staggeredBaseQuery = retry(
   fetchBaseQuery({
@@ -36,9 +44,40 @@ const staggeredBaseQuery = retry(
   }
 );
 
+const scheduledBaseQuery = async (args, api, extraOptions) => {
+  const runQuery = async (attempt = 0) => {
+    const now = Date.now();
+    const waitTime = Math.max(nextRequestAt - now, cooldownUntil - now, 0);
+
+    if (waitTime > 0) {
+      await wait(waitTime);
+    }
+
+    nextRequestAt = Date.now() + JIKAN_REQUEST_GAP_MS;
+
+    const result = await staggeredBaseQuery(args, api, extraOptions);
+
+    if (result?.error?.status === 429) {
+      cooldownUntil = Date.now() + JIKAN_429_COOLDOWN_MS;
+
+      if (attempt === 0) {
+        return runQuery(1);
+      }
+    }
+
+    return result;
+  };
+
+  const scheduled = jikanQueue.then(() => runQuery(), () => runQuery());
+  jikanQueue = scheduled.catch(() => undefined);
+
+  return scheduled;
+};
+
 export const fetchDataApi = createApi({
   reducerPath: "fetchDataApi",
-  baseQuery: staggeredBaseQuery,
+  baseQuery: scheduledBaseQuery,
+  keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     getTopAnime: builder.query({
       query: () => '/top/anime',

@@ -12,6 +12,7 @@ import {
   RelationsPanel,
 } from "../JikanDetailExtras/JikanDetailExtras";
 import LibraryControls from "../LibraryControls/LibraryControls";
+import useAutoLoadOnVisible from "../../hooks/useAutoLoadOnVisible";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -141,12 +142,23 @@ const FullManga = () => {
       triggerMangaRelations(id, true);
     }
   };
+  const charactersRef = useAutoLoadOnVisible({
+    enabled: canLoadMangaSecondary && !isActiveCharacters,
+    isLoaded: isActiveCharacters,
+    onLoad: handleShowMangaCharacters,
+  });
+  const reviewsRef = useAutoLoadOnVisible({
+    enabled: canLoadMangaSecondary && !isActiveReviews,
+    isLoaded: isActiveReviews,
+    onLoad: handleShowMangaReviews,
+  });
   return (
     <main className="fullManga__wrapper pb-10" id="main-content">
       {fullMangaLoading ? (
         <LazyLoading message="Loading manga details..." count={6} />
       ) : fullMangaError ? (
         <ErrorState
+          eyebrow="Manga unavailable"
           message="Manga details could not be loaded."
           onRetry={refetchFullManga}
           isRetrying={fullMangaFetching}
@@ -187,6 +199,7 @@ const FullManga = () => {
             <div className="animeImages__content">
               {mangaPicturesLoading ? <LazyLoading message="Loading manga images..." count={5} /> : mangaPicturesError ? (
                 <ErrorState
+                  eyebrow="Gallery unavailable"
                   message="Manga images could not be loaded."
                   onRetry={refetchMangaPictures}
                   isRetrying={mangaPicturesFetching}
@@ -222,11 +235,12 @@ const FullManga = () => {
             onOpen={handleShowMangaRelations}
             onRetry={() => triggerMangaRelations(id, false)}
           />
-          <div className="mangaCharacters mt-8">
+          <div className="mangaCharacters mt-8" ref={charactersRef}>
             <h2 className="mangaCharacters__title detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters</h2>
-            <button className={isActiveCharacters ? "display-none " : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowMangaCharacters}>Browse character list</button>
+            <button className="show-btn bg-black text-white py-2 px-3" onClick={handleShowMangaCharacters}>Browse character list</button>
             {showMangaCharactersLoader ? <LazyLoading message="Loading manga characters..." count={8} /> : mangaCharactersError && isActiveCharacters ? (
               <ErrorState
+                eyebrow="Characters unavailable"
                 message="Manga characters could not be loaded."
                 onRetry={() => triggerMangaCharacters(id, false)}
                 isRetrying={mangaCharactersFetching}
@@ -262,10 +276,11 @@ const FullManga = () => {
               </div>
             ) : isActiveCharacters ? <p>There are currently no characters for this manga.</p> : null}
           </div>
-          <div className="reviews mt-5">
-            <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowMangaReviews}>Read community reviews</button>
+          <div className="reviews mt-5" ref={reviewsRef}>
+            <button className="show-btn bg-black text-white py-2 px-3" onClick={handleShowMangaReviews}>Read community reviews</button>
             {showMangaReviewsLoader ? <LazyLoading message="Loading manga reviews..." count={4} /> : mangaReviewsError && isActiveReviews ? (
               <ErrorState
+                eyebrow="Reviews unavailable"
                 message="Manga reviews could not be loaded."
                 onRetry={() => triggerMangaReviews(id, false)}
                 isRetrying={mangaReviewsFetching}

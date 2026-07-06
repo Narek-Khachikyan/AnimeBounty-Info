@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useGetMangaGenresQuery, useGetMangaSearchQuery } from "../../features/apiSlice";
@@ -11,11 +11,13 @@ import ErrorState from "../ErrorState/ErrorState";
 import GenreChips from "../GenreChips/GenreChips";
 import "./mangaSearch.scss";
 
-const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true }) => {
+const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true, deferUntilVisible = false }) => {
   const [searchParams] = useSearchParams();
   const queryParam = searchParams.get("q") || "";
   const [queryManga, setQueryManga] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
+  const [shouldFetch, setShouldFetch] = useState(!deferUntilVisible);
+  const sectionRef = useRef(null);
   const debouncedQuery = useDebounce(queryManga, 500);
 
   const {
@@ -24,23 +26,46 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
     isFetching,
     isError,
     refetch,
-  } = useGetMangaSearchQuery({ orderBy, sortBy, query: debouncedQuery, genreId: selectedGenreId });
+  } = useGetMangaSearchQuery(
+    { orderBy, sortBy, query: debouncedQuery, genreId: selectedGenreId },
+    { skip: !shouldFetch }
+  );
   const {
     data: mangaGenres,
     isFetching: mangaGenresFetching,
     isError: mangaGenresError,
     refetch: refetchMangaGenres,
-  } = useGetMangaGenresQuery();
+  } = useGetMangaGenresQuery(undefined, { skip: !shouldFetch });
   const mangaSearchItems = mangaSearch?.data ?? [];
 
   useEffect(() => {
     setQueryManga(queryParam);
   }, [queryParam]);
 
+  useEffect(() => {
+    if (!deferUntilVisible || shouldFetch) return undefined;
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setShouldFetch(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShouldFetch(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "240px 0px" });
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, [deferUntilVisible, shouldFetch]);
+
   const HeadingTag = showMediaToggle ? "h2" : "h1";
 
   return (
-    <section id="manga" className="MangaSearch catalogue-search py-8">
+    <section id="manga" className="MangaSearch catalogue-search py-8" ref={sectionRef}>
       <div className="search-panel search-panel--manga">
         <div className="search-panel__copy">
           <p className="section-kicker">Manga catalogue</p>
@@ -108,6 +133,7 @@ MangaSearch.propTypes = {
   setSortBy: PropTypes.func.isRequired,
   sortBy: PropTypes.string.isRequired,
   showMediaToggle: PropTypes.bool,
+  deferUntilVisible: PropTypes.bool,
 };
 
 export default MangaSearch;

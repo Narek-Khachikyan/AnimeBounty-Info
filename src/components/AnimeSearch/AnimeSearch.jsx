@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useGetAnimeGenresQuery, useGetAnimeSearchQuery } from "../../features/apiSlice";
@@ -12,11 +12,13 @@ import GenreChips from "../GenreChips/GenreChips";
 import "./animeSearch.scss";
 import useDebounce from "../../hooks/useDebounce";
 
-const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true }) => {
+const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true, deferUntilVisible = false }) => {
   const [searchParams] = useSearchParams();
   const queryParam = searchParams.get("q") || "";
   const [query, setQuery] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
+  const [shouldFetch, setShouldFetch] = useState(!deferUntilVisible);
+  const sectionRef = useRef(null);
   const debouncedQuery = useDebounce(query, 500);
   const {
     data: animeSearch,
@@ -24,21 +26,44 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
     isFetching,
     isError,
     refetch,
-  } = useGetAnimeSearchQuery({ orderBy, rating, sortBy, query: debouncedQuery, genreId: selectedGenreId });
+  } = useGetAnimeSearchQuery(
+    { orderBy, rating, sortBy, query: debouncedQuery, genreId: selectedGenreId },
+    { skip: !shouldFetch }
+  );
   const {
     data: animeGenres,
     isFetching: animeGenresFetching,
     isError: animeGenresError,
     refetch: refetchAnimeGenres,
-  } = useGetAnimeGenresQuery();
+  } = useGetAnimeGenresQuery(undefined, { skip: !shouldFetch });
   const animeSearchItems = animeSearch?.data ?? [];
 
   useEffect(() => {
     setQuery(queryParam);
   }, [queryParam]);
 
+  useEffect(() => {
+    if (!deferUntilVisible || shouldFetch) return undefined;
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setShouldFetch(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShouldFetch(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "240px 0px" });
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, [deferUntilVisible, shouldFetch]);
+
   return (
-    <section id="anime" className="animeSearch catalogue-search">
+    <section id="anime" className="animeSearch catalogue-search" ref={sectionRef}>
       <div className="search-panel">
         <div className="search-panel__copy">
           <p className="section-kicker">Anime catalogue</p>
@@ -112,6 +137,7 @@ AnimeSearch.propTypes = {
   rating: PropTypes.string.isRequired,
   sortBy: PropTypes.string.isRequired,
   showMediaToggle: PropTypes.bool,
+  deferUntilVisible: PropTypes.bool,
 };
 
 export default AnimeSearch;

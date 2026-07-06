@@ -39,6 +39,7 @@ const GenreChips = ({ genres, isError, isFetching, onRetry, selectedGenreId, onS
             key={genre.mal_id}
             className={selectedGenreId === genre.mal_id ? "genre-chip genre-chip--active" : "genre-chip"}
             onClick={() => onSelectGenre(genre.mal_id)}
+            aria-pressed={selectedGenreId === genre.mal_id}
           >
             {genre.name}
           </button>

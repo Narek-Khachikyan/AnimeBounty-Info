@@ -223,6 +223,33 @@ test('anime page consumes the q query parameter for search', async ({ page }) =>
   await expect(page.getByText('Anime query: Samurai Champloo')).toBeVisible();
 });
 
+test('anime search recovers from a single Jikan 429 response', async ({ page }) => {
+  let animeSearchAttempts = 0;
+
+  await page.route(/^https:\/\/api\.jikan\.moe\/v4\/anime\?.*/, async (route) => {
+    animeSearchAttempts += 1;
+
+    if (animeSearchAttempts === 1) {
+      await route.fulfill({
+        contentType: 'application/json',
+        status: 429,
+        body: JSON.stringify({ message: 'Rate limit fixture' }),
+      });
+      return;
+    }
+
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ data: [animeItem(17, 'Recovered Anime Search')] }),
+    });
+  });
+
+  await page.goto('/anime?q=Rate%20Limit');
+
+  await expect(page.getByText('Recovered Anime Search')).toBeVisible({ timeout: 12000 });
+  expect(animeSearchAttempts).toBe(2);
+});
+
 test('manga page filters search by manga genre', async ({ page }) => {
   await page.goto('/manga');
 

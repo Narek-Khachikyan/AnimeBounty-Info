@@ -14,6 +14,7 @@ import {
 } from "../JikanDetailExtras/JikanDetailExtras";
 import LibraryControls from "../LibraryControls/LibraryControls";
 import playButton from "../../assets/images/playButton.svg";
+import useAutoLoadOnVisible from "../../hooks/useAutoLoadOnVisible";
 import "./FullAnime.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -58,6 +59,7 @@ const FullAnime = () => {
   const [isActiveRelations, setIsActiveRelations] = useState(false)
   const [isActiveStreaming, setIsActiveStreaming] = useState(false)
   const [isActiveVideos, setIsActiveVideos] = useState(false)
+  const [isActiveEpisodes, setIsActiveEpisodes] = useState(false)
   const {
     data: fullAnimeData,
     isLoading: fullAnimeLoading,
@@ -80,7 +82,7 @@ const FullAnime = () => {
     isFetching: animeEpisodesFetching,
     isError: animeEpisodesError,
     refetch: refetchAnimeEpisodes,
-  } = useGetAnimeEpisodesQuery(id, { skip: !canLoadAnimeSecondary })
+  } = useGetAnimeEpisodesQuery(id, { skip: !canLoadAnimeSecondary || !isActiveEpisodes })
   const [
     triggerAnimeCharacters,
     {
@@ -192,6 +194,24 @@ const FullAnime = () => {
       triggerAnimeVideos(id, true);
     }
   };
+  const handleShowAnimeEpisodes = () => {
+    setIsActiveEpisodes(true);
+  };
+  const episodesRef = useAutoLoadOnVisible({
+    enabled: canLoadAnimeSecondary && !isActiveEpisodes,
+    isLoaded: isActiveEpisodes,
+    onLoad: handleShowAnimeEpisodes,
+  });
+  const charactersRef = useAutoLoadOnVisible({
+    enabled: canLoadAnimeSecondary && !isActiveCharacters,
+    isLoaded: isActiveCharacters,
+    onLoad: handleShowAnimeCharacters,
+  });
+  const reviewsRef = useAutoLoadOnVisible({
+    enabled: canLoadAnimeSecondary && !isActiveReviews,
+    isLoaded: isActiveReviews,
+    onLoad: handleShowAnimeReviews,
+  });
   return (
     <main className="fullAnime__wrapper pb-10" id="main-content">
       <div className="container">
@@ -199,6 +219,7 @@ const FullAnime = () => {
           <LazyLoading message="Loading anime details..." count={6} />
         ) : fullAnimeError ? (
           <ErrorState
+            eyebrow="Anime unavailable"
             message="Anime details could not be loaded."
             onRetry={refetchFullAnime}
             isRetrying={fullAnimeFetching}
@@ -231,6 +252,7 @@ const FullAnime = () => {
               <div className="images__content">
                 {animePicturesLoading ? <LazyLoading message="Loading anime images..." count={5} /> : animePicturesError ? (
                   <ErrorState
+                    eyebrow="Gallery unavailable"
                     message="Anime images could not be loaded."
                     onRetry={refetchAnimePictures}
                     isRetrying={animePicturesFetching}
@@ -299,14 +321,15 @@ const FullAnime = () => {
               onOpen={handleShowAnimeVideos}
               onRetry={() => triggerAnimeVideos(id, false)}
             />
-            <div className="episodes">
+            <div className="episodes" ref={episodesRef}>
               <h2 className="episodes__text detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-4">Episodes</h2>
               <div className="episodes__type flex gap-4 items-center">
                 <p className="episode__canon canonEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Canon color</p>
                 <p className="episode__filter fillerEpisode text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-5">Filler color</p>
               </div>
-              {animeEpisodesLoading ? <LazyLoading message="Loading episodes..." count={4} /> : animeEpisodesError ? (
+              {!isActiveEpisodes ? <LazyLoading message="Episodes will load as this section opens..." count={2} /> : animeEpisodesLoading ? <LazyLoading message="Loading episodes..." count={4} /> : animeEpisodesError ? (
                 <ErrorState
+                  eyebrow="Episodes unavailable"
                   message="Anime episodes could not be loaded."
                   onRetry={refetchAnimeEpisodes}
                   isRetrying={animeEpisodesFetching}
@@ -339,11 +362,12 @@ const FullAnime = () => {
                 </div>
               ) : <p>There are currently no episodes for this anime.</p>}
             </div>
-            <div className="characters mt-8">
+            <div className="characters mt-8" ref={charactersRef}>
               <h2 className="characters__title detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-3">Characters</h2>
-              <button className={isActiveCharacters ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowAnimeCharacters}>Browse character list</button>
+              <button className="show-btn bg-black text-white py-2 px-3" onClick={handleShowAnimeCharacters}>Browse character list</button>
               {showAnimeCharactersLoader ? <LazyLoading message="Loading characters..." count={8} /> : animeCharactersError && isActiveCharacters ? (
                 <ErrorState
+                  eyebrow="Characters unavailable"
                   message="Anime characters could not be loaded."
                   onRetry={() => triggerAnimeCharacters(id, false)}
                   isRetrying={animeCharactersFetching}
@@ -384,10 +408,11 @@ const FullAnime = () => {
                 </div>
               ) : isActiveCharacters ? <p>There are currently no characters for this anime.</p> : null}
             </div>
-            <div className="reviews mt-5">
-              <button className={isActiveReviews ? "display-none" : 'show-btn bg-black text-white py-2 px-3'} onClick={handleShowAnimeReviews}>Read community reviews</button>
+            <div className="reviews mt-5" ref={reviewsRef}>
+              <button className="show-btn bg-black text-white py-2 px-3" onClick={handleShowAnimeReviews}>Read community reviews</button>
               {showAnimeReviewsLoader ? <LazyLoading message="Loading reviews..." count={4} /> : animeReviewsError && isActiveReviews ? (
                 <ErrorState
+                  eyebrow="Reviews unavailable"
                   message="Anime reviews could not be loaded."
                   onRetry={() => triggerAnimeReviews(id, false)}
                   isRetrying={animeReviewsFetching}
