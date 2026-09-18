@@ -1,6 +1,8 @@
 # Product Specs
 
-The current product source of truth is `PRD.md`.
+This file is the product source of truth. The original stabilization PRD was
+retired after its issues were fixed; ongoing work is tracked in
+`docs/exec-plans/active/`.
 
 ## Product Summary
 
@@ -17,8 +19,10 @@ dependency risk.
 
 ## Acceptance Criteria Index
 
-The active acceptance criteria live in `PRD.md` and are implemented through
-`docs/exec-plans/active/jikan-stability-and-quality.md`.
+Acceptance criteria for in-flight work live in
+`docs/exec-plans/active/jikan-stability-and-quality.md`. The behavioral
+contracts pinned by the e2e suite (copy, counts, offline behavior, update
+notice) are listed in `AGENTS.md` under "Verifying before you claim done".
 
 ## AI Recommendations
 

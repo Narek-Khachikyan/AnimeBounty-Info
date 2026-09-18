@@ -6,7 +6,6 @@ const root = process.cwd();
 const requiredPaths = [
   'AGENTS.md',
   'ARCHITECTURE.md',
-  'PRD.md',
   'docs/design-docs/harness-engineering-notes.md',
   'docs/exec-plans/active/jikan-stability-and-quality.md',
   'docs/product-specs/index.md',

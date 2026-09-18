@@ -23,7 +23,7 @@ npm audit --audit-level=high
 ```
 
 This is not yet included in `npm run verify` because the current dependency tree
-may still contain high or critical findings from the stabilization PRD.
+may still contain high or critical findings from the stabilization work.
 
 ## AI Recommendation Quality Gates
 

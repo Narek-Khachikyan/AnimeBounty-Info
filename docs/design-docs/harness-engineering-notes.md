@@ -33,7 +33,8 @@ These notes separate article-backed principles from local project assumptions.
   `public/_redirects` already encode that path.
 - Jikan API stability is the highest-value first quality area because the app
   depends on third-party response shapes and network availability.
-- More mechanical checks can be added after the current PRD issues are fixed.
+- More mechanical checks can be added after the remaining stabilization tasks in
+  `docs/exec-plans/active/jikan-stability-and-quality.md` are done.
 
 ## Not Implemented From The Article
 
