@@ -4,6 +4,7 @@
 
 - `npm run harness:check`
 - `npm run pwa:check`
+- `npm run jikan:check`
 - `npm run lint`
 - `npm run build`
 - `npm run pwa:dist-check`

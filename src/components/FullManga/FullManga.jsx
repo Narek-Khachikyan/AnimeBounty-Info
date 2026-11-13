@@ -46,7 +46,7 @@ const swiperBreakpoints = {
   }
 };
 
-const FullManga = () => {
+const FullMangaDetails = () => {
   const [isActiveCharacters, setIsActiveCharacters] = useState(false);
   const [isActiveReviews, setIsActiveReviews] = useState(false)
   const [isActiveRelations, setIsActiveRelations] = useState(false)
@@ -303,6 +303,12 @@ const FullManga = () => {
       )}
     </main>
   );
+};
+
+const FullManga = () => {
+  const { id } = useParams();
+
+  return <FullMangaDetails key={id} />;
 };
 
 export default FullManga;

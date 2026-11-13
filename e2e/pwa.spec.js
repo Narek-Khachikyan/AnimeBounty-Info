@@ -80,6 +80,42 @@ const jikanFixtures = {
   },
 };
 
+// Detail fixtures exercise the real Workbox runtime cache during hard offline loads.
+Object.assign(jikanFixtures, {
+  'https://api.jikan.moe/v4/anime/1': {
+    data: {
+      mal_id: 1, title: 'Cached Anime Detail', score: 8.2, episodes: 12,
+      status: 'Finished Airing', year: 2026, rating: 'PG-13',
+      studios: [{ mal_id: 1, name: 'Cached Studio' }],
+      images: { webp: {} }, trailer: { images: {} },
+    },
+  },
+  'https://api.jikan.moe/v4/anime/1/episodes': {
+    data: [
+      { mal_id: 1, title: 'Cached episode', score: 4, filler: false },
+      { mal_id: 2, title: 'Cached sparse episode', score: null, url: null },
+    ],
+  },
+  'https://api.jikan.moe/v4/anime/1/reviews': {
+    data: [{ mal_id: 1, user: { username: 'Offline reader', images: { webp: {} } }, review: 'Cached anime community review' }],
+  },
+  'https://api.jikan.moe/v4/manga/2': {
+    data: { mal_id: 2, title: 'Cached Manga Detail', images: {} },
+  },
+  'https://api.jikan.moe/v4/manga/2/reviews': {
+    data: [{ mal_id: 2, user: null, review: 'Cached manga community review' }],
+  },
+});
+
+for (const [media, id, panels] of [
+  ['anime', 1, ['pictures', 'relations', 'streaming', 'videos']],
+  ['manga', 2, ['pictures', 'relations']],
+]) {
+  for (const panel of panels) {
+    jikanFixtures[`https://api.jikan.moe/v4/${media}/${id}/${panel}`] = { data: panel === 'videos' ? { promo: [] } : [] };
+  }
+}
+
 const activateServiceWorker = async (page) => {
   await page.waitForFunction(async () => {
     if (!('serviceWorker' in navigator)) {
@@ -124,7 +160,8 @@ const seedJikanCache = async (page) => {
 };
 
 test('PWA serves the app shell and cached Jikan data offline', async ({ page, context }) => {
-  await page.goto('/');
+  test.setTimeout(90_000);
+  await page.goto('/about');
   await expect(page.getByRole('button', { name: 'AnimeBounty-Info' })).toBeVisible();
 
   await activateServiceWorker(page);
@@ -149,7 +186,25 @@ test('PWA serves the app shell and cached Jikan data offline', async ({ page, co
     await expect(page.getByText(/manga .* could not be loaded/i)).toHaveCount(0);
 
     await page.goto('/anime/1', { waitUntil: 'domcontentloaded' });
-    await expect(page.getByRole('button', { name: 'AnimeBounty-Info' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Cached Anime Detail', exact: true })).toBeVisible();
+    await page.getByRole('heading', { name: 'Episodes', exact: true }).scrollIntoViewIfNeeded();
+    await expect(page.getByText('Cached episode', { exact: true })).toBeVisible();
+    await expect(page.locator('.episode__item').filter({ hasText: 'Cached sparse episode' })).toContainText('Unknown');
+    await page.getByRole('button', { name: 'Read community reviews' }).click();
+    await expect(page.getByText('Cached anime community review', { exact: true })).toBeVisible();
+
+    // Characters are deliberately absent from the cache: the failure must end
+    // visibly, while subsequent cached detail work remains usable.
+    await page.getByRole('button', { name: 'Browse character list' }).click();
+    await expect(page.getByRole('alert').filter({ hasText: 'Anime characters could not be loaded.' })).toBeVisible();
+    await expect(page.getByText('Cached anime community review', { exact: true })).toBeVisible();
+
+    await page.goto('/manga/2', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByRole('heading', { name: 'Cached Manga Detail', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Read community reviews' }).click();
+    await expect(page.getByText('Cached manga community review', { exact: true })).toBeVisible();
+    await expect(page.locator('.reviews').getByText('Unknown', { exact: true })).toBeVisible();
+    await expect(page.locator('main#main-content')).toHaveCount(1);
   } finally {
     await context.setOffline(false);
   }

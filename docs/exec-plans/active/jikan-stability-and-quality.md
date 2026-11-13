@@ -31,3 +31,10 @@ state layer.
 - 2026-04-24: Created a lightweight harness scaffold based on the OpenAI harness
   engineering article. Deferred observability, browser automation, and custom
   architecture linting until the frontend stabilization work is green.
+
+- 2026-11-13: Jikan scheduler recovery now shares a two-retry budget across
+  transient errors and 429, paces every attempt, honors Retry-After with a
+  five-second minimum, and releases the start queue before responses complete.
+  Detail state is scoped to route IDs for anime/manga; exported detail hooks
+  cancel unfinished work when their final consumer leaves. Regression checks:
+  `node scripts/verify-jikan-scheduler.mjs` and `e2e/jikan-endpoints.spec.js`.
