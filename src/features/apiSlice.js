@@ -1,4 +1,6 @@
-import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createJikanBaseQuery } from './jikanScheduler';
+import { createOwnedQueryHook, createOwnedLazyQueryHook } from './ownedQueryHooks';
 
 export const buildSearchQuery = (resource, params) => {
   const searchParams = new URLSearchParams();
@@ -14,65 +16,10 @@ export const buildSearchQuery = (resource, params) => {
   return queryString ? `${resource}?${queryString}` : resource;
 };
 
-const isTransientJikanError = (error) => {
-  const status = error?.status;
-
-  return (
-    status === "FETCH_ERROR" ||
-    status === "TIMEOUT_ERROR" ||
-    (typeof status === "number" && status >= 500)
-  );
-};
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const JIKAN_REQUEST_GAP_MS = 900;
-const JIKAN_429_COOLDOWN_MS = 5000;
-
-let jikanQueue = Promise.resolve();
-let nextRequestAt = 0;
-let cooldownUntil = 0;
-
-const staggeredBaseQuery = retry(
-  fetchBaseQuery({
-    baseUrl: 'https://api.jikan.moe/v4',
-    timeout: 15000,
-  }),
-  {
-    maxRetries: 2,
-    retryCondition: (error) => isTransientJikanError(error),
-  }
-);
-
-const scheduledBaseQuery = async (args, api, extraOptions) => {
-  const runQuery = async (attempt = 0) => {
-    const now = Date.now();
-    const waitTime = Math.max(nextRequestAt - now, cooldownUntil - now, 0);
-
-    if (waitTime > 0) {
-      await wait(waitTime);
-    }
-
-    nextRequestAt = Date.now() + JIKAN_REQUEST_GAP_MS;
-
-    const result = await staggeredBaseQuery(args, api, extraOptions);
-
-    if (result?.error?.status === 429) {
-      cooldownUntil = Date.now() + JIKAN_429_COOLDOWN_MS;
-
-      if (attempt === 0) {
-        return runQuery(1);
-      }
-    }
-
-    return result;
-  };
-
-  const scheduled = jikanQueue.then(() => runQuery(), () => runQuery());
-  jikanQueue = scheduled.catch(() => undefined);
-
-  return scheduled;
-};
+const scheduledBaseQuery = createJikanBaseQuery(fetchBaseQuery({
+  baseUrl: 'https://api.jikan.moe/v4',
+  timeout: 15000,
+}));
 
 export const fetchDataApi = createApi({
   reducerPath: "fetchDataApi",
@@ -190,24 +137,6 @@ export const {
   useGetTopAnimeQuery,
   useGetTopMangaQuery,
 
-  useGetFullAnimeQuery,
-  useGetFullMangaQuery,
-
-  useGetAnimePicturesQuery,
-  useGetMangaPicturesQuery,
-
-  useGetAnimeEpisodesQuery,
-
-  useGetAnimeCharactersQuery,
-  useGetMangaCharactersQuery,
-  useLazyGetAnimeCharactersQuery,
-  useLazyGetMangaCharactersQuery,
-
-  useGetAnimeReviewsQuery,
-  useGetMangaReviewsQuery,
-  useLazyGetAnimeReviewsQuery,
-  useLazyGetMangaReviewsQuery,
-
   useGetAnimeSearchQuery,
   useGetMangaSearchQuery,
   useLazyGetAnimeSearchQuery,
@@ -220,10 +149,24 @@ export const {
   useGetAnimeGenresQuery,
   useGetMangaGenresQuery,
 
-  useLazyGetAnimeRelationsQuery,
-  useLazyGetAnimeStreamingQuery,
-  useLazyGetAnimeVideosQuery,
-  useLazyGetMangaRelationsQuery,
   useGetCharacterFullQuery,
   useLazyGetCharacterFullQuery,
 } = fetchDataApi;
+
+export const useGetFullAnimeQuery = createOwnedQueryHook(fetchDataApi, 'getFullAnime');
+export const useGetFullMangaQuery = createOwnedQueryHook(fetchDataApi, 'getFullManga');
+export const useGetAnimePicturesQuery = createOwnedQueryHook(fetchDataApi, 'getAnimePictures');
+export const useGetMangaPicturesQuery = createOwnedQueryHook(fetchDataApi, 'getMangaPictures');
+export const useGetAnimeEpisodesQuery = createOwnedQueryHook(fetchDataApi, 'getAnimeEpisodes');
+export const useGetAnimeCharactersQuery = createOwnedQueryHook(fetchDataApi, 'getAnimeCharacters');
+export const useLazyGetAnimeCharactersQuery = createOwnedLazyQueryHook(fetchDataApi, 'getAnimeCharacters');
+export const useGetMangaCharactersQuery = createOwnedQueryHook(fetchDataApi, 'getMangaCharacters');
+export const useLazyGetMangaCharactersQuery = createOwnedLazyQueryHook(fetchDataApi, 'getMangaCharacters');
+export const useGetAnimeReviewsQuery = createOwnedQueryHook(fetchDataApi, 'getAnimeReviews');
+export const useLazyGetAnimeReviewsQuery = createOwnedLazyQueryHook(fetchDataApi, 'getAnimeReviews');
+export const useGetMangaReviewsQuery = createOwnedQueryHook(fetchDataApi, 'getMangaReviews');
+export const useLazyGetMangaReviewsQuery = createOwnedLazyQueryHook(fetchDataApi, 'getMangaReviews');
+export const useLazyGetAnimeRelationsQuery = createOwnedLazyQueryHook(fetchDataApi, 'getAnimeRelations');
+export const useLazyGetMangaRelationsQuery = createOwnedLazyQueryHook(fetchDataApi, 'getMangaRelations');
+export const useLazyGetAnimeStreamingQuery = createOwnedLazyQueryHook(fetchDataApi, 'getAnimeStreaming');
+export const useLazyGetAnimeVideosQuery = createOwnedLazyQueryHook(fetchDataApi, 'getAnimeVideos');

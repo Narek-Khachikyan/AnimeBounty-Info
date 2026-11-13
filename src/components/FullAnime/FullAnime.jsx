@@ -52,7 +52,7 @@ const swiperBreakpoints = {
   }
 };
 
-const FullAnime = () => {
+const FullAnimeDetails = () => {
   const { id } = useParams();
   const [isActiveCharacters, setIsActiveCharacters] = useState(false)
   const [isActiveReviews, setIsActiveReviews] = useState(false)
@@ -436,6 +436,12 @@ const FullAnime = () => {
       </div>
     </main>
   );
+};
+
+const FullAnime = () => {
+  const { id } = useParams();
+
+  return <FullAnimeDetails key={id} />;
 };
 
 export default FullAnime;

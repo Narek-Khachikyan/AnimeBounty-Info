@@ -16,6 +16,11 @@ to Netlify.
    Toolkit Query endpoints and builds search URLs with `URLSearchParams`.
    `src/features/userLibrary.js` owns the localStorage library, and
    `src/features/aiRecommendations.js` shapes the AI request payload.
+   `src/features/jikanScheduler.js` spaces physical attempts by 900 ms, shares
+   a minimum 5-second 429 cooldown, and caps recovery at two retries. Response
+   latency does not hold the request-start queue; at most two transports run at once.
+   Exported detail hooks share request ownership per store and cancel unfinished
+   work after the last consumer leaves, retaining completed cache entries.
 5. Components under `src/components/` render cards, search controls, detail
    views, recommendations, loading states, and errors.
 6. The AI helper calls a Netlify Function (`netlify/functions/ai-recommendations.mjs`),
@@ -50,8 +55,9 @@ to Netlify.
 ## Current Gaps
 
 - Browser coverage comes from the Playwright specs in `e2e/`, which run against
-  the built `dist/` via `npm run pwa:e2e`. There are no unit tests; the
-  harness scripts in `scripts/` plus `npm run lint` are the static checks.
+  the built `dist/` via `npm run pwa:e2e`. `npm run jikan:check` uses a
+  deterministic clock to check scheduler timing, bounded recovery, and cancellation;
+  the other harness scripts in `scripts/` and `npm run lint` cover static checks.
 - `npm audit --audit-level=high` is not yet part of `npm run verify` because
   the existing dependency tree still needs remediation.
 - There is no generated code map yet; use this document plus `AGENTS.md` as the

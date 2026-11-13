@@ -335,3 +335,174 @@ test('character page tolerates missing nested fields', async ({ page }) => {
   await expect(page.getByText('No anime appearances are listed yet.')).toBeVisible();
   await expect(page.getByText('No manga appearances are listed yet.')).toBeVisible();
 });
+
+const communityReviews = (prefix) => [
+  {
+    mal_id: 101,
+    user: { username: 'Fixture reader', images: { webp: {} } },
+    review: `${prefix} community review`,
+  },
+  { mal_id: 102, user: null, review: `${prefix} sparse review` },
+];
+
+for (const [media, id] of [['anime', 1], ['manga', 2]]) {
+  test(`${media} reviews render despite an unresolved gallery`, async ({ page }) => {
+    let releaseGallery;
+    const galleryGate = new Promise((resolve) => { releaseGallery = resolve; });
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/pictures`, async (route) => {
+      await galleryGate;
+      await route.fulfill({ json: { data: [] } });
+    });
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, (route) =>
+      route.fulfill({ json: { data: communityReviews(media) } }));
+
+    try {
+      await page.goto(`/${media}/${id}`);
+      await page.getByRole('button', { name: 'Read community reviews' }).click();
+      await expect(page.getByText(`${media} community review`, { exact: true })).toBeVisible({ timeout: 12000 });
+      await expect(page.getByText(`${media} sparse review`, { exact: true })).toBeVisible();
+      await expect(page.locator('.reviews').getByText('Unknown', { exact: true })).toBeVisible();
+      await expect(page.getByText(`Loading ${media} images...`, { exact: true })).toBeVisible();
+    } finally {
+      releaseGallery();
+    }
+  });
+
+  test(`${media} reviews reach a terminal error and recover with Try again`, async ({ page }) => {
+    let failing = true;
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, (route) =>
+      route.fulfill(failing
+        ? { status: 503, json: { message: 'Temporarily unavailable' } }
+        : { json: { data: communityReviews('Recovered') } }));
+    await page.goto(`/${media}/${id}`);
+    await page.getByRole('button', { name: 'Read community reviews' }).click();
+    const alert = page.getByRole('alert').filter({ hasText: `${media === 'anime' ? 'Anime' : 'Manga'} reviews could not be loaded.` });
+    await expect(alert).toBeVisible();
+    failing = false;
+    await alert.getByRole('button', { name: 'Try again', exact: true }).click();
+    await expect(page.getByText('Recovered community review', { exact: true })).toBeVisible();
+    await expect(alert).toHaveCount(0);
+  });
+
+  test(`${media} relation navigation resets reviews and restores the correct cached title on Back`, async ({ page }) => {
+    const nextId = 88;
+    let releaseNext;
+    const nextGate = new Promise((resolve) => { releaseNext = resolve; });
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, (route) =>
+      route.fulfill({ json: { data: communityReviews('Original title') } }));
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/relations`, (route) =>
+      route.fulfill({ json: { data: [{ relation: 'Sequel', entry: [{ mal_id: nextId, type: media, name: 'Next title' }] }] } }));
+    await page.route(`https://api.jikan.moe/v4/${media}/${nextId}`, async (route) => {
+      await nextGate;
+      await route.fulfill({ json: { data: { mal_id: nextId, title: 'Next title', images: {} } } });
+    });
+    await page.route(`https://api.jikan.moe/v4/${media}/${nextId}/reviews`, (route) =>
+      route.fulfill({ json: { data: [] } }));
+
+    await page.goto(`/${media}/${id}`);
+    await page.getByRole('button', { name: 'Read community reviews' }).click();
+    await expect(page.getByText('Original title community review', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Explore relations' }).click();
+    await page.getByRole('link', { name: 'Next title', exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/${media}/${nextId}$`));
+    await expect(page.getByText(`Loading ${media} details...`, { exact: true })).toBeVisible();
+    await expect(page.getByText('Original title community review', { exact: true })).toHaveCount(0);
+    releaseNext();
+    await expect(page.getByRole('heading', { name: 'Next title', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Read community reviews' }).click();
+    await expect(page.getByText(`There are currently no reviews for this ${media}.`, { exact: true })).toBeVisible();
+    await expect(page.getByText('Original title community review', { exact: true })).toHaveCount(0);
+    await page.goBack();
+    await expect(page.getByRole('heading', { name: `Detail ${media === 'anime' ? 'Anime' : 'Manga'} Fixture`, exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Read community reviews' }).click();
+    await expect(page.getByText('Original title community review', { exact: true })).toBeVisible();
+    await expect(page.getByText(`There are currently no reviews for this ${media}.`, { exact: true })).toHaveCount(0);
+    await expect(page.locator('main#main-content')).toHaveCount(1);
+  });
+}
+
+test('episodes recover from 429 and render complete and sparse rows', async ({ page }) => {
+  let attempts = 0;
+  await page.route('https://api.jikan.moe/v4/anime/1/episodes', (route) => {
+    attempts += 1;
+    return route.fulfill(attempts === 1
+      ? { status: 429, json: { message: 'Rate limited' } }
+      : { json: { data: [
+        { mal_id: 1, title: 'Recovered episode', score: 4, url: 'https://example.com/episode', filler: false },
+        { mal_id: 2, title: 'Sparse episode', score: null, url: null },
+      ] } });
+  });
+  await page.goto('/anime/1');
+  await page.getByRole('heading', { name: 'Episodes', exact: true }).scrollIntoViewIfNeeded();
+  await expect(page.getByRole('link', { name: 'Recovered episode', exact: true })).toBeVisible();
+  await expect(page.locator('.episode__item').filter({ hasText: 'Recovered episode' }).locator('.episode__score-value')).toHaveText('8');
+  await expect(page.locator('.episode__item').filter({ hasText: 'Sparse episode' })).toContainText('Unknown');
+});
+
+test('episodes show a retryable terminal error and an honest empty result', async ({ page }) => {
+  let failing = true;
+  await page.route('https://api.jikan.moe/v4/anime/1/episodes', (route) =>
+    route.fulfill(failing ? { status: 503, json: { message: 'Unavailable' } } : { json: { data: [] } }));
+  await page.goto('/anime/1');
+  await page.getByRole('heading', { name: 'Episodes', exact: true }).scrollIntoViewIfNeeded();
+  const alert = page.getByRole('alert').filter({ hasText: 'Anime episodes could not be loaded.' });
+  await expect(alert).toBeVisible();
+  failing = false;
+  await alert.getByRole('button', { name: 'Try again', exact: true }).click();
+  await expect(page.getByText('There are currently no episodes for this anime.', { exact: true })).toBeVisible();
+  await expect(alert).toHaveCount(0);
+});
+
+for (const [media, id] of [['anime', 1], ['manga', 2]]) {
+  test(`${media} navigation cancels occupied and queued detail work`, async ({ page }) => {
+    // Exercise explicit controls in a fixed order; visibility prefetch has its
+    // own coverage above and must not race the deliberately occupied slots.
+    await page.addInitScript(() => {
+      window.IntersectionObserver = class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+        takeRecords() { return []; }
+      };
+    });
+    let releaseHeld;
+    const held = new Promise((resolve) => { releaseHeld = resolve; });
+    let markReviewsStarted;
+    const reviewsStarted = new Promise((resolve) => { markReviewsStarted = resolve; });
+    let oldCharacterRequests = 0;
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/pictures`, async (route) => {
+      await held;
+      await route.fulfill({ json: { data: [] } }).catch(() => {});
+    });
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, async (route) => {
+      markReviewsStarted();
+      await held;
+      await route.fulfill({ json: { data: communityReviews('Obsolete title') } }).catch(() => {});
+    });
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/characters`, (route) => {
+      oldCharacterRequests += 1;
+      return route.fulfill({ json: { data: [] } });
+    });
+    await page.route(`https://api.jikan.moe/v4/${media}/${id}/relations`, (route) =>
+      route.fulfill({ json: { data: [{ relation: 'Sequel', entry: [{ mal_id: 89, type: media, name: 'Current title after cancellation' }] }] } }));
+    await page.route(`https://api.jikan.moe/v4/${media}/89`, (route) =>
+      route.fulfill({ json: { data: { mal_id: 89, title: 'Current title after cancellation', images: {} } } }));
+    try {
+      await page.goto(`/${media}/${id}`);
+      await page.getByRole('button', { name: 'Explore relations' }).click();
+      const nextTitle = page.getByRole('link', { name: 'Current title after cancellation', exact: true });
+      await expect(nextTitle).toBeVisible();
+      await page.getByRole('button', { name: 'Read community reviews' }).click();
+      await reviewsStarted;
+      await page.getByRole('button', { name: 'Browse character list' }).click();
+      await expect(page.getByText(media === 'anime' ? 'Loading characters...' : 'Loading manga characters...', { exact: true })).toBeVisible();
+      await nextTitle.click();
+      await expect(page.getByRole('heading', { name: 'Current title after cancellation', exact: true })).toBeVisible({ timeout: 5000 });
+      await expect(page.getByText('Obsolete title community review', { exact: true })).toHaveCount(0);
+      expect(oldCharacterRequests).toBe(0);
+      await expect(page.locator('main#main-content')).toHaveCount(1);
+    } finally {
+      releaseHeld();
+    }
+  });
+}
