@@ -1,30 +1,22 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import "./filter.scss";
 
-const Sort = ({ setSortBy }) => {
-  const [active, setActive] = useState(2);
+const Sort = ({ setSortBy, sortBy }) => {
 
   const sort = [
     { id: 1, sortType: "asc", label: "Ascending" },
     { id: 2, sortType: "desc", label: "Descending" },
   ];
 
-  const handleSortClick = (sortType, id) => {
-    setSortBy(sortType);
-    setActive(id);
-  };
-
-
   return (
     <div className="filter-control" role="group" aria-label="Sort direction">
       {sort.map((item) => (
         <button
-          className={active === item.id ? "sort-btn active" : "sort-btn"}
-          onClick={() => handleSortClick(item.sortType, item.id)}
+          className={sortBy === item.sortType ? "sort-btn active" : "sort-btn"}
+          onClick={() => setSortBy(item.sortType)}
           key={item.id}
           type="button"
-          aria-pressed={active === item.id}
+          aria-pressed={sortBy === item.sortType}
         >
           {item.label}
         </button>
@@ -34,6 +26,7 @@ const Sort = ({ setSortBy }) => {
 }
 
 Sort.propTypes = {
+  sortBy: PropTypes.string.isRequired,
   setSortBy: PropTypes.func.isRequired,
 };
 

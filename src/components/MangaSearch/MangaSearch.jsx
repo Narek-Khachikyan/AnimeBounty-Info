@@ -12,7 +12,7 @@ import GenreChips from "../GenreChips/GenreChips";
 import "./mangaSearch.scss";
 
 const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true, deferUntilVisible = false }) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const queryParam = searchParams.get("q") || "";
   const [queryManga, setQueryManga] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
@@ -62,6 +62,19 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
     return () => observer.disconnect();
   }, [deferUntilVisible, shouldFetch]);
 
+  const isUpdating = isFetching || queryManga !== debouncedQuery;
+  const resetSearch = () => {
+    setQueryManga("");
+    setSelectedGenreId(null);
+    setOrderBy("score");
+    setSortBy("desc");
+    if (searchParams.has("q")) {
+      const nextParams = new URLSearchParams(searchParams);
+      nextParams.delete("q");
+      setSearchParams(nextParams, { replace: true });
+    }
+  };
+
   const HeadingTag = showMediaToggle ? "h2" : "h1";
 
   return (
@@ -69,8 +82,8 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
       <div className="search-panel search-panel--manga">
         <div className="search-panel__copy">
           <p className="section-kicker">Manga catalogue</p>
-          <HeadingTag>Browse the shelf before you commit.</HeadingTag>
-          <p className="search-panel__subtitle">Move from popular series to quieter finds with the same simple search and sort rhythm.</p>
+          <HeadingTag>Explore manga</HeadingTag>
+          <p className="search-panel__subtitle">Find a new read. Browse by genre, compare scores and build your shelf.</p>
         </div>
         <div className="search-panel__actions">
           {showMediaToggle ? (
@@ -82,6 +95,8 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
           <input className="searchInput" placeholder="Search manga..." aria-label="Search manga" type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
         </div>
       </div>
+      <details className="catalogue-options">
+        <summary>Filters <span>Order and genres</span></summary>
       <div className="filter search-filters">
         <div className="search-filters__summary">
           <span>Current shelf</span>
@@ -93,7 +108,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
         </div>
         <div className="search-filters__group">
           <p>Sort</p>
-          <Sort setSortBy={setSortBy} />
+          <Sort sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
       <GenreChips
@@ -105,8 +120,14 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
         selectedGenreId={selectedGenreId}
         onSelectGenre={setSelectedGenreId}
       />
-      <div className="search-content catalogue-grid">
-        {isLoading ? (
+      </details>
+      {shouldFetch ? (
+        <p className="search-results-status" role="status" aria-live="polite">
+          {isUpdating ? "Updating manga matches…" : isError ? "" : `${mangaSearchItems.length} manga matches`}
+        </p>
+      ) : null}
+      <div className="search-content catalogue-grid" aria-busy={isUpdating}>
+        {!shouldFetch || isLoading ? (
           <LazyLoading message="Loading manga matches..." count={8} />
         ) : isError ? (
           <ErrorState
@@ -115,6 +136,12 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
             isRetrying={isFetching}
             role="alert"
           />
+        ) : !isUpdating && mangaSearchItems.length === 0 ? (
+          <div className="search-empty">
+            <h3>No manga matches found</h3>
+            <p>Try another title or clear your search and filters.</p>
+            <button type="button" className="show-btn" onClick={resetSearch}>Reset manga search</button>
+          </div>
         ) : (
           mangaSearchItems.map(obj => (
             <Link key={obj.mal_id} to={`/manga/${obj.mal_id}`}>

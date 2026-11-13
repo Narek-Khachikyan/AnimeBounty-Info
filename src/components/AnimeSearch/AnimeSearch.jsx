@@ -13,7 +13,7 @@ import "./animeSearch.scss";
 import useDebounce from "../../hooks/useDebounce";
 
 const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true, deferUntilVisible = false }) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const queryParam = searchParams.get("q") || "";
   const [query, setQuery] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
@@ -62,13 +62,29 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
     return () => observer.disconnect();
   }, [deferUntilVisible, shouldFetch]);
 
+  const isUpdating = isFetching || query !== debouncedQuery;
+  const resetSearch = () => {
+    setQuery("");
+    setSelectedGenreId(null);
+    setOrderBy("score");
+    setSortBy("desc");
+    setRating("pg13");
+    if (searchParams.has("q")) {
+      const nextParams = new URLSearchParams(searchParams);
+      nextParams.delete("q");
+      setSearchParams(nextParams, { replace: true });
+    }
+  };
+
+  const HeadingTag = showMediaToggle ? "h2" : "h1";
+
   return (
     <section id="anime" className="animeSearch catalogue-search" ref={sectionRef}>
       <div className="search-panel">
         <div className="search-panel__copy">
           <p className="section-kicker">Anime catalogue</p>
-          <h1>Find a title that fits tonight.</h1>
-          <p className="search-panel__subtitle">A cleaner shelf for top-rated series, films, and comfort rewatches. Search first, then tune the list by rating and mood.</p>
+          <HeadingTag>Explore anime</HeadingTag>
+          <p className="search-panel__subtitle">Find a series or film. Compare ratings and save your next watch.</p>
         </div>
         <div className="search-panel__actions">
           {showMediaToggle ? (
@@ -80,6 +96,8 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
           <input className="searchInput" placeholder="Search anime..." aria-label="Search anime" type="text" value={query} onChange={event => setQuery(event.target.value)} />
         </div>
       </div>
+      <details className="catalogue-options">
+        <summary>Filters <span>Order, rating and genres</span></summary>
       <div className="filter search-filters">
         <div className="search-filters__summary">
           <span>Current shelf</span>
@@ -87,15 +105,15 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
         </div>
         <div className="search-filters__group">
           <p>Order by</p>
-          <Filter setOrderBy={setOrderBy} />
+          <Filter orderBy={orderBy} setOrderBy={setOrderBy} />
         </div>
         <div className="search-filters__group">
           <p>Rating</p>
-          <Rating setRating={setRating} />
+          <Rating rating={rating} setRating={setRating} />
         </div>
         <div className="search-filters__group">
           <p>Sort</p>
-          <Sort setSortBy={setSortBy} />
+          <Sort sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
       <GenreChips
@@ -107,8 +125,14 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
         selectedGenreId={selectedGenreId}
         onSelectGenre={setSelectedGenreId}
       />
-      <div className="search-content catalogue-grid">
-        {isLoading ? (
+      </details>
+      {shouldFetch ? (
+        <p className="search-results-status" role="status" aria-live="polite">
+          {isUpdating ? "Updating anime matches…" : isError ? "" : `${animeSearchItems.length} anime matches`}
+        </p>
+      ) : null}
+      <div className="search-content catalogue-grid" aria-busy={isUpdating}>
+        {!shouldFetch || isLoading ? (
           <LazyLoading message="Loading anime matches..." count={6} />
         ) : isError ? (
           <ErrorState
@@ -117,6 +141,12 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
             isRetrying={isFetching}
             role="alert"
           />
+        ) : !isUpdating && animeSearchItems.length === 0 ? (
+          <div className="search-empty">
+            <h3>No anime matches found</h3>
+            <p>Try another title or clear your search and filters.</p>
+            <button type="button" className="show-btn" onClick={resetSearch}>Reset anime search</button>
+          </div>
         ) : (
           animeSearchItems.map(obj => (
             <Link key={obj.mal_id} to={`/anime/${obj.mal_id}`}>

@@ -113,6 +113,16 @@ const Library = () => {
             );
           })}
         </section>
+      ) : items.length > 0 ? (
+        <section className="library-empty">
+          <h2>No titles match these filters.</h2>
+          <p>Your saved titles are still in your library. Clear the filters to see them.</p>
+          <button type="button" className="show-btn" onClick={() => {
+            setTypeFilter("all");
+            setStatusFilter("all");
+            setFavoritesOnly(false);
+          }}>Clear library filters</button>
+        </section>
       ) : (
         <section className="library-empty">
           <p className="section-kicker">No saved titles</p>

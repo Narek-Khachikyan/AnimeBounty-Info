@@ -20,7 +20,7 @@ const TopMangaCard = ({ mal_id, images, title_english, title: originalTitle, cha
           </div>
           <div className="slide__textWrapper p-1">
             <p className="slide__text text-base my-1">
-              {title.length > 20 ? `${title.slice(0, 21)}...` : title}
+              {title}
             </p>
             <p className="slide__chapters">Chapters: {chapters || "Unknown"}</p>
           </div>

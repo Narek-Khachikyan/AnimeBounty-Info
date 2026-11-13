@@ -1,9 +1,7 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import "./filter.scss";
 
-const Filter = ({ setOrderBy }) => {
-  const [active, setActive] = useState(2);
+const Filter = ({ setOrderBy, orderBy }) => {
 
   const order = [
     { id: 1, sortType: "title", label: "Title" },
@@ -11,20 +9,15 @@ const Filter = ({ setOrderBy }) => {
     { id: 3, sortType: "popularity", label: "Popularity" },
   ];
 
-  const handleOrderClick = (sortType, id) => {
-    setOrderBy(sortType);
-    setActive(id);
-  };
-
   return (
     <div className="filter-control" role="group" aria-label="Order results by">
       {order.map((item) => (
         <button
-          className={active === item.id ? "filter-btn active" : "filter-btn"}
-          onClick={() => handleOrderClick(item.sortType, item.id)}
+          className={orderBy === item.sortType ? "filter-btn active" : "filter-btn"}
+          onClick={() => setOrderBy(item.sortType)}
           key={item.id}
           type="button"
-          aria-pressed={active === item.id}
+          aria-pressed={orderBy === item.sortType}
         >
           {item.label}
         </button>
@@ -33,6 +26,7 @@ const Filter = ({ setOrderBy }) => {
   );
 };
 Filter.propTypes = {
+  orderBy: PropTypes.string.isRequired,
   setOrderBy: PropTypes.func.isRequired,
 };
 

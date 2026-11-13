@@ -18,7 +18,7 @@ const AnimeSliderCard = ({ images, score, title_english, title: originalTitle, e
         </div>
         <div className="slide__textWrapper p-1">
           <p className="slide__text text-base my-1">
-            {title.length > 20 ? `${title.slice(0, 21)}...` : title}
+            {title}
           </p>
           <p className="slide__subText">
             Episodes : <span>{episodes || "Unknown"}</span>

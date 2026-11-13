@@ -133,7 +133,8 @@ test.describe('Accessibility Smoke Tests', () => {
     await page.goto('/anime');
 
     const primaryNavigation = page.getByRole('navigation', { name: 'Primary navigation' });
-    await expect(primaryNavigation.getByRole('link', { name: 'Anime', exact: true })).toHaveAttribute('aria-current', 'page');
+    await expect(primaryNavigation).toBeHidden();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
     const menuButton = page.getByRole('button', { name: 'Open navigation menu' });
     await expect(menuButton).toHaveAttribute('aria-controls', 'primary-navigation');
@@ -141,9 +142,13 @@ test.describe('Accessibility Smoke Tests', () => {
 
     await menuButton.click();
     await expect(page.getByRole('button', { name: 'Close navigation menu' })).toHaveAttribute('aria-expanded', 'true');
+    await expect(primaryNavigation.getByRole('link', { name: 'Anime', exact: true })).toHaveAttribute('aria-current', 'page');
+    await expect(primaryNavigation.getByRole('link', { name: 'Anime', exact: true })).toBeFocused();
 
     await page.keyboard.press('Escape');
     await expect(page.getByRole('button', { name: 'Open navigation menu' })).toHaveAttribute('aria-expanded', 'false');
+    await expect(primaryNavigation).toBeHidden();
+    await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeFocused();
   });
 
   const routes = [

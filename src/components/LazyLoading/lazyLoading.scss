@@ -14,30 +14,31 @@
 
 .loader__grid {
   display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 26px 20px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .skeleton-card {
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
+  background: transparent;
+  border: 0;
+  min-width: 0;
   border-radius: var(--radius);
   display: grid;
   gap: 12px;
   overflow: hidden;
-  padding: 12px;
+  padding: 0;
 }
 
 .skeleton-card__poster,
 .skeleton-card__line,
 .skeleton-card__chips span {
-  animation: skeletonPulse 1.35s ease-in-out infinite;
+  animation: skeletonPulse 1.35s ease-in-out 3;
   background: linear-gradient(90deg, rgba(246, 240, 229, 0.055), rgba(246, 240, 229, 0.13), rgba(246, 240, 229, 0.055));
   background-size: 200% 100%;
 }
 
 .skeleton-card__poster {
-  aspect-ratio: 2 / 2.75;
+  aspect-ratio: 2 / 2.8;
   border-radius: 6px;
 }
 
@@ -73,3 +74,9 @@
     background-position: -100% 0;
   }
 }
+
+@media (max-width:1119px) { .loader__grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+@media (max-width:639px) { .loader__grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap:22px 14px; } }
+@media(max-width:639px) { .skeleton-card__poster { aspect-ratio:2 / 2.55; } }
+.catalogue-search .loader__message { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.skeleton-card { align-content: start; }

@@ -5,9 +5,7 @@
 }
 
 .library-hero {
-  background:
-    linear-gradient(135deg, rgba(255, 93, 61, 0.12), transparent 44%),
-    rgba(23, 20, 32, 0.76);
+  background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   margin-bottom: 20px;
@@ -16,10 +14,10 @@
   h1 {
     color: var(--text-primary);
     font-family: var(--font-display);
-    font-size: clamp(2.4rem, 5vw, 4.8rem);
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
     letter-spacing: -0.06em;
-    line-height: 0.92;
+    line-height: 1.1;
     margin: 8px 0 12px;
   }
 
@@ -56,8 +54,8 @@
 
   &:hover,
   &--active {
-    background: rgba(217, 164, 65, 0.16);
-    border-color: rgba(255, 93, 61, 0.55);
+    background: #45385f;
+    border-color: var(--accent);
     color: var(--text-primary);
   }
 }
@@ -76,7 +74,7 @@
   }
 
   select {
-    background: rgba(12, 12, 11, 0.72);
+    background: var(--app-bg-soft);
     border: 1px solid var(--surface-border-strong);
     border-radius: var(--radius);
     color: var(--text-primary);
@@ -103,7 +101,7 @@
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 
   &:hover {
-    border-color: rgba(255, 93, 61, 0.4);
+    border-color: var(--accent);
     box-shadow: var(--shadow-lift);
     transform: translateY(-2px);
   }
@@ -175,7 +173,7 @@
 }
 
 .library-empty {
-  background: rgba(23, 20, 32, 0.72);
+  background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   display: grid;
@@ -200,8 +198,8 @@
   gap: 10px;
 
   a {
-    background: rgba(217, 164, 65, 0.16);
-    border: 1px solid rgba(255, 93, 61, 0.45);
+    background: #45385f;
+    border: 1px solid var(--surface-border-strong);
     border-radius: var(--radius);
     color: var(--text-primary);
     font-weight: 850;

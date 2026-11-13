@@ -10,12 +10,12 @@ const AnimeCard = ({ title_english, title: originalTitle, images, score, episode
     <article className="card">
       <div className="card__content">
         <div className="card__img">
-          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : null}
+          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : <span className="poster-placeholder">Artwork unavailable</span>}
           {score ? <p className="card__score">{score}</p> : null}
         </div>
         <div className="card__textWrapper">
           <p className="card__eyebrow">Anime</p>
-          <h3 className="card__title">{title.length > 42 ? `${title.slice(0, 43)}...` : title}</h3>
+          <h3 className="card__title">{title}</h3>
           <div className="card__meta">
             <span>Episodes</span>
             <strong>{episodes || "Unknown"}</strong>

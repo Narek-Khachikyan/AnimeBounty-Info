@@ -212,6 +212,7 @@ test('anime page lazy-loads seasonal spotlight and filters search by genre', asy
   await page.getByRole('button', { name: 'Schedule' }).click();
   await expect(page.getByText('Monday Schedule Pick')).toBeVisible();
 
+  await page.locator('#anime summary').click();
   await page.getByRole('button', { name: 'Adventure' }).click();
   await expect(page.getByText('Adventure Anime Pick')).toBeVisible();
 });
@@ -253,6 +254,7 @@ test('anime search recovers from a single Jikan 429 response', async ({ page }) 
 test('manga page filters search by manga genre', async ({ page }) => {
   await page.goto('/manga');
 
+  await page.locator('#manga summary').click();
   await page.getByRole('button', { name: 'Drama' }).click();
   await expect(page.getByText('Drama Manga Pick')).toBeVisible();
 });

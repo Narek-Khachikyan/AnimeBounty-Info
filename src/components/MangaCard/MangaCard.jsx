@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import "./mangaCard.scss";
+import "../AnimeCard/AnimeCard.scss";
 
 const MangaCard = ({ title_english, title: originalTitle, chapters, images, score, genres }) => {
   const imageUrl = images?.webp?.image_url;
@@ -10,12 +10,12 @@ const MangaCard = ({ title_english, title: originalTitle, chapters, images, scor
     <article className="mangaCard">
       <div className="mangaCard__content">
         <div className="mangaCard__img">
-          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : null}
+          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : <span className="poster-placeholder">Artwork unavailable</span>}
           {score ? <p className="mangaCard__score">{score}</p> : null}
         </div>
         <div className="card__textWrapper">
           <p className="card__eyebrow">Manga</p>
-          <h3 className="card__title">{title.length > 42 ? `${title.slice(0, 43)}...` : title}</h3>
+          <h3 className="card__title">{title}</h3>
           <div className="card__meta">
             <span>Chapters</span>
             <strong>{chapters || "Unknown"}</strong>

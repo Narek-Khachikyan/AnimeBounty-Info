@@ -1,8 +1,5 @@
 .ai-rec {
-  background:
-    radial-gradient(circle at 92% 18%, rgba(183, 140, 255, 0.16), transparent 14rem),
-    linear-gradient(135deg, rgba(117, 227, 255, 0.09), transparent 34%),
-    rgba(23, 20, 32, 0.8);
+  background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   display: grid;
@@ -72,7 +69,7 @@
 }
 
 .ai-rec__controls select {
-  background: rgba(12, 12, 11, 0.72);
+  background: var(--app-bg-soft);
   border: 1px solid var(--surface-border-strong);
   color: var(--text-primary);
   padding: 9px 12px;
@@ -81,8 +78,8 @@
 .ai-rec__controls button,
 .ai-rec__notice a,
 .ai-rec-card__body a {
-  background: rgba(255, 93, 61, 0.16);
-  border: 1px solid rgba(255, 93, 61, 0.45);
+  background: #45385f;
+  border: 1px solid var(--surface-border-strong);
   border-radius: var(--radius);
   color: var(--text-primary);
   font-weight: 850;
