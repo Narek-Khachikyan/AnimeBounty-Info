@@ -4,7 +4,7 @@
 
 .character-page__hero,
 .character-page__section {
-  background: rgba(28, 26, 23, 0.72);
+  background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);

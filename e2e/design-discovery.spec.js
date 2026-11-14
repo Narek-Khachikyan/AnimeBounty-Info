@@ -84,3 +84,33 @@ test('library distinguishes a filter miss from an empty shelf', async ({ page })
   await page.getByRole('button', { name: 'Clear library filters' }).click();
   await expect(page.getByRole('link', { name: /Saved Lantern/ })).toBeVisible();
 });
+
+for (const media of ['anime', 'manga']) {
+  test(`home ${media} expands filtered results without losing the selection`, async ({ page }) => {
+    const filtered = Array.from({ length: 8 }, (_, index) => ({
+      ...records[0], mal_id: 1000 + index, title: `Filtered ${media} ${index + 1}`,
+      title_english: `Filtered ${media} ${index + 1}`,
+    }));
+    await page.route('https://api.tenrai.org/v1/**', async route => {
+      const url = new URL(route.request().url());
+      const isCatalogue = url.pathname === `/v1/${media}`;
+      const genres = url.pathname === `/v1/genres/${media}`;
+      await route.fulfill({ json: { data: genres ? [{ mal_id: 2, name: 'Adventure' }] : isCatalogue ? filtered : [] } });
+    });
+    await page.goto('/');
+    const section = page.locator(`#${media}`);
+    await section.locator('summary').click();
+    await section.getByRole('button', { name: 'Adventure', exact: true }).click();
+    await section.getByRole('button', { name: 'Title', exact: true }).click();
+    await section.getByRole('button', { name: 'Ascending', exact: true }).click();
+    await expect(section.getByRole('status')).toHaveText('5 ' + media + ' titles shown');
+    await expect(section.getByRole('heading', { name: `Filtered ${media} 6`, exact: true })).toHaveCount(0);
+    await section.getByRole('button', { name: `Show all 8 ${media} titles` }).click();
+    await expect(section.getByRole('heading', { name: `Filtered ${media} 6`, exact: true })).toBeVisible();
+    await expect(section.locator('.catalogue-context')).toContainText('By title · Ascending');
+    await expect(section.locator('.catalogue-context')).toContainText('Genre: Adventure');
+    await expect(section.getByRole('button', { name: 'Title', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await section.getByRole('button', { name: `Show fewer ${media} titles` }).click();
+    await expect(section.getByRole('heading', { name: `Filtered ${media} 6`, exact: true })).toHaveCount(0);
+  });
+}

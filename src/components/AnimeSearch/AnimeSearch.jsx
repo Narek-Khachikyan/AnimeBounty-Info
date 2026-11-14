@@ -12,8 +12,9 @@ import GenreChips from "../GenreChips/GenreChips";
 import "./animeSearch.scss";
 import useDebounce from "../../hooks/useDebounce";
 
-const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true, deferUntilVisible = false }) => {
+const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy, showMediaToggle = true, deferUntilVisible = false, previewLimit }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showAll, setShowAll] = useState(false);
   const queryParam = searchParams.get("q") || "";
   const [query, setQuery] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
@@ -93,9 +94,11 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
               <a className="media-toggle__item" href="#manga">Manga</a>
             </div>
           ) : null}
-          <input className="searchInput" placeholder="Search anime..." aria-label="Search anime" type="text" value={query} onChange={event => setQuery(event.target.value)} />
+          <label className="catalogue-search-field" htmlFor="anime-search-input"><span>Search anime</span>
+          <input id="anime-search-input" className="searchInput" placeholder="Search anime..." aria-label="Search anime" type="text" value={query} onChange={event => setQuery(event.target.value)} /></label>
         </div>
       </div>
+      <div className="catalogue-context"><p>{orderBy === "score" ? "Highest rated" : orderBy === "title" ? "By title" : `Ordered by ${orderBy}`} · {sortBy === "desc" ? "Descending" : "Ascending"} · Rating: {({pg:"PG",pg13:"PG-13",r17:"R-17"}[rating] || rating)} {selectedGenreId ? `· Genre: ${animeGenres?.data?.find(genre => genre.mal_id === selectedGenreId)?.name || selectedGenreId}` : ""}</p><button type="button" onClick={resetSearch}>Reset filters</button></div>
       <details className="catalogue-options">
         <summary>Filters <span>Order, rating and genres</span></summary>
       <div className="filter search-filters">
@@ -128,7 +131,7 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
       </details>
       {shouldFetch ? (
         <p className="search-results-status" role="status" aria-live="polite">
-          {isUpdating ? "Updating anime matches…" : isError ? "" : `${animeSearchItems.length} anime matches`}
+          {isUpdating ? "Updating anime matches…" : isError ? "" : `${previewLimit && !showAll && !query ? Math.min(previewLimit, animeSearchItems.length) : animeSearchItems.length} anime titles shown`}
         </p>
       ) : null}
       <div className="search-content catalogue-grid" aria-busy={isUpdating}>
@@ -148,13 +151,17 @@ const AnimeSearch = ({ setOrderBy, setRating, setSortBy, orderBy, rating, sortBy
             <button type="button" className="show-btn" onClick={resetSearch}>Reset anime search</button>
           </div>
         ) : (
-          animeSearchItems.map(obj => (
+          animeSearchItems.slice(0, previewLimit && !showAll && !query ? previewLimit : undefined).map(obj => (
             <Link key={obj.mal_id} to={`/anime/${obj.mal_id}`}>
               <AnimeCard {...obj} />
             </Link>
           ))
         )}
       </div>
+      {previewLimit ? <div className="catalogue-continuation">
+        {animeSearchItems.length > previewLimit && !query ? <button className="catalogue-view-all" type="button" aria-expanded={showAll} onClick={() => setShowAll(value => !value)}>{showAll ? "Show fewer anime titles" : `Show all ${animeSearchItems.length} anime titles`}<span aria-hidden="true">{showAll ? "−" : "+"}</span></button> : null}
+        <Link className="catalogue-route-link" to="/anime">Open anime catalogue ↗</Link>
+      </div> : null}
     </section>
   )
 }
@@ -168,6 +175,7 @@ AnimeSearch.propTypes = {
   sortBy: PropTypes.string.isRequired,
   showMediaToggle: PropTypes.bool,
   deferUntilVisible: PropTypes.bool,
+  previewLimit: PropTypes.number,
 };
 
 export default AnimeSearch;

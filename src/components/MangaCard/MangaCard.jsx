@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import "../AnimeCard/AnimeCard.scss";
 
-const MangaCard = ({ title_english, title: originalTitle, chapters, images, score, genres }) => {
+const MangaCard = ({ title_english, title: originalTitle, chapters, images, score, type, genres }) => {
   const imageUrl = images?.webp?.image_url;
   const title = title_english || originalTitle || "Untitled manga";
   const mangaGenres = Array.isArray(genres) ? genres : [];
@@ -10,13 +10,14 @@ const MangaCard = ({ title_english, title: originalTitle, chapters, images, scor
     <article className="mangaCard">
       <div className="mangaCard__content">
         <div className="mangaCard__img">
-          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" /> : <span className="poster-placeholder">Artwork unavailable</span>}
+          {imageUrl ? <img src={imageUrl} alt={title} loading="lazy" decoding="async" width="200" height="280" /> : <span className="poster-placeholder">Artwork unavailable</span>}
           {score ? <p className="mangaCard__score">{score}</p> : null}
         </div>
         <div className="card__textWrapper">
           <p className="card__eyebrow">Manga</p>
           <h3 className="card__title">{title}</h3>
           <div className="card__meta">
+            {type ? <strong>{type} ·</strong> : null}
             <span>Chapters</span>
             <strong>{chapters || "Unknown"}</strong>
           </div>
@@ -48,6 +49,7 @@ MangaCard.propTypes = {
     }),
   }),
   score: PropTypes.number,
+  type: PropTypes.string,
   genres: PropTypes.arrayOf(
     PropTypes.shape({
       mal_id: PropTypes.number.isRequired,

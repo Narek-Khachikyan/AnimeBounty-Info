@@ -109,7 +109,7 @@
 }
 
 .episodes__content {
-  background: rgba(12, 12, 11, 0.22);
+  background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   padding: 18px;
@@ -164,7 +164,7 @@
 .reviews {
   background:
     linear-gradient(135deg, rgba(255, 93, 61, 0.07), transparent 44%),
-    rgba(23, 20, 32, 0.74);
+    var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   margin-top: 24px;
@@ -180,10 +180,10 @@
 .fullAnime__text {
   color: var(--text-primary);
   font-family: var(--font-display);
-  font-size: clamp(2.3rem, 5vw, 4.8rem) !important;
+  font-size: clamp(2rem, 4vw, 3.8rem);
   font-weight: 700;
   letter-spacing: -0.06em;
-  line-height: 0.94;
+  line-height: 1.08;
 }
 
 .detail-section__title {
@@ -252,4 +252,13 @@
   .images__img {
     height: 100%;
   }
+}
+.fullAnime__img { align-self:flex-start; aspect-ratio:2 / 2.8; }
+
+@media(max-width:760px) {
+ .fullAnime__img { flex-basis:128px; width:128px; max-width:128px; }
+ .fullAnime__textWrapper { width:100%; min-width:0; gap:6px; }
+ .fullAnime__text { font-size:clamp(1.7rem,7vw,2.2rem); line-height:1.12; overflow-wrap:anywhere; }
+ .fullAnime__subtext { font-size:1rem; line-height:1.5; }
+ .fullAnime__contnet { gap:20px; }
 }

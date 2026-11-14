@@ -13,9 +13,9 @@ export default defineConfig({
       manifest: {
         name: 'AnimeBounty Info',
         short_name: 'AnimeBounty',
-        description: 'Browse anime and manga shelves from the public Jikan API.',
-        theme_color: '#10100f',
-        background_color: '#10100f',
+        description: 'Explore anime and manga and build your personal library.',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
@@ -41,7 +41,7 @@ export default defineConfig({
       },
       workbox: {
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webp,webmanifest}'],
         navigateFallback: '/index.html',
         runtimeCaching: [
           {

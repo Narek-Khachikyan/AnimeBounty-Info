@@ -166,14 +166,14 @@ const FullMangaDetails = () => {
         />
       ) : manga ? (
         <>
-          <div data-aos="fade-up" className="fullManga__content flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap">
+          <div  className="fullManga__content flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap">
             <div className="fullManga__img">
               {mangaImageUrl ? <img src={mangaImageUrl} alt={mangaTitle} /> : null}
               {manga.score ? <p className="fullManga__score bg-white text-black text-xl py-1 px-4">{manga.score}</p> : null}
             </div>
             <div className="fullManga__textWrapper">
               <p className="section-kicker">Manga profile</p>
-              <h1 className="fullManga__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{mangaTitle}</h1>
+              <h1 className="fullManga__text">{mangaTitle}</h1>
               <p className="fullManga__subtext mt-1 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Chapters: <b>{manga.chapters || "Unknown"}</b></p>
               <p className="fullManga__subtext my-2 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Status: <b>{manga.status || "Unknown"}</b></p>
               <p className="fullManga__subtext text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-2">Published: <b>{manga.published?.string || "Unknown"}</b></p>
@@ -188,13 +188,13 @@ const FullMangaDetails = () => {
               <LibraryControls item={manga} type="manga" />
             </div>
           </div>
-          <div data-aos="fade-up" className="fullManga__descr mt-3">
+          <div  className="fullManga__descr mt-3">
             <h2 className="fullManga__descr-title detail-section__title text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl my-4">Description</h2>
             <p className="fullManga__descr-text text-base sm:text-sm md:text-base">
               {manga.background || manga.synopsis || "No description available."}
             </p>
           </div>
-          <div data-aos="fade-up" className="mangaImages">
+          <div  className="mangaImages">
             <h2 className="detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Poster gallery</h2>
             <div className="animeImages__content">
               {mangaPicturesLoading ? <LazyLoading message="Loading manga images..." count={5} /> : mangaPicturesError ? (

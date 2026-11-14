@@ -227,14 +227,14 @@ const FullAnimeDetails = () => {
           />
         ) : anime ? (
           <>
-            <div data-aos="fade-up" className="fullAnime__contnet flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap" key={anime.mal_id}>
+            <div  className="fullAnime__contnet flex flex-wrap gap-10 pt-10 sm:flex-wrap md:flex-nowrap" key={anime.mal_id}>
               <div className="fullAnime__img">
                 {animeImageUrl ? <img src={animeImageUrl} alt={animeTitle} /> : null}
                 {anime.score ? <p className="fullAnime__score bg-white text-black text-xl py-1 px-4">{anime.score}</p> : null}
               </div>
               <div className="fullAnime__textWrapper">
                 <p className="section-kicker">Anime profile</p>
-                <h1 className="fullAnime__text text-2xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{animeTitle}</h1>
+                <h1 className="fullAnime__text">{animeTitle}</h1>
                 <p className="fullAnime__episodes mt-1 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Episodes: <b>{anime.episodes || "Unknown"}</b></p>
                 <p className="FullAnime__status my-2 text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Status: <b>{anime.status || "Unknown"}</b></p>
                 <p className="FullAnime__year text-base sm:text-xl md:text-xl lg:text-2xl xl:text-2xl">Year: <b>{anime.year || "Unknown"}</b></p>
@@ -247,7 +247,7 @@ const FullAnimeDetails = () => {
                 <LibraryControls item={anime} type="anime" />
               </div>
             </div>
-            <div className="images" data-aos="fade-up">
+            <div className="images" >
               <h2 className="detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl my-8">Poster gallery</h2>
               <div className="images__content">
                 {animePicturesLoading ? <LazyLoading message="Loading anime images..." count={5} /> : animePicturesError ? (
@@ -279,7 +279,7 @@ const FullAnimeDetails = () => {
                 ) : <p>There are currently no images for this anime.</p>}
               </div>
             </div>
-            <div data-aos="fade-up" className="fullAnime__trailer mt-4">
+            <div  className="fullAnime__trailer mt-4">
               {trailerUrl && trailerImageUrl ? (
                 <>
                   <h2 className="detail-section__title text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-4">Trailer</h2>

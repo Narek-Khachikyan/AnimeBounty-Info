@@ -15,7 +15,7 @@ a:active {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(134, 215, 198, 0.85);
+  outline: 3px solid var(--accent, #22603c);
   outline-offset: 4px;
 }
 

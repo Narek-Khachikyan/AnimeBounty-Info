@@ -35,7 +35,7 @@
   color: var(--text-primary);
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.6vw, 2rem);
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1.1;
   margin-top: 6px;
 }
@@ -65,7 +65,7 @@
 .ai-rec__controls select,
 .ai-rec__controls button {
   border-radius: var(--radius);
-  min-height: 42px;
+  min-height: 44px;
 }
 
 .ai-rec__controls select {
@@ -78,12 +78,15 @@
 .ai-rec__controls button,
 .ai-rec__notice a,
 .ai-rec-card__body a {
-  background: #45385f;
+  background: #232323;
   border: 1px solid var(--surface-border-strong);
   border-radius: var(--radius);
-  color: var(--text-primary);
-  font-weight: 850;
-  padding: 10px 13px;
+  color: #fff;
+  font-weight: 550;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
 }
 
 .ai-rec__controls button {
@@ -115,8 +118,8 @@
 }
 
 .ai-rec-card {
-  background: rgba(7, 9, 17, 0.38);
-  border: 1px solid rgba(240, 220, 184, 0.1);
+  background: #f5f7f4;
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr);
@@ -130,7 +133,7 @@
   color: var(--text-subtle);
   display: flex;
   font-size: 0.7rem;
-  font-weight: 900;
+  font-weight: 600;
   justify-content: center;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -152,7 +155,7 @@
     color: var(--text-primary);
     font-family: var(--font-display);
     font-size: 1rem;
-    font-weight: 900;
+    font-weight: 600;
     line-height: 1.25;
   }
 
@@ -170,7 +173,7 @@
   color: var(--accent-gold);
   font-family: var(--font-utility);
   font-size: 0.68rem;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -184,3 +187,7 @@
     grid-template-columns: 82px minmax(0, 1fr);
   }
 }
+
+.ai-rec__controls button:not(:disabled):hover, .ai-rec__notice a:hover, .ai-rec-card__body a:hover { background: #35513e; transform: translateY(-2px); }
+.ai-rec__controls button, .ai-rec__notice a, .ai-rec-card__body a { transition: background 160ms ease, transform 160ms ease; }
+@media (max-width: 560px) { .ai-rec__results { grid-template-columns: minmax(0, 1fr); } }

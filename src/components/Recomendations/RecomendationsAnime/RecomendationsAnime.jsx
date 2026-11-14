@@ -35,7 +35,7 @@ const RecomendationsAnime = ({ data }) => {
   }, [animeRecommendations.length, hasMoreItems, isLoading]);
 
   return (
-    <section data-aos="fade-up" className="py-5 rec" aria-labelledby="anime-recommendations-title">
+    <section  className="py-5 rec" aria-labelledby="anime-recommendations-title">
       <div className="section-heading">
         <p className="section-kicker">If you liked these</p>
         <h3 id="anime-recommendations-title" className="text-4xl rec__title mb-5">Recommended anime</h3>
