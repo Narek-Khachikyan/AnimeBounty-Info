@@ -12,7 +12,8 @@ to Netlify.
    link, offline and update notices, `<Outlet />`).
 3. Pages under `src/Page/` request anime or manga data and compose feature
    components.
-4. `src/features/apiSlice.js` is the Jikan API boundary. It defines Redux
+4. `src/features/apiSlice.js` is the catalogue API boundary, using Tenrai
+   (`https://api.tenrai.org/v1`) with Jikan-compatible response shapes. It defines Redux
    Toolkit Query endpoints and builds search URLs with `URLSearchParams`.
    `src/features/userLibrary.js` owns the localStorage library, and
    `src/features/aiRecommendations.js` shapes the AI request payload.
@@ -25,7 +26,10 @@ to Netlify.
    views, recommendations, loading states, and errors.
 6. The AI helper calls a Netlify Function (`netlify/functions/ai-recommendations.mjs`),
    the only place the Gemini key is read.
-7. Netlify serves the built `dist/` directory and falls back all routes to
+7. Workbox caches Tenrai responses under legacy Jikan URL keys in
+   `jikan-api-cache`, with the existing seven-day expiration. This lets updated
+   installed clients read previously cached responses while offline.
+8. Netlify serves the built `dist/` directory and falls back all routes to
    `index.html`.
 
 ## Boundaries
@@ -45,7 +49,7 @@ to Netlify.
 ## Agent-Oriented Invariants
 
 - API response shapes are not trusted. Components must tolerate missing nested
-  fields from Jikan.
+  fields from the catalogue API.
 - Search parameters are encoded structurally, not by string concatenation.
 - A failed API request must produce a visible error state.
 - Lists must receive arrays or locally coerce unknown values to arrays.

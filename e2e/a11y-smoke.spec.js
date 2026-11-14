@@ -20,34 +20,34 @@ const mangaItem = (malId, title) => ({
 });
 
 const routeJikan = async (page) => {
-  await page.route('https://api.jikan.moe/v4/**', async (route) => {
+  await page.route('https://api.tenrai.org/v1/**', async (route) => {
     const requestUrl = new URL(route.request().url());
     const { pathname } = requestUrl;
     let body = { data: [] };
 
-    if (pathname === '/v4/top/anime') {
+    if (pathname === '/v1/top/anime') {
       body = { data: [animeItem(10, 'Top Anime Fixture')] };
-    } else if (pathname === '/v4/recommendations/anime') {
+    } else if (pathname === '/v1/recommendations/anime') {
       body = { data: [{ entry: [animeItem(11, 'Recommended Anime Fixture')] }] };
-    } else if (pathname === '/v4/seasons/now') {
+    } else if (pathname === '/v1/seasons/now') {
       body = { data: [animeItem(14, 'Season Now Pick')] };
-    } else if (pathname === '/v4/seasons/upcoming') {
+    } else if (pathname === '/v1/seasons/upcoming') {
       body = { data: [animeItem(15, 'Upcoming Season Pick')] };
-    } else if (pathname === '/v4/schedules') {
+    } else if (pathname === '/v1/schedules') {
       body = { data: [animeItem(16, 'Monday Schedule Pick')] };
-    } else if (pathname === '/v4/genres/anime') {
+    } else if (pathname === '/v1/genres/anime') {
       body = { data: [{ mal_id: 2, name: 'Adventure', count: 200 }] };
-    } else if (pathname === '/v4/top/manga') {
+    } else if (pathname === '/v1/top/manga') {
       body = { data: [mangaItem(20, 'Top Manga Fixture')] };
-    } else if (pathname === '/v4/recommendations/manga') {
+    } else if (pathname === '/v1/recommendations/manga') {
       body = { data: [{ entry: [mangaItem(21, 'Recommended Manga Fixture')] }] };
-    } else if (pathname === '/v4/genres/manga') {
+    } else if (pathname === '/v1/genres/manga') {
       body = { data: [{ mal_id: 8, name: 'Drama', count: 180 }] };
-    } else if (pathname === '/v4/anime') {
+    } else if (pathname === '/v1/anime') {
       body = { data: [animeItem(13, 'Search Anime Fixture')] };
-    } else if (pathname === '/v4/manga') {
+    } else if (pathname === '/v1/manga') {
       body = { data: [mangaItem(23, 'Search Manga Fixture')] };
-    } else if (pathname === '/v4/anime/1') {
+    } else if (pathname === '/v1/anime/1') {
       body = {
         data: {
           ...animeItem(1, 'Detail Anime Fixture'),
@@ -59,17 +59,17 @@ const routeJikan = async (page) => {
           trailer: { url: null, images: {} },
         },
       };
-    } else if (pathname === '/v4/anime/1/pictures' || pathname === '/v4/anime/1/episodes') {
+    } else if (pathname === '/v1/anime/1/pictures' || pathname === '/v1/anime/1/episodes') {
       body = { data: [] };
-    } else if (pathname === '/v4/anime/1/characters') {
+    } else if (pathname === '/v1/anime/1/characters') {
       body = { data: [] };
-    } else if (pathname === '/v4/anime/1/relations') {
+    } else if (pathname === '/v1/anime/1/relations') {
       body = { data: [] };
-    } else if (pathname === '/v4/anime/1/streaming') {
+    } else if (pathname === '/v1/anime/1/streaming') {
       body = { data: [] };
-    } else if (pathname === '/v4/anime/1/videos') {
+    } else if (pathname === '/v1/anime/1/videos') {
       body = { data: { promo: [] } };
-    } else if (pathname === '/v4/manga/2') {
+    } else if (pathname === '/v1/manga/2') {
       body = {
         data: {
           ...mangaItem(2, 'Detail Manga Fixture'),
@@ -79,13 +79,13 @@ const routeJikan = async (page) => {
           authors: [{ mal_id: 1, name: 'Author Fixture' }],
         },
       };
-    } else if (pathname === '/v4/manga/2/pictures') {
+    } else if (pathname === '/v1/manga/2/pictures') {
       body = { data: [] };
-    } else if (pathname === '/v4/manga/2/characters') {
+    } else if (pathname === '/v1/manga/2/characters') {
       body = { data: [] };
-    } else if (pathname === '/v4/manga/2/relations') {
+    } else if (pathname === '/v1/manga/2/relations') {
       body = { data: [] };
-    } else if (pathname === '/v4/characters/777/full') {
+    } else if (pathname === '/v1/characters/777/full') {
       body = {
         data: {
           mal_id: 777,

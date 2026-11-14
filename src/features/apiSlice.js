@@ -17,7 +17,7 @@ export const buildSearchQuery = (resource, params) => {
 };
 
 const scheduledBaseQuery = createJikanBaseQuery(fetchBaseQuery({
-  baseUrl: 'https://api.jikan.moe/v4',
+  baseUrl: 'https://api.tenrai.org/v1',
   timeout: 15000,
 }));
 

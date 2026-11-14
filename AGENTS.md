@@ -14,8 +14,8 @@ Short map for agent work here. Durable project knowledge lives in `docs/`, not i
 
 The app is publicly deployed and installable as a PWA, with the user library in `localStorage`. Four rules protect that:
 
-- Offline still renders cached Jikan content. The `jikan-api-cache` Workbox runtime cache serves up to 7 days of anime and manga data; changing the cache name or `navigateFallback` leaves installed users with an empty app.
-- A Jikan failure renders a visible error state, never a blank screen. `/anime` and `/manga` already render `ErrorState` with `role="alert"` and retry; match that shape.
+- Offline still renders cached catalogue content. The `jikan-api-cache` Workbox runtime cache serves up to 7 days of anime and manga data; changing the cache name or `navigateFallback` leaves installed users with an empty app.
+- A catalogue API failure renders a visible error state, never a blank screen. `/anime` and `/manga` already render `ErrorState` with `role="alert"` and retry; match that shape.
 - A hard refresh of any nested route works. `/anime/1`, `/manga/2`, and `/character/777` come from the SPA fallback, not from a file on disk.
 - No API secrets in client code. The Gemini key is read only inside the Netlify Function, so a key under `src/` is a leaked key.
 
@@ -24,7 +24,7 @@ The app is publicly deployed and installable as a PWA, with the user library in 
 Read `package.json` for the dependency list. These parts it does not explain:
 
 - Routes live in `src/App.jsx`: 8 URLs plus a `*` catch-all to `/`.
-- `src/features/` owns logic: `apiSlice.js` (Jikan), `userLibrary.js` (localStorage), `aiRecommendations.js` (AI payload).
+- `src/features/` owns logic: `apiSlice.js` (Tenrai, Jikan-compatible), `userLibrary.js` (localStorage), `aiRecommendations.js` (AI payload).
 - `src/Page/` uses a capital P and is flat; `src/components/` groups components into folders with no barrel file (`Filter/` holds `Filter.jsx`, `Rating.jsx`, `Sort.jsx`).
 - Tailwind utilities sit in JSX, design tokens in `src/App.scss`, and each component imports its own `.scss`.
 - `e2e/` specs run against the built `dist/` through `npm run preview` on port 4173.
@@ -73,7 +73,7 @@ A one-way door is a bug. If you add a way in, add the way out and the way to see
 
 ## API and data rules
 
-- `src/features/apiSlice.js` is the only place Jikan requests are built. Add new endpoints there.
+- `src/features/apiSlice.js` is the only place catalogue API requests are built. Add new endpoints there.
 - Encode query strings with `URLSearchParams`; never concatenate raw user input into a URL.
 - Normalization for missing nested fields lives in `src/features/`; components render what they are handed and never touch raw response shapes.
 - Keep the pacing constants: request gap 900ms, 429 cooldown 5s, `maxRetries: 2`, `timeout: 15000`. `e2e/jikan-endpoints.spec.js` asserts recovery after one 429.
@@ -108,7 +108,7 @@ A one-way door is a bug. If you add a way in, add the way out and the way to see
 
 ## Fixtures and secrets
 
-- The specs intercept `https://api.jikan.moe/v4/**` and fulfill fixtures, so assert rendered output, not that a fetch happened. Every fixture set needs one realistic full Jikan record and one record with missing nested fields.
+- The specs intercept `https://api.tenrai.org/v1/**` and fulfill fixtures, so assert rendered output, not that a fetch happened. Every fixture set needs one realistic full Jikan-compatible record and one record with missing nested fields.
 - Never place a real Gemini key or Netlify env value in a fixture, a spec, or a committed file. `ai:check` reads `.env.example`, not `.env`, and requires the literal `GEMINI_API_KEY=` and `GEMINI_MODEL=gemini-3.1-flash-lite`.
 
 ## Authority

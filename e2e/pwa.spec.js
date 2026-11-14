@@ -159,7 +159,7 @@ const seedJikanCache = async (page) => {
   expect(cachedEntryCount).toBeGreaterThanOrEqual(Object.keys(jikanFixtures).length);
 };
 
-test('PWA serves the app shell and cached Jikan data offline', async ({ page, context }) => {
+test('PWA serves the app shell and legacy Jikan cache offline after API migration', async ({ page, context }) => {
   test.setTimeout(90_000);
   await page.goto('/about');
   await expect(page.getByRole('button', { name: 'AnimeBounty-Info' })).toBeVisible();
@@ -205,6 +205,41 @@ test('PWA serves the app shell and cached Jikan data offline', async ({ page, co
     await expect(page.getByText('Cached manga community review', { exact: true })).toBeVisible();
     await expect(page.locator('.reviews').getByText('Unknown', { exact: true })).toBeVisible();
     await expect(page.locator('main#main-content')).toHaveCount(1);
+  } finally {
+    await context.setOffline(false);
+  }
+});
+
+test('PWA caches online Tenrai results under legacy keys for offline reloads', async ({ page, context }) => {
+  await context.route('https://api.tenrai.org/v1/**', async (route) => {
+    const legacyUrl = route.request().url().replace('https://api.tenrai.org/v1', 'https://api.jikan.moe/v4');
+    await route.fulfill({
+      contentType: 'application/json',
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify(jikanFixtures[legacyUrl] ?? { data: [] }),
+    });
+  });
+  await page.goto('/about');
+  await activateServiceWorker(page);
+
+  for (const media of ['anime', 'manga']) {
+    await page.goto(`/${media}`);
+    await expect(page.getByRole('heading', { name: `Cached ${media === 'anime' ? 'Anime' : 'Manga'} Search`, exact: true })).toBeVisible();
+    const legacyUrl = `https://api.jikan.moe/v4/${media}?order_by=score&${media === 'anime' ? 'rating=pg13&' : ''}sort=desc`;
+    await expect.poll(() => page.evaluate(async (url) => {
+      const cache = await caches.open('jikan-api-cache');
+      const response = await cache.match(url);
+      return response ? (await response.json()).data[0].title : null;
+    }, legacyUrl)).toBe(`Cached ${media === 'anime' ? 'Anime' : 'Manga'} Search`);
+  }
+
+  await context.unroute('https://api.tenrai.org/v1/**');
+  await context.setOffline(true);
+  try {
+    for (const media of ['anime', 'manga']) {
+      await page.goto(`/${media}`);
+      await expect(page.getByRole('heading', { name: `Cached ${media === 'anime' ? 'Anime' : 'Manga'} Search`, exact: true })).toBeVisible();
+    }
   } finally {
     await context.setOffline(false);
   }

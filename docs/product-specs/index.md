@@ -7,14 +7,14 @@ retired after its issues were fixed; ongoing work is tracked in
 ## Product Summary
 
 AnimeBounty-Info is a browse and discovery UI for anime and manga content backed
-by the public Jikan API. Users should be able to browse top items, search, filter,
+by the public Tenrai API using Jikan-compatible data. Users should be able to browse top items, search, filter,
 open detail pages, and recover gracefully when the API is incomplete, slow, or
 temporarily unavailable.
 
 ## Current Stabilization Goal
 
 Stabilize the app for Netlify deployment by keeping build/lint checks green,
-guarding against incomplete Jikan responses, preserving SPA routing, and reducing
+guarding against incomplete catalogue API responses, preserving SPA routing, and reducing
 dependency risk.
 
 ## Acceptance Criteria Index
