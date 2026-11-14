@@ -45,11 +45,18 @@ export default defineConfig({
         navigateFallback: '/index.html',
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/api\.jikan\.moe\/v4\/.*$/i,
+            urlPattern: /^https:\/\/(?:api\.tenrai\.org\/v1|api\.jikan\.moe\/v4)\/.*$/i,
             handler: 'NetworkFirst',
             method: 'GET',
             options: {
               cacheName: 'jikan-api-cache',
+              plugins: [{
+                // Keep existing installed clients' cached Jikan responses usable.
+                cacheKeyWillBeUsed: async ({ request }) => request.url.replace(
+                  /^https:\/\/api\.tenrai\.org\/v1\//i,
+                  'https://api.jikan.moe/v4/'
+                ),
+              }],
               expiration: {
                 maxEntries: 80,
                 maxAgeSeconds: 60 * 60 * 24 * 7,

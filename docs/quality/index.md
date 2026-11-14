@@ -52,7 +52,7 @@ Check these flows in a browser:
 - Refreshing a nested route still loads through the Netlify SPA fallback after
   deployment.
 - After opening Anime and Manga online, switch the browser offline and confirm
-  those views still show previously cached Jikan-backed content.
+  those views still show previously cached catalogue content.
 - Trigger or wait for a changed service worker and confirm the app shows a
   visible "New version" update notice with an Update action.
 
@@ -67,14 +67,15 @@ Also manually check this deploy-preview flow:
 1. Open the home page, `/anime`, and `/manga` while online.
 2. Use DevTools to switch the page offline.
 3. Reload `/anime` and `/manga`; the app shell should load and previously opened
-   Jikan data should still render from cache.
+   catalogue data should still render from cache.
 4. Deploy a changed build and confirm the update notice appears before applying
    the new service worker.
 
 ## Known Risks
 
-- Jikan may return rate limits, partial data, or null nested fields.
-- Jikan runtime cache can serve data up to 7 days old while offline.
+- Tenrai may return rate limits, partial data, or null nested fields.
+- The legacy `jikan-api-cache` runtime cache now stores Tenrai responses and can
+  serve data up to 7 days old while offline.
 - Some legacy component names use `Recomendations`; do not rename broadly unless
   a plan explicitly covers the migration.
 - The PWA browser smoke is intentionally narrow, so manual smoke checks still

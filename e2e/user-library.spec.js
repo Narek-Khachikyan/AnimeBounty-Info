@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
 
 const routeJikanDetail = async (page) => {
-  await page.route('https://api.jikan.moe/v4/**', async (route) => {
+  await page.route('https://api.tenrai.org/v1/**', async (route) => {
     const requestUrl = new URL(route.request().url());
     const { pathname } = requestUrl;
     let body = { data: [] };
 
-    if (pathname === '/v4/anime/1') {
+    if (pathname === '/v1/anime/1') {
       body = {
         data: {
           mal_id: 1,
@@ -21,7 +21,7 @@ const routeJikanDetail = async (page) => {
           trailer: { url: null, images: {} },
         },
       };
-    } else if (pathname === '/v4/anime/1/pictures' || pathname === '/v4/anime/1/episodes') {
+    } else if (pathname === '/v1/anime/1/pictures' || pathname === '/v1/anime/1/episodes') {
       body = { data: [] };
     }
 

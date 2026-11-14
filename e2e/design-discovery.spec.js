@@ -19,9 +19,9 @@ for (const media of ['anime', 'manga']) {
   test(`${media} search explains pending and empty results and recovers after reset`, async ({ page }) => {
     let finishEmpty;
     const emptyResponse = new Promise((resolve) => { finishEmpty = resolve; });
-    await page.route('https://api.jikan.moe/v4/**', async (route) => {
+    await page.route('https://api.tenrai.org/v1/**', async (route) => {
       const url = new URL(route.request().url());
-      if (url.pathname === `/v4/${media}`) {
+      if (url.pathname === `/v1/${media}`) {
         const empty = url.searchParams.get('q') === 'no-match';
         if (empty) await emptyResponse;
         await route.fulfill({ json: { data: empty ? [] : records } });
@@ -46,9 +46,9 @@ for (const media of ['anime', 'manga']) {
 }
 
 test('home filter highlights follow effective values in both catalogues', async ({ page }) => {
-  await page.route('https://api.jikan.moe/v4/**', async (route) => {
+  await page.route('https://api.tenrai.org/v1/**', async (route) => {
     const url = new URL(route.request().url());
-    const isCatalogue = ['/v4/anime', '/v4/manga'].includes(url.pathname);
+    const isCatalogue = ['/v1/anime', '/v1/manga'].includes(url.pathname);
     const title = url.searchParams.get('order_by') === 'title' ? 'Title ordered result' : 'Score ordered result';
     await route.fulfill({ json: { data: isCatalogue ? [{ ...records[0], title, title_english: title }] : [] } });
   });

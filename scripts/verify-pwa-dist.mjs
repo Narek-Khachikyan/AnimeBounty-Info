@@ -64,6 +64,7 @@ if (existsSync(join(root, 'dist/sw.js'))) {
     ['jikan-api-cache', /jikan-api-cache/],
     ['NetworkFirst', /NetworkFirst/],
     ['api.jikan.moe route', /api\\\.jikan\\\.moe/],
+    ['api.tenrai.org route', /api\\\.tenrai\\\.org/],
     ['ExpirationPlugin', /ExpirationPlugin/],
     ['CacheableResponsePlugin', /CacheableResponsePlugin/],
     ['maxEntries 80', /maxEntries:80/],

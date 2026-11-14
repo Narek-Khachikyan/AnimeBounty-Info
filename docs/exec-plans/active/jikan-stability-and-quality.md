@@ -5,7 +5,7 @@ dependency risk) while keeping the harness documentation and verification flow
 current. The original stabilization PRD is retired; this plan owns the remaining
 acceptance criteria.
 
-**Architecture:** Keep Jikan access behind `src/features/apiSlice.js`; pages own
+**Architecture:** Keep catalogue API access behind `src/features/apiSlice.js`; pages own
 query states; components render guarded data. Do not introduce a new framework or
 state layer.
 
@@ -38,3 +38,9 @@ state layer.
   Detail state is scoped to route IDs for anime/manga; exported detail hooks
   cancel unfinished work when their final consumer leaves. Regression checks:
   `node scripts/verify-jikan-scheduler.mjs` and `e2e/jikan-endpoints.spec.js`.
+
+- 2026-11-14: [Jikan announced its public API shutdown on October 1, 2026](https://github.com/jikan-me/jikan-rest/issues/613).
+  Local live requests timed out; Tenrai returned compatible catalogue records.
+  Switched the API boundary to `https://api.tenrai.org/v1` and updated fixture
+  routes. Retained the legacy scheduler names, `jikan-api-cache`, seven-day
+  expiration, and Jikan cache route while adding Tenrai caching.

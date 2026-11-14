@@ -72,9 +72,9 @@ test("library can request status-based AI recommendations", async ({ page }) => 
     });
   });
 
-  await page.route("https://api.jikan.moe/v4/**", async (route) => {
+  await page.route("https://api.tenrai.org/v1/**", async (route) => {
     const requestUrl = new URL(route.request().url());
-    const isSamuraiSearch = requestUrl.pathname === "/v4/anime" && requestUrl.searchParams.get("q") === "Samurai Champloo";
+    const isSamuraiSearch = requestUrl.pathname === "/v1/anime" && requestUrl.searchParams.get("q") === "Samurai Champloo";
     const body = isSamuraiSearch
       ? {
         data: [{

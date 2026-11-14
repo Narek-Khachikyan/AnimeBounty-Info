@@ -39,6 +39,7 @@ const offlineNotice = readFileSync(
   ['vite.config.js', viteConfig, 'navigateFallback'],
   ['vite.config.js', viteConfig, 'runtimeCaching'],
   ['vite.config.js', viteConfig, 'api\\.jikan\\.moe'],
+  ['vite.config.js', viteConfig, 'api\\.tenrai\\.org'],
   ['vite.config.js', viteConfig, "handler: 'NetworkFirst'"],
   ['vite.config.js', viteConfig, "method: 'GET'"],
   ['vite.config.js', viteConfig, "cacheName: 'jikan-api-cache'"],

@@ -20,16 +20,16 @@ const mangaItem = (malId, title) => ({
 });
 
 const routeJikan = async (page) => {
-  await page.route('https://api.jikan.moe/v4/**', async (route) => {
+  await page.route('https://api.tenrai.org/v1/**', async (route) => {
     const requestUrl = new URL(route.request().url());
     const { pathname, searchParams } = requestUrl;
     let body = { data: [] };
 
-    if (pathname === '/v4/top/anime') {
+    if (pathname === '/v1/top/anime') {
       body = { data: [animeItem(10, 'Top Anime Fixture')] };
-    } else if (pathname === '/v4/recommendations/anime') {
+    } else if (pathname === '/v1/recommendations/anime') {
       body = { data: [{ entry: [animeItem(11, 'Recommended Anime Fixture')] }] };
-    } else if (pathname === '/v4/anime') {
+    } else if (pathname === '/v1/anime') {
       const query = searchParams.get('q');
       body = {
         data: [
@@ -39,19 +39,19 @@ const routeJikan = async (page) => {
           ),
         ],
       };
-    } else if (pathname === '/v4/seasons/now') {
+    } else if (pathname === '/v1/seasons/now') {
       body = { data: [animeItem(14, 'Season Now Pick')] };
-    } else if (pathname === '/v4/seasons/upcoming') {
+    } else if (pathname === '/v1/seasons/upcoming') {
       body = { data: [animeItem(15, 'Upcoming Season Pick')] };
-    } else if (pathname === '/v4/schedules') {
+    } else if (pathname === '/v1/schedules') {
       body = { data: [animeItem(16, 'Monday Schedule Pick')] };
-    } else if (pathname === '/v4/genres/anime') {
+    } else if (pathname === '/v1/genres/anime') {
       body = { data: [{ mal_id: 2, name: 'Adventure', count: 200 }] };
-    } else if (pathname === '/v4/top/manga') {
+    } else if (pathname === '/v1/top/manga') {
       body = { data: [mangaItem(20, 'Top Manga Fixture')] };
-    } else if (pathname === '/v4/recommendations/manga') {
+    } else if (pathname === '/v1/recommendations/manga') {
       body = { data: [{ entry: [mangaItem(21, 'Recommended Manga Fixture')] }] };
-    } else if (pathname === '/v4/manga') {
+    } else if (pathname === '/v1/manga') {
       const query = searchParams.get('q');
       body = {
         data: [
@@ -61,9 +61,9 @@ const routeJikan = async (page) => {
           ),
         ],
       };
-    } else if (pathname === '/v4/genres/manga') {
+    } else if (pathname === '/v1/genres/manga') {
       body = { data: [{ mal_id: 8, name: 'Drama', count: 180 }] };
-    } else if (pathname === '/v4/anime/1') {
+    } else if (pathname === '/v1/anime/1') {
       body = {
         data: {
           ...animeItem(1, 'Detail Anime Fixture'),
@@ -75,9 +75,9 @@ const routeJikan = async (page) => {
           trailer: { url: null, images: {} },
         },
       };
-    } else if (pathname === '/v4/anime/1/pictures' || pathname === '/v4/anime/1/episodes') {
+    } else if (pathname === '/v1/anime/1/pictures' || pathname === '/v1/anime/1/episodes') {
       body = { data: [] };
-    } else if (pathname === '/v4/anime/1/characters') {
+    } else if (pathname === '/v1/anime/1/characters') {
       body = {
         data: [
           {
@@ -91,7 +91,7 @@ const routeJikan = async (page) => {
           },
         ],
       };
-    } else if (pathname === '/v4/anime/1/relations') {
+    } else if (pathname === '/v1/anime/1/relations') {
       body = {
         data: [
           {
@@ -104,9 +104,9 @@ const routeJikan = async (page) => {
           },
         ],
       };
-    } else if (pathname === '/v4/anime/1/streaming') {
+    } else if (pathname === '/v1/anime/1/streaming') {
       body = { data: [{ name: 'Crunchyroll Fixture', url: 'https://example.com/stream' }] };
-    } else if (pathname === '/v4/anime/1/videos') {
+    } else if (pathname === '/v1/anime/1/videos') {
       body = {
         data: {
           promo: [
@@ -120,7 +120,7 @@ const routeJikan = async (page) => {
           ],
         },
       };
-    } else if (pathname === '/v4/manga/2') {
+    } else if (pathname === '/v1/manga/2') {
       body = {
         data: {
           ...mangaItem(2, 'Detail Manga Fixture'),
@@ -130,9 +130,9 @@ const routeJikan = async (page) => {
           authors: [{ mal_id: 1, name: 'Author Fixture' }],
         },
       };
-    } else if (pathname === '/v4/manga/2/pictures') {
+    } else if (pathname === '/v1/manga/2/pictures') {
       body = { data: [] };
-    } else if (pathname === '/v4/manga/2/characters') {
+    } else if (pathname === '/v1/manga/2/characters') {
       body = {
         data: [
           {
@@ -145,7 +145,7 @@ const routeJikan = async (page) => {
           },
         ],
       };
-    } else if (pathname === '/v4/manga/2/relations') {
+    } else if (pathname === '/v1/manga/2/relations') {
       body = {
         data: [
           {
@@ -154,7 +154,7 @@ const routeJikan = async (page) => {
           },
         ],
       };
-    } else if (pathname === '/v4/characters/777/full') {
+    } else if (pathname === '/v1/characters/777/full') {
       body = {
         data: {
           mal_id: 777,
@@ -227,7 +227,7 @@ test('anime page consumes the q query parameter for search', async ({ page }) =>
 test('anime search recovers from a single Jikan 429 response', async ({ page }) => {
   let animeSearchAttempts = 0;
 
-  await page.route(/^https:\/\/api\.jikan\.moe\/v4\/anime\?.*/, async (route) => {
+  await page.route(/^https:\/\/api\.tenrai\.org\/v1\/anime\?.*/, async (route) => {
     animeSearchAttempts += 1;
 
     if (animeSearchAttempts === 1) {
@@ -313,7 +313,7 @@ test('character page shows biography and anime and manga appearances', async ({ 
 });
 
 test('character page tolerates missing nested fields', async ({ page }) => {
-  await page.route('https://api.jikan.moe/v4/characters/999/full', async (route) => {
+  await page.route('https://api.tenrai.org/v1/characters/999/full', async (route) => {
     await route.fulfill({
       contentType: 'application/json',
       body: JSON.stringify({
@@ -349,11 +349,11 @@ for (const [media, id] of [['anime', 1], ['manga', 2]]) {
   test(`${media} reviews render despite an unresolved gallery`, async ({ page }) => {
     let releaseGallery;
     const galleryGate = new Promise((resolve) => { releaseGallery = resolve; });
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/pictures`, async (route) => {
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/pictures`, async (route) => {
       await galleryGate;
       await route.fulfill({ json: { data: [] } });
     });
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, (route) =>
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/reviews`, (route) =>
       route.fulfill({ json: { data: communityReviews(media) } }));
 
     try {
@@ -370,7 +370,7 @@ for (const [media, id] of [['anime', 1], ['manga', 2]]) {
 
   test(`${media} reviews reach a terminal error and recover with Try again`, async ({ page }) => {
     let failing = true;
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, (route) =>
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/reviews`, (route) =>
       route.fulfill(failing
         ? { status: 503, json: { message: 'Temporarily unavailable' } }
         : { json: { data: communityReviews('Recovered') } }));
@@ -388,15 +388,15 @@ for (const [media, id] of [['anime', 1], ['manga', 2]]) {
     const nextId = 88;
     let releaseNext;
     const nextGate = new Promise((resolve) => { releaseNext = resolve; });
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, (route) =>
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/reviews`, (route) =>
       route.fulfill({ json: { data: communityReviews('Original title') } }));
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/relations`, (route) =>
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/relations`, (route) =>
       route.fulfill({ json: { data: [{ relation: 'Sequel', entry: [{ mal_id: nextId, type: media, name: 'Next title' }] }] } }));
-    await page.route(`https://api.jikan.moe/v4/${media}/${nextId}`, async (route) => {
+    await page.route(`https://api.tenrai.org/v1/${media}/${nextId}`, async (route) => {
       await nextGate;
       await route.fulfill({ json: { data: { mal_id: nextId, title: 'Next title', images: {} } } });
     });
-    await page.route(`https://api.jikan.moe/v4/${media}/${nextId}/reviews`, (route) =>
+    await page.route(`https://api.tenrai.org/v1/${media}/${nextId}/reviews`, (route) =>
       route.fulfill({ json: { data: [] } }));
 
     await page.goto(`/${media}/${id}`);
@@ -423,7 +423,7 @@ for (const [media, id] of [['anime', 1], ['manga', 2]]) {
 
 test('episodes recover from 429 and render complete and sparse rows', async ({ page }) => {
   let attempts = 0;
-  await page.route('https://api.jikan.moe/v4/anime/1/episodes', (route) => {
+  await page.route('https://api.tenrai.org/v1/anime/1/episodes', (route) => {
     attempts += 1;
     return route.fulfill(attempts === 1
       ? { status: 429, json: { message: 'Rate limited' } }
@@ -441,7 +441,7 @@ test('episodes recover from 429 and render complete and sparse rows', async ({ p
 
 test('episodes show a retryable terminal error and an honest empty result', async ({ page }) => {
   let failing = true;
-  await page.route('https://api.jikan.moe/v4/anime/1/episodes', (route) =>
+  await page.route('https://api.tenrai.org/v1/anime/1/episodes', (route) =>
     route.fulfill(failing ? { status: 503, json: { message: 'Unavailable' } } : { json: { data: [] } }));
   await page.goto('/anime/1');
   await page.getByRole('heading', { name: 'Episodes', exact: true }).scrollIntoViewIfNeeded();
@@ -470,22 +470,22 @@ for (const [media, id] of [['anime', 1], ['manga', 2]]) {
     let markReviewsStarted;
     const reviewsStarted = new Promise((resolve) => { markReviewsStarted = resolve; });
     let oldCharacterRequests = 0;
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/pictures`, async (route) => {
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/pictures`, async (route) => {
       await held;
       await route.fulfill({ json: { data: [] } }).catch(() => {});
     });
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/reviews`, async (route) => {
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/reviews`, async (route) => {
       markReviewsStarted();
       await held;
       await route.fulfill({ json: { data: communityReviews('Obsolete title') } }).catch(() => {});
     });
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/characters`, (route) => {
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/characters`, (route) => {
       oldCharacterRequests += 1;
       return route.fulfill({ json: { data: [] } });
     });
-    await page.route(`https://api.jikan.moe/v4/${media}/${id}/relations`, (route) =>
+    await page.route(`https://api.tenrai.org/v1/${media}/${id}/relations`, (route) =>
       route.fulfill({ json: { data: [{ relation: 'Sequel', entry: [{ mal_id: 89, type: media, name: 'Current title after cancellation' }] }] } }));
-    await page.route(`https://api.jikan.moe/v4/${media}/89`, (route) =>
+    await page.route(`https://api.tenrai.org/v1/${media}/89`, (route) =>
       route.fulfill({ json: { data: { mal_id: 89, title: 'Current title after cancellation', images: {} } } }));
     try {
       await page.goto(`/${media}/${id}`);
