@@ -13,7 +13,7 @@
   }
 }
 .review {
-  background: rgba(28, 26, 23, 0.72);
+  background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   color: var(--text-muted);

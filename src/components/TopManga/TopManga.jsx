@@ -10,7 +10,7 @@ const TopManga = ({ data }) => {
   const mangaItems = Array.isArray(data) ? data : [];
 
   return (
-    <section data-aos="fade-up" className="AnimeSlide py-4" aria-labelledby="top-manga-title">
+    <section  className="AnimeSlide py-4" aria-labelledby="top-manga-title">
       <div className="section-heading">
         <p className="section-kicker">Reader favorites</p>
         <h2 id="top-manga-title" className='TopManga__title text-4xl text-black mt-12 mb-6'>Top Manga</h2>

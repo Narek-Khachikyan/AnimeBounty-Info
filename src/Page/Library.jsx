@@ -47,12 +47,12 @@ const Library = () => {
   ), [favoritesOnly, items, statusFilter, typeFilter]);
 
   return (
-    <main className="library-page" id="main-content">
+    <main className={items.length === 0 ? "library-page library-page--empty" : "library-page"} id="main-content">
       <section className="library-hero">
         <div>
-          <p className="section-kicker">Offline shelf</p>
+          <p className="section-kicker">The personal collection</p>
           <h1>Your library</h1>
-          <p>Saved anime and manga stay on this device, so the PWA can show your shelf even without a network connection.</p>
+          <p>Your next watch. Your favorite read. Saved on this device, available offline.</p>
         </div>
       </section>
 
@@ -87,8 +87,6 @@ const Library = () => {
           Favorites only
         </button>
       </section>
-
-      <AiRecommendations items={items} />
 
       {filteredItems.length > 0 ? (
         <section className="library-grid" aria-label="Saved library items">
@@ -134,6 +132,8 @@ const Library = () => {
           </div>
         </section>
       )}
+
+      <AiRecommendations items={items} />
     </main>
   );
 };

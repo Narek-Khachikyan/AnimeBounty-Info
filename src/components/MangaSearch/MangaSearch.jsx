@@ -11,8 +11,9 @@ import ErrorState from "../ErrorState/ErrorState";
 import GenreChips from "../GenreChips/GenreChips";
 import "./mangaSearch.scss";
 
-const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true, deferUntilVisible = false }) => {
+const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle = true, deferUntilVisible = false, previewLimit }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showAll, setShowAll] = useState(false);
   const queryParam = searchParams.get("q") || "";
   const [queryManga, setQueryManga] = useState(queryParam);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
@@ -92,9 +93,11 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
               <span className="media-toggle__item media-toggle__item--active">Manga</span>
             </div>
           ) : null}
-          <input className="searchInput" placeholder="Search manga..." aria-label="Search manga" type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} />
+          <label className="catalogue-search-field" htmlFor="manga-search-input"><span>Search manga</span>
+          <input id="manga-search-input" className="searchInput" placeholder="Search manga..." aria-label="Search manga" type="text" value={queryManga} onChange={event => setQueryManga(event.target.value)} /></label>
         </div>
       </div>
+      <div className="catalogue-context"><p>{orderBy === "score" ? "Highest rated" : orderBy === "title" ? "By title" : `Ordered by ${orderBy}`} · {sortBy === "desc" ? "Descending" : "Ascending"} {selectedGenreId ? `· Genre: ${mangaGenres?.data?.find(genre => genre.mal_id === selectedGenreId)?.name || selectedGenreId}` : ""}</p><button type="button" onClick={resetSearch}>Reset filters</button></div>
       <details className="catalogue-options">
         <summary>Filters <span>Order and genres</span></summary>
       <div className="filter search-filters">
@@ -123,7 +126,7 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
       </details>
       {shouldFetch ? (
         <p className="search-results-status" role="status" aria-live="polite">
-          {isUpdating ? "Updating manga matches…" : isError ? "" : `${mangaSearchItems.length} manga matches`}
+          {isUpdating ? "Updating manga matches…" : isError ? "" : `${previewLimit && !showAll && !queryManga ? Math.min(previewLimit, mangaSearchItems.length) : mangaSearchItems.length} manga titles shown`}
         </p>
       ) : null}
       <div className="search-content catalogue-grid" aria-busy={isUpdating}>
@@ -143,13 +146,17 @@ const MangaSearch = ({ orderBy, setOrderBy, setSortBy, sortBy, showMediaToggle =
             <button type="button" className="show-btn" onClick={resetSearch}>Reset manga search</button>
           </div>
         ) : (
-          mangaSearchItems.map(obj => (
+          mangaSearchItems.slice(0, previewLimit && !showAll && !queryManga ? previewLimit : undefined).map(obj => (
             <Link key={obj.mal_id} to={`/manga/${obj.mal_id}`}>
               <MangaCard {...obj} />
             </Link>
           ))
         )}
       </div>
+      {previewLimit ? <div className="catalogue-continuation">
+        {mangaSearchItems.length > previewLimit && !queryManga ? <button className="catalogue-view-all" type="button" aria-expanded={showAll} onClick={() => setShowAll(value => !value)}>{showAll ? "Show fewer manga titles" : `Show all ${mangaSearchItems.length} manga titles`}<span aria-hidden="true">{showAll ? "−" : "+"}</span></button> : null}
+        <Link className="catalogue-route-link" to="/manga">Open manga catalogue ↗</Link>
+      </div> : null}
     </section>
   )
 }
@@ -161,6 +168,7 @@ MangaSearch.propTypes = {
   sortBy: PropTypes.string.isRequired,
   showMediaToggle: PropTypes.bool,
   deferUntilVisible: PropTypes.bool,
+  previewLimit: PropTypes.number,
 };
 
 export default MangaSearch;

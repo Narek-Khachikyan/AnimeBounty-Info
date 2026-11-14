@@ -16,6 +16,7 @@ const Header = () => {
   };
 
   const navItems = [
+    { to: "/", label: "Discover" },
     { to: "/anime", label: "Anime" },
     { to: "/manga", label: "Manga" },
     { to: "/library", label: "Library" },
@@ -44,7 +45,7 @@ const Header = () => {
 
   useEffect(() => {
     if (!isActive) return undefined;
-    navigationRef.current?.querySelector("a")?.focus();
+    (navigationRef.current?.querySelector('[aria-current="page"]') || navigationRef.current?.querySelector("a"))?.focus();
 
     const handleMenuKeys = (event) => {
       if (!window.matchMedia("(max-width: 720px)").matches) return;
@@ -73,9 +74,9 @@ const Header = () => {
     <header className="header">
       <div className="header__container">
         <div className="header__content py-2">
-          <button type="button" onClick={() => navigateToHome()} className="header__logo text-xl justify-self-start content-center">
-            <span className="header__mark" aria-hidden="true">✦</span>
-            <span>AnimeBounty-Info</span>
+          <button type="button" onClick={() => navigateToHome()} aria-label="AnimeBounty-Info home" className="header__logo text-xl justify-self-start content-center">
+            <span className="header__mark" aria-hidden="true">ab</span>
+            <span>AnimeBounty<span className="header__logo-dot">.</span></span>
           </button>
           <nav
             ref={navigationRef}
@@ -89,7 +90,7 @@ const Header = () => {
                   <Link
                     onClick={() => scrollUp()}
                     to={item.to}
-                    className={location.pathname === item.to ? "navigation__list-link header__active" : "navigation__list-link"}
+                    className={`navigation__list-link${item.to === "/library" ? " navigation__list-link--library" : ""}${location.pathname === item.to ? " header__active" : ""}`}
                     aria-current={location.pathname === item.to ? "page" : undefined}
                   >
                     <span>{item.label}</span>

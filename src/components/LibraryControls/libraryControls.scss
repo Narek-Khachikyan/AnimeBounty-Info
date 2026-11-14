@@ -90,3 +90,7 @@
     }
   }
 }
+.library-controls { background:var(--surface); }
+.library-controls__status select { background:var(--app-bg); }
+.library-controls__button,.library-controls__favorite { border-color:var(--surface-border-strong); background:var(--app-bg); min-height:44px; }
+.library-controls__favorite--active { background:var(--surface-paper); color:#232323; }

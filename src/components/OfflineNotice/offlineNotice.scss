@@ -1,7 +1,7 @@
 .offline-notice {
   align-items: center;
-  background: rgba(24, 22, 19, 0.96);
-  border-bottom: 1px solid rgba(217, 164, 65, 0.36);
+  background: var(--surface);
+  border-bottom: 1px solid var(--surface-border);
   color: var(--text-muted);
   display: flex;
   gap: 12px;

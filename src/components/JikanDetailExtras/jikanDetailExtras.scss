@@ -1,6 +1,6 @@
 .detail-extra,
 .character-profile {
-  background: rgba(28, 26, 23, 0.66);
+  background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   margin-top: 24px;
@@ -60,7 +60,7 @@
 
 .detail-extra__relation-marker {
   background: var(--accent);
-  border: 4px solid rgba(28, 26, 23, 0.95);
+  border: 4px solid var(--surface);
   border-radius: 999px;
   box-shadow: 0 0 0 1px rgba(217, 164, 65, 0.5);
   height: 20px;

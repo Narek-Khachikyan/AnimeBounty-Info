@@ -42,7 +42,10 @@ to Netlify.
 - The single layout wrapper is `src/layouts/MainLayout.jsx`.
 - `src/index.css` holds the Tailwind directives; `src/globalStyles/reset.css`
   is the reset. Design tokens live in `src/App.scss`.
-- Static images and icons live in `src/assets/`.
+- Bundled icons live in `src/assets/`. Featured catalogue covers live in
+  `public/art/`; `public/assets/` contains the unmodified taste-skill motion
+  and moment modules plus their small route-mount bridge. Local WebP covers
+  are precached with the application shell.
 - Cross-component hooks live in `src/hooks/`; the Redux store lives in
   `src/app/store.js`.
 

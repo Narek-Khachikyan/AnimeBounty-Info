@@ -12,7 +12,7 @@
 .media-toggle__item { padding: 10px 12px; font-size: .8rem; font-weight: 600; border-radius: 5px; color: var(--text-muted); }
 .media-toggle__item--active { background: var(--surface-paper); color: #241d3b; }
 .searchInput { background: var(--app-bg-soft); min-height: 48px; padding: 12px 14px; }
-.search-filters { display: flex; flex-wrap: wrap; gap: 18px 24px; align-items: end; padding: 16px 0; border-top: 1px solid var(--surface-border); border-bottom: 1px solid var(--surface-border); }
+.search-filters { display: flex; flex-wrap: wrap; gap: 18px 24px; align-items: flex-end; padding: 16px 0; border-top: 1px solid var(--surface-border); border-bottom: 1px solid var(--surface-border); }
 .search-filters__summary { display: none; }
 .search-filters__group { display: grid; gap: 8px; > p { color: var(--text-muted); font-size: .75rem; font-weight: 600; } }
 .search-content > a { min-width: 0; height: 100%; border-radius: 8px; }
@@ -24,3 +24,11 @@
 .catalogue-options > summary { cursor: pointer; padding: 12px 2px; font-size: .85rem; color: var(--text-primary); font-weight: 600; span { margin-left: 12px; color: var(--text-muted); font-weight: 400; font-size: .78rem; } }
 .catalogue-options[open] > summary { border-bottom: 1px solid var(--surface-border); }
 .catalogue-options .search-filters { border: 0; }
+.catalogue-search { padding:32px 0; }
+.search-panel__copy h1,.search-panel__copy h2 { font-weight:500; font-size:clamp(26px,3vw,36px); letter-spacing:-.045em; }
+.search-panel__subtitle { font-size:13px; }
+.media-toggle__item--active { color:#232323; }
+.media-toggle__item { min-height:44px; display:inline-flex; align-items:center; }
+.searchInput { background:var(--app-bg); }
+.catalogue-options > summary { min-height:46px; padding:14px 2px; }
+@media(max-width:760px) { .search-panel { gap:16px; } .search-panel__actions { flex-direction:row; align-items:center; gap:10px; } .search-panel__actions .searchInput { min-width:0; flex:1; width:100px; } .media-toggle { flex-shrink:0; } .media-toggle__item { padding:9px; font-size:11px; } .search-panel__subtitle { font-size:12px; display:block; } .catalogue-search { padding:28px 0; } }

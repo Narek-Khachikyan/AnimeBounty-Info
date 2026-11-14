@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-type="software" data-radius="soft" data-buttons="solid" data-motion>
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#10100f" />
-  <meta name="description" content="Browse anime and manga shelves from the public Jikan API." />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="page-type" content="software" />
+  <meta name="site-kind" content="software" />
+  <meta property="og:title" content="AnimeBounty — Your anime and manga field guide" />
+  <meta property="og:description" content="Explore anime and manga, compare titles and build your own library." />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="/assets/motion/motion.css" />
+  <meta name="description" content="Explore anime and manga, compare titles and keep your next find in your personal library." />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="AnimeBounty" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>AnimeBounty-Info</title>
+  <script>document.documentElement.classList.add("m-enter");setTimeout(()=>document.documentElement.classList.add("m-enter-done"),700)</script>
 </head>
 
 <body>
+  <!-- software · white-mint-tiles / Geist · film-inspired editorial frame · giant-type-pass · solid / wordmark -->
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+  <script type="module" src="/assets/taste-bridge.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 .filter-control { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px; background: var(--app-bg-soft); padding: 3px; border: 1px solid var(--surface-border); border-radius: 8px; }
 .filter-btn, .rating-btn, .sort-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 12px; min-height: 40px; color: var(--text-muted); border-radius: 5px; font-size: .78rem; font-weight: 500; &:hover { color: var(--text-primary); background: var(--surface-strong); } }
-.filter-control .active { color: var(--text-primary); background: #45385f; box-shadow: inset 0 0 0 1px #79649d; }
+.filter-control .active { color: white; background: var(--p-action); box-shadow: inset 0 0 0 1px var(--p-action); }
 .filter-btn__hint { color: var(--text-muted); font-size: .7rem; }
 @media(max-width: 520px) { .filter-control { display: flex; width: 100%; } .filter-btn, .rating-btn, .sort-btn { flex: 1; padding: 8px 6px; } }
+.filter-btn,.rating-btn,.sort-btn { min-height:44px; }
